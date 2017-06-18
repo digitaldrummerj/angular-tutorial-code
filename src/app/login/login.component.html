@@ -15,7 +15,12 @@
     <div class="form-group">
       <label for="password">Password:</label>
       <input name="password" id="password" id="password" type="password" class="form-control" placeholder="Password..." (ngModel)="password"
-        required />
+        required #password="ngModel" />
+      <div *ngIf="password.errors && (password.dirty || password.touched)" class="alert alert-danger">
+        <div [hidden]="!password.errors.required">
+          Password is required
+        </div>
+      </div>
     </div>
     <button type="submit" class="btn btn-primary">Login</button>
     <button type="button" class="btn btn-default">Cancel</button>
