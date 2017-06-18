@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+  invalidLogin: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -18,7 +19,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(formValues.email, formValues.password)
       .subscribe(result => {
         if (!this.authService.currentUser) {
-          console.log('user not found');
+          this.invalidLogin = true;
         } else {
           this.router.navigate(['/']);
         }
