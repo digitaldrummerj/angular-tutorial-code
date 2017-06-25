@@ -1,0 +1,61 @@
+<div class="container">
+  <div class="page-header">
+    <h1 align="center">Todo List</h1>
+  </div>
+  <form (ngSubmit)="save()" role="form" [formGroup]="addForm" class="text-center">
+    <div class="form-group row">
+      <div class="col-sm-10">
+        <input type="text" class="form-control form-control-lg" formControlName="item" placeholder="Todo!">
+      </div>
+      <div class="col-sm-2">
+        <button type="submit" class="btn btn-primary btn-lg btn-block" [disabled]="addForm.invalid">Add</button>
+      </div>
+    </div>
+  </form>
+  <div class="alert alert-danger" *ngIf="addForm.get('item').errors && (addForm.get('item').dirty || addForm.get('item').touched)">
+      <span *ngIf="addForm.get('item').errors.required">
+       Item is required
+     </span>
+      <span *ngIf="addForm.get('item').errors.minlength">
+       Item must be 3 characters
+     </span>
+  </div>
+  <div class="container">
+    <h3>Form Status Info</h3>
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Status</th>
+          <th>Form</th>
+          <th>Item Field</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Dirty</td>
+          <td>{{ addForm.dirty }}</td>
+          <td>{{ addForm.get('item').dirty }}</td>
+        </tr>
+        <tr>
+          <td>Touched</td>
+          <td>{{ addForm.touched }}</td>
+          <td>{{ addForm.get('item').touched }}</td>
+        </tr>
+        <tr>
+          <td>Valid</td>
+          <td>{{ addForm.valid }}</td>
+          <td>{{ addForm.get('item').valid }}</td>
+        </tr>
+        <tr>
+            <td>Errors</td>
+            <td>N/A</td>
+            <td><pre>{{ addForm.get('item').errors | json }}</pre></td>
+        </tr>
+        <tr>
+            <td>Form Field Values</td>
+            <td colspan="2"><pre>{{ addForm.value | json }}</pre></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
