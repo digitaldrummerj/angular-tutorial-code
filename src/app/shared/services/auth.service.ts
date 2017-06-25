@@ -24,4 +24,18 @@ export class AuthService {
         return Observable.of(false);
       });
   }
+
+  signup(email: string, password: string) {
+    let loginInfo = { "email": email, "password": password };
+    return this.http.post("https://dj-sails-todo.azurewebsites.net/user/", loginInfo, this.options)
+      .do((res: Response) => {
+        if (res) {
+          this.currentUser = <User>res.json();
+        }
+      })
+      .catch(error => {
+        console.log('signup error', error)
+        return Observable.of(false);
+      });
+  }
 }
