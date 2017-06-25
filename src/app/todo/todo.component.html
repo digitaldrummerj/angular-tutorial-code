@@ -3,7 +3,7 @@
     <h1 align="center">Todo List</h1>
   </div>
   <form (ngSubmit)="save()" role="form" [formGroup]="addForm" class="text-center">
-    <div class="form-group row">
+    <div class="form-group row"  [ngClass]="{'has-danger': formErrors.item}">
       <div class="col-sm-10">
         <input type="text" class="form-control form-control-lg" formControlName="item" placeholder="Todo!">
       </div>
