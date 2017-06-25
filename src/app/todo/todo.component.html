@@ -12,14 +12,10 @@
       </div>
     </div>
   </form>
-  <div class="alert alert-danger" *ngIf="addForm.get('item').errors && (addForm.get('item').dirty || addForm.get('item').touched)">
-      <span *ngIf="addForm.get('item').errors.required">
-       Item is required
-     </span>
-      <span *ngIf="addForm.get('item').errors.minlength">
-       Item must be 3 characters
-     </span>
+  <div *ngIf="formErrors.item" class="alert alert-danger">
+    {{ formErrors.item }}
   </div>
+
   <div class="container">
     <h3>Form Status Info</h3>
     <table class="table table-striped table-bordered">
@@ -47,13 +43,17 @@
           <td>{{ addForm.get('item').valid }}</td>
         </tr>
         <tr>
-            <td>Errors</td>
-            <td>N/A</td>
-            <td><pre>{{ addForm.get('item').errors | json }}</pre></td>
+          <td>Errors</td>
+          <td>N/A</td>
+          <td>
+            <pre>{{ addForm.get('item').errors | json }}</pre>
+          </td>
         </tr>
         <tr>
-            <td>Form Field Values</td>
-            <td colspan="2"><pre>{{ addForm.value | json }}</pre></td>
+          <td>Form Field Values</td>
+          <td colspan="2">
+            <pre>{{ addForm.value | json }}</pre>
+          </td>
         </tr>
       </tbody>
     </table>
