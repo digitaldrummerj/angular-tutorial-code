@@ -18,4 +18,28 @@ export class TodoService {
         return error;
       });
   }
+
+  getAll(): Observable<Array<Todo>> {
+    let url = "https://dj-sails-todo.azurewebsites.net/todo";
+    return this.http.get(url, this.options)
+      .map((res: Response) => {
+        return <Array<Todo>>res.json();
+      })
+      .catch(error => {
+        console.log('get error', error);
+        return error;
+      });
+  }
+
+  updateTodo(todo: Todo): Observable<Todo> {
+    console.log('todo', todo);
+    let url = `https://dj-sails-todo.azurewebsites.net/todo/${todo.id}`;
+    console.log(url);
+    return this.http.put(url, todo, this.options)
+      .map((res: Response) => <Todo>res.json())
+      .catch(error => {
+        console.log('update error', error);
+        return error;
+      });
+  }
 }

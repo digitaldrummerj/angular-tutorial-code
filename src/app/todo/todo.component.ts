@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import 'rxjs/add/operator/debounceTime';
+import { TodoService } from '../shared/services/todo.service';
+import { Todo } from '../shared/classes/todo';
 
 @Component({
   selector: 'app-todo',
@@ -9,7 +11,10 @@ import 'rxjs/add/operator/debounceTime';
 })
 export class TodoComponent implements OnInit {
   addForm: FormGroup;
-  constructor(private formBuilder: FormBuilder) { }
+  errorMessage: string;
+  todoList: Array<Todo> = [];
+
+  constructor(private formBuilder: FormBuilder, private todoService: TodoService) { }
 
   ngOnInit() {
     this.addForm = this.formBuilder.group({
@@ -19,6 +24,8 @@ export class TodoComponent implements OnInit {
     this.addForm.valueChanges.debounceTime(1000).subscribe(data => this.onValueChanged(data));
 
     this.onValueChanged();
+
+    this.getTodoListAll();
   }
 
   onValueChanged(data?: any) {
@@ -39,9 +46,44 @@ export class TodoComponent implements OnInit {
     }
   }
 
-
   save(): void {
-    console.log('form values: ', this.addForm.value);
+    this.todoService.save(this.addForm.value.item)
+      .subscribe(result => {
+        console.log('save result', result);
+        this.todoList.push(result);
+      },
+      error => {
+        this.errorMessage = <any>error;
+      });
+  }
+
+  getTodoListAll(): void {
+    this.todoService.getAll()
+      .subscribe(
+      data => {
+        console.log(data);
+        this.todoList = data;
+      },
+      error => {
+        this.errorMessage = <any>error;
+      }
+      );
+  }
+
+  completeTodo(todo: Todo): void {
+    console.log('completing...');
+    todo.completed = !todo.completed;
+    this.todoService.updateTodo(todo)
+      .subscribe(
+      data => {
+        // do nothing
+        console.log('completed');
+      },
+      error => {
+        todo.completed = !todo.completed;
+        this.errorMessage = <any>error;
+        console.log('complete error', this.errorMessage);
+      });
   }
 
   formErrors = {
