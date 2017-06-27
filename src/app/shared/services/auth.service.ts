@@ -38,4 +38,23 @@ export class AuthService {
         return Observable.of(false);
       });
   }
+
+  isAuthenticated(): Observable<boolean> {
+    return this.http.get("https://dj-sails-todo.azurewebsites.net/user/identity", this.options)
+      .map((res: Response) => {
+        if (res) {
+          return Observable.of(true);
+        }
+
+        return Observable.of(false);
+      })
+      .catch((error: Response) => {
+        if (error.status !== 403) {
+          console.log('isAuthenticated error', error)
+          this.currentUser = null;
+        }
+
+        return Observable.of(false);
+      });
+  }
 }

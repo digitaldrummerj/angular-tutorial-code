@@ -10,6 +10,7 @@ import { AuthService } from './shared/services/auth.service';
 import { SignupComponent } from './signup/signup.component';
 import { TodoComponent } from './todo/todo.component';
 import { TodoService } from './shared/services/todo.service';
+import { IsLoggedInGuard } from './shared/guards/is-logged-in.guard';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,7 @@ import { TodoService } from './shared/services/todo.service';
     HttpModule,
     AppRoutingModule
   ],
-  providers: [AuthService, TodoService],
+  providers: [AuthService, TodoService, IsLoggedInGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
