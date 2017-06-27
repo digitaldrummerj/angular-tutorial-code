@@ -2,14 +2,17 @@ import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { Todo } from '../classes/todo';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class TodoService {
   private options = new RequestOptions({ withCredentials: true });
+  private url: string = `${environment.apiBaseUrl}/todo`;
+
   constructor(private http: Http) { }
 
   save(item: string): Observable<Todo> {
-    return this.http.post('https://dj-sails-todo.azurewebsites.net/todo', new Todo(item), this.options)
+    return this.http.post(this.url, new Todo(item), this.options)
       .map((res: Response) => {
         return <Todo>res.json();
       })
@@ -20,7 +23,7 @@ export class TodoService {
   }
 
   getAll(): Observable<Array<Todo>> {
-    let url = "https://dj-sails-todo.azurewebsites.net/todo";
+    let url = this.url;
     return this.http.get(url, this.options)
       .map((res: Response) => {
         return <Array<Todo>>res.json();
@@ -32,7 +35,7 @@ export class TodoService {
   }
 
   updateTodo(todo: Todo): Observable<Todo> {
-    let url = `https://dj-sails-todo.azurewebsites.net/todo/${todo.id}`;
+    let url = `${this.url}/${todo.id}`;
     return this.http.put(url, todo, this.options)
       .map((res: Response) => <Todo>res.json())
       .catch(error => {
@@ -42,7 +45,7 @@ export class TodoService {
   }
 
   deleteTodo(todo: Todo): Observable<Response> {
-    let url = `https://dj-sails-todo.azurewebsites.net/todo/${todo.id}`;
+    let url = `${this.url}/${todo.id}`;
     return this.http.delete(url, this.options)
       .catch(error => {
         console.log('delete error', error);
