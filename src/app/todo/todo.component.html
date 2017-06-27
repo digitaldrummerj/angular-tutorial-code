@@ -19,10 +19,11 @@
     <h3>Error Saving</h3>
     {{ errorMessage }}
   </div>
-  <div class="row" *ngFor="let todoItem of todoList">
-    <div class="col-1" (click)="completeTodo(todoItem)"><i [className]="todoItem.completed == true ? 'fa fa-check-square-o' : 'fa fa-square-o'"></i></div>
-    <div class="col-11 done-{{todoItem.completed}}">
-      {{todoItem.item}} <small>{{ todoItem.completed}} created: {{todoItem.createdAt | date:'short'}}</small>
+  <div class="row todo" *ngFor="let todoItem of todoList">
+    <div class="col-1" (click)="completeTodo(todoItem)"><i [className]="todoItem.completed  ? 'fa fa-check-square-o' : 'fa fa-square-o'"></i></div>
+    <div class="col-10 done-{{todoItem.completed}}">
+      {{todoItem.item}} <small>created: {{todoItem.createdAt | date:'short'}}</small>
     </div>
+    <div class="col-1" (click)="deleteTodo(todoItem)"><i class="fa fa-trash"></i></div>
   </div>
 </div>

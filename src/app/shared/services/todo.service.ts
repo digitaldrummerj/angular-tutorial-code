@@ -32,13 +32,20 @@ export class TodoService {
   }
 
   updateTodo(todo: Todo): Observable<Todo> {
-    console.log('todo', todo);
     let url = `https://dj-sails-todo.azurewebsites.net/todo/${todo.id}`;
-    console.log(url);
     return this.http.put(url, todo, this.options)
       .map((res: Response) => <Todo>res.json())
       .catch(error => {
         console.log('update error', error);
+        return error;
+      });
+  }
+
+  deleteTodo(todo: Todo): Observable<Response> {
+    let url = `https://dj-sails-todo.azurewebsites.net/todo/${todo.id}`;
+    return this.http.delete(url, this.options)
+      .catch(error => {
+        console.log('delete error', error);
         return error;
       });
   }
