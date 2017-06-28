@@ -11,13 +11,15 @@ import { SignupComponent } from './signup/signup.component';
 import { TodoComponent } from './todo/todo.component';
 import { TodoService } from './shared/services/todo.service';
 import { IsLoggedInGuard } from './shared/guards/is-logged-in.guard';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     SignupComponent,
-    TodoComponent
+    TodoComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
