@@ -13,6 +13,7 @@ export class TodoComponent implements OnInit {
   addForm: FormGroup;
   errorMessage: string;
   todoList: Array<Todo> = [];
+  openItemCount: number = 0;
 
   constructor(private formBuilder: FormBuilder, private todoService: TodoService) { }
 
@@ -51,6 +52,7 @@ export class TodoComponent implements OnInit {
       .subscribe(result => {
         console.log('save result', result);
         this.todoList.push(result);
+         this.openItemCount++;
       },
       error => {
         this.errorMessage = <any>error;
@@ -63,6 +65,7 @@ export class TodoComponent implements OnInit {
       data => {
         console.log(data);
         this.todoList = data;
+         this.calculateOpenItems();
       },
       error => {
         this.errorMessage = <any>error;
@@ -76,6 +79,7 @@ export class TodoComponent implements OnInit {
       .subscribe(
       data => {
         // do nothing
+          todo.completed ? this.openItemCount-- : this.openItemCount++;
       },
       error => {
         todo.completed = !todo.completed;
@@ -90,12 +94,17 @@ export class TodoComponent implements OnInit {
       data => {
         let index = this.todoList.indexOf(todo);
         this.todoList.splice(index, 1);
+        if (todo.completed === false) this.openItemCount--;
       },
       error => {
         todo.completed = !todo.completed;
         this.errorMessage = <any>error;
         console.log('complete error', this.errorMessage);
       });
+  }
+
+  calculateOpenItems(): void {
+    this.openItemCount = this.todoList.filter(item => item.completed === false).length;
   }
 
   formErrors = {

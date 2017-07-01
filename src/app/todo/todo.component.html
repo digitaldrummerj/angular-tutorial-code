@@ -1,6 +1,7 @@
 <div class="container">
   <div class="page-header">
     <h1 align="center">Todo List</h1>
+     <p class="lead">You've got <em>{{openItemCount}}</em> things to do</p>
   </div>
   <form (ngSubmit)="save()" role="form" [formGroup]="addForm" class="text-center">
     <div class="form-group row" [ngClass]="{'has-danger': formErrors.item}">
