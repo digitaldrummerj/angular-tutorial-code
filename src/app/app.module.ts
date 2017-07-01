@@ -12,6 +12,8 @@ import { TodoComponent } from './todo/todo.component';
 import { TodoService } from './shared/services/todo.service';
 import { IsLoggedInGuard } from './shared/guards/is-logged-in.guard';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { HeaderComponent } from './shared/header/header.component';
+import { FooterComponent } from './shared/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { NotFoundComponent } from './not-found/not-found.component';
     LoginComponent,
     SignupComponent,
     TodoComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
