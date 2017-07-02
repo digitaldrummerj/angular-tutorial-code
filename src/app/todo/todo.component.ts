@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import 'rxjs/add/operator/debounceTime';
 import { TodoService } from '../shared/services/todo.service';
 import { Todo } from '../shared/classes/todo';
+import { FieldSorter } from '../shared/classes/field-sorter';
 
 @Component({
   selector: 'app-todo',
@@ -47,12 +48,17 @@ export class TodoComponent implements OnInit {
     }
   }
 
+   sortItems(): void {
+     this.todoList.sort(FieldSorter.sort(['completed', 'item'], true));
+ }
+
   save(): void {
     this.todoService.save(this.addForm.value.item)
       .subscribe(result => {
         console.log('save result', result);
         this.todoList.push(result);
          this.openItemCount++;
+         this.sortItems();
       },
       error => {
         this.errorMessage = <any>error;
@@ -66,6 +72,7 @@ export class TodoComponent implements OnInit {
         console.log(data);
         this.todoList = data;
          this.calculateOpenItems();
+         this.sortItems();
       },
       error => {
         this.errorMessage = <any>error;
@@ -80,6 +87,7 @@ export class TodoComponent implements OnInit {
       data => {
         // do nothing
           todo.completed ? this.openItemCount-- : this.openItemCount++;
+         this.sortItems();
       },
       error => {
         todo.completed = !todo.completed;
