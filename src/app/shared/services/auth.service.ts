@@ -11,30 +11,37 @@ export class AuthService {
   constructor(private http: Http) {
   }
 
-  login(email: string, password: string): Observable<boolean | Response> {
+  login(email: string, password: string): Observable<boolean> {
     let loginInfo = { "email": email, "password": password };
     return this.http.put("https://dj-sails-todo.azurewebsites.net/user/login", loginInfo, this.options)
       .do((res: Response) => {
         if (res) {
           this.currentUser = <User>res.json();
+          return Observable.of(true);
         }
+
+        return Observable.of(false);
       })
       .catch(error => {
-        console.log('login error', error)
+        console.log('login error', error);
+        this.currentUser = null;
         return Observable.of(false);
       });
   }
 
-  signup(email: string, password: string) {
+  signup(email: string, password: string): Observable<boolean> {
     let loginInfo = { "email": email, "password": password };
     return this.http.post("https://dj-sails-todo.azurewebsites.net/user/", loginInfo, this.options)
       .do((res: Response) => {
         if (res) {
           this.currentUser = <User>res.json();
+          return Observable.of(true);
         }
+
+        return Observable.of(false);
       })
       .catch(error => {
-        console.log('signup error', error)
+        console.log('signup error', error);
         return Observable.of(false);
       });
   }
