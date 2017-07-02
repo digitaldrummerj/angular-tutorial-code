@@ -52,8 +52,7 @@ export class AuthService {
       })
       .catch((error: Response) => {
         if (error.status !== 403) {
-          console.log('isAuthenticated error', error)
-          this.currentUser = null;
+          console.log('isAuthenticated error', error);
         }
 
         return Observable.of(false);
