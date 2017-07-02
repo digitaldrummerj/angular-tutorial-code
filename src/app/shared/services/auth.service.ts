@@ -81,4 +81,22 @@ export class AuthService {
         return Observable.of(false);
       });
   }
+
+  logout(): Observable<boolean> {
+    return this.http.get(`${this.url}/logout`, this.options)
+      .map((res: Response) => {
+        this.clearUser();
+
+        if (res.ok) {
+          return Observable.of(true);
+        }
+
+        return Observable.of(false);
+      })
+      .catch(error => {
+        console.log('logout error', error)
+        this.clearUser();
+        return Observable.of(false);
+      });
+  }
 }
