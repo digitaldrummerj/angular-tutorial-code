@@ -98,7 +98,6 @@ export class TodoComponent implements OnInit {
   }
 
   deleteTodo(todo: Todo): void {
-    if (confirm("Are you sure you want to delete?")) {
       this.todoService.deleteTodo(todo)
         .subscribe(
         data => {
@@ -111,7 +110,6 @@ export class TodoComponent implements OnInit {
           this.errorMessage = <any>error;
           console.log('complete error', this.errorMessage);
         });
-    }
   }
 
   calculateOpenItems(): void {
