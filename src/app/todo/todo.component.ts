@@ -48,17 +48,18 @@ export class TodoComponent implements OnInit {
     }
   }
 
-   sortItems(): void {
-     this.todoList.sort(FieldSorter.sort(['completed', 'item'], true));
- }
+  sortItems(): void {
+    this.todoList.sort(FieldSorter.sort(['completed', 'item'], true));
+  }
 
   save(): void {
     this.todoService.save(this.addForm.value.item)
       .subscribe(result => {
         console.log('save result', result);
         this.todoList.push(result);
-         this.openItemCount++;
-         this.sortItems();
+        this.openItemCount++;
+        this.sortItems();
+        this.addForm.reset();
       },
       error => {
         this.errorMessage = <any>error;
@@ -71,8 +72,8 @@ export class TodoComponent implements OnInit {
       data => {
         console.log(data);
         this.todoList = data;
-         this.calculateOpenItems();
-         this.sortItems();
+        this.calculateOpenItems();
+        this.sortItems();
       },
       error => {
         this.errorMessage = <any>error;
@@ -86,8 +87,8 @@ export class TodoComponent implements OnInit {
       .subscribe(
       data => {
         // do nothing
-          todo.completed ? this.openItemCount-- : this.openItemCount++;
-         this.sortItems();
+        todo.completed ? this.openItemCount-- : this.openItemCount++;
+        this.sortItems();
       },
       error => {
         todo.completed = !todo.completed;
@@ -97,18 +98,20 @@ export class TodoComponent implements OnInit {
   }
 
   deleteTodo(todo: Todo): void {
-    this.todoService.deleteTodo(todo)
-      .subscribe(
-      data => {
-        let index = this.todoList.indexOf(todo);
-        this.todoList.splice(index, 1);
-        if (todo.completed === false) this.openItemCount--;
-      },
-      error => {
-        todo.completed = !todo.completed;
-        this.errorMessage = <any>error;
-        console.log('complete error', this.errorMessage);
-      });
+    if (confirm("Are you sure you want to delete?")) {
+      this.todoService.deleteTodo(todo)
+        .subscribe(
+        data => {
+          let index = this.todoList.indexOf(todo);
+          this.todoList.splice(index, 1);
+          if (todo.completed === false) this.openItemCount--;
+        },
+        error => {
+          todo.completed = !todo.completed;
+          this.errorMessage = <any>error;
+          console.log('complete error', this.errorMessage);
+        });
+    }
   }
 
   calculateOpenItems(): void {
