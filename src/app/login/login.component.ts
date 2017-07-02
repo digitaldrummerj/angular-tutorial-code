@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   login(formValues) {
     this.authService.login(formValues.email, formValues.password)
       .subscribe(result => {
-        if (!this.authService.currentUser) {
+        if (!result) {
           this.invalidLogin = true;
         } else {
           this.router.navigate(['/']);
