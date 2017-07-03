@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  isCollapsed: boolean = true;
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -18,5 +19,9 @@ export class HeaderComponent implements OnInit {
     this.authService.logout().subscribe(() => {
       this.router.navigate(['/login']);
     });
+  }
+
+  toggleMenu() {
+    this.isCollapsed = !this.isCollapsed;
   }
 }
