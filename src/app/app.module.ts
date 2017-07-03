@@ -11,6 +11,7 @@ import { SignupComponent } from './signup/signup.component';
 import { TodoComponent } from './todo/todo.component';
 import { TodoService } from './shared/services/todo.service';
 import { IsLoggedInGuard } from './shared/guards/is-logged-in.guard';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { IsLoggedInGuard } from './shared/guards/is-logged-in.guard';
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule.forRoot()
   ],
   providers: [AuthService, TodoService, IsLoggedInGuard],
   bootstrap: [AppComponent]
