@@ -10,6 +10,7 @@ import { AuthService } from './shared/services/auth.service';
 import { SignupComponent } from './signup/signup.component';
 import { TodoComponent } from './todo/todo.component';
 import { TodoService } from './shared/services/todo.service';
+ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { TodoService } from './shared/services/todo.service';
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    AppRoutingModule
+    AppRoutingModule,
+     NgbModule.forRoot()
   ],
   providers: [AuthService, TodoService],
   bootstrap: [AppComponent]
