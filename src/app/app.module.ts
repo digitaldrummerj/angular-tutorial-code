@@ -15,6 +15,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { CookieModule } from 'ngx-cookie';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { CookieModule } from 'ngx-cookie';
     ReactiveFormsModule,
     HttpModule,
     AppRoutingModule,
-    CookieModule.forRoot()
+    CookieModule.forRoot(),
+    NgbModule.forRoot()
   ],
   providers: [AuthService, TodoService, IsLoggedInGuard],
   bootstrap: [AppComponent]
