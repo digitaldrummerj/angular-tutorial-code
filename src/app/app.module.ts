@@ -12,6 +12,7 @@ import { TodoComponent } from './todo/todo.component';
 import { TodoService } from './shared/services/todo.service';
 import { IsLoggedInGuard } from './shared/guards/is-logged-in.guard';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule.forRoot()
   ],
   providers: [AuthService, TodoService, IsLoggedInGuard],
   bootstrap: [AppComponent]
