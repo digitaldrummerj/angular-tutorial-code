@@ -23,14 +23,12 @@ export class FieldSorter {
       }
 
       // item1 is higher = 1, lower = -1, equal = 0
-      console.log(field, item1[field], item2[field], item1Value, item2Value, item1Value > item2Value, item1Value < item2Value);
       return item1Value > item2Value ? direction : item1Value < item2Value ? -(direction) : 0;
     }).reduce((item1SortValue: number, item2SortValue: number) => {
       // values will be 1 or 0 based on the map function output.
       // if item1SortValue is 1 and item2SortValue is 0 then item1 goes 1st
       // if item1SortValue is 0 and item2SortValue is 1 then item2 goes 1st
       // if both are equal then item2 will go 1st
-console.log(item1SortValue, item2SortValue);
       return item1SortValue ? item1SortValue : item2SortValue
     }, 0);
   }
