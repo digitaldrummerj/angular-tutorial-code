@@ -14,6 +14,9 @@ describe('HeaderComponent', () => {
       declarations: [HeaderComponent]
     })
       .compileComponents();
+
+    fixture = TestBed.createComponent(HeaderComponent);
+    component = fixture.debugElement.componentInstance;
   }));
 
   beforeEach(() => {
@@ -24,5 +27,20 @@ describe('HeaderComponent', () => {
 
   it('should be created', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('isCollapsed should be true by default', () => {
+    expect(component.isCollapsed).toBeTruthy();
+  });
+
+  it('toggleMenu should change isCollapsed to false', () => {
+    component.toggleMenu();
+    expect(component.isCollapsed).toBeFalsy();
+  });
+
+  it('isCollapsed false should change to true when toggled', () => {
+    component.toggleMenu();
+    component.toggleMenu();
+    expect(component.isCollapsed).toBeTruthy();
   });
 });
