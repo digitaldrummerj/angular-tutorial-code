@@ -4,6 +4,7 @@ import 'rxjs/add/operator/debounceTime';
 import { TodoService } from '../shared/services/todo.service';
 import { Todo } from '../shared/classes/todo';
 import { FieldSorter } from '../shared/classes/field-sorter';
+import { ItemTextPipe } from '../shared/pipe/item-text.pipe';
 
 @Component({
   selector: 'app-todo',

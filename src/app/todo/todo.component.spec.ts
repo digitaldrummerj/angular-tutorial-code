@@ -7,7 +7,8 @@ import 'rxjs/add/observable/of';
 import { TodoService } from '../shared/services/todo.service';
 import { TodoComponent } from './todo.component';
 import { Todo } from '../shared/classes/todo';
-
+import { ItemTextPipe } from '../shared/pipe/item-text.pipe';
+import { DatePipe } from '@angular/common';
 
 class MockTodoService {
   getAll(): Observable<Array<Todo>> {
@@ -33,8 +34,8 @@ describe('TodoComponent', () => {
       imports: [ReactiveFormsModule],
       schemas: [NO_ERRORS_SCHEMA],
 
-      declarations: [TodoComponent],
-      providers: [{ provide: TodoService, useClass: MockTodoService }]
+      declarations: [TodoComponent, ItemTextPipe],
+      providers: [DatePipe, { provide: TodoService, useClass: MockTodoService }]
     })
       .compileComponents();
   }));

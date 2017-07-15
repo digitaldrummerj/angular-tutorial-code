@@ -23,7 +23,7 @@
   <div class="row todo" *ngFor="let todoItem of todoList">
     <div class="col-1" (click)="completeTodo(todoItem)"><i [className]="todoItem.completed  ? 'fa fa-check-square-o' : 'fa fa-square-o'"></i></div>
     <div class="col-10 done-{{todoItem.completed}}">
-      {{todoItem.item}} <small>created: {{todoItem.createdAt | date:'short'}}</small>
+      {{todoItem | itemText}}
     </div>
     <div class="col-1" (click)="deleteTodo(todoItem)"><i class="fa fa-trash"></i></div>
   </div>
