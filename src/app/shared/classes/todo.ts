@@ -12,7 +12,7 @@ export class Todo {
     completed?: boolean,
     createdAt?: Date,
     updatedAt?: Date) {
-    id = id ? id : '';
+    this.id = id;
     this.item = item;
     this.completed = completed ? completed : false;
     this.createdAt = createdAt ? createdAt : new Date();
