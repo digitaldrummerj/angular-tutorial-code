@@ -3,8 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import { Http, Response, ResponseOptions } from '@angular/http';
 import { TodoService } from './todo.service';
-import { MockHttpResponse } from '../test/mock-http-response';
-import { MockHttp } from '../test/mock-http';
+import { MockHttp, MockHttpResponse } from '../../../testing';
 
 const user = {
   id: 1,

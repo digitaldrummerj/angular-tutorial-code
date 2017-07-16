@@ -2,22 +2,10 @@ import { TestBed, inject } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import { Http, Response, ResponseOptions } from '@angular/http';
+import { MockHttp, MockHttpResponse } from '../../../testing';
 
 
 import { AuthService } from './auth.service';
-
-
-function createResponse(body) {
-  return Observable.of(
-    new Response(new ResponseOptions({ body: JSON.stringify(body) }))
-  );
-}
-
-class MockHttp {
-  get() {
-    return createResponse([]);
-  }
-}
 
 describe('AuthService', () => {
   beforeEach(() => {
