@@ -27,11 +27,11 @@
      </div>
      </div>
 
-     <span (mouseenter)="mouseoverLogin=true" (mouseleave)="mouseoverLogin=false">
+     <span>
          <button type="submit" [disabled]="signupForm.invalid" class="btn btn-primary">Sign Up</button>
      </span>
     <button type="button" class=" btn-default">Cancel</button>
-     <span><a [routerLink]="['/login']">login to existing account</a></span>
+     <span><a routerLink="/login">login to existing account</a></span>
 
  </form>
  <br />
