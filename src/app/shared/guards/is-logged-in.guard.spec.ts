@@ -5,7 +5,7 @@ import { Http, Response, ResponseOptions } from '@angular/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CookieModule } from 'ngx-cookie';
 
-import { MockHttp, MockHttpResponse } from '../../../testing';
+import { MockUserData, MockAuthService, MockHttp, MockHttpResponse } from '../../../testing';
 
 import { IsLoggedInGuard } from './is-logged-in.guard';
 import { AuthService } from '../services/auth.service';
@@ -19,7 +19,8 @@ describe('IsLoggedInGuard', () => {
       ],
       providers: [
         IsLoggedInGuard,
-        AuthService,
+        MockUserData,
+        { provide: AuthService, useClass: MockAuthService },
         { provide: Http, useClas: MockHttp }]
     });
   });

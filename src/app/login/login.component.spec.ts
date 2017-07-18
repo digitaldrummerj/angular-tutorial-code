@@ -7,21 +7,8 @@ import 'rxjs/add/observable/of';
 
 import { LoginComponent } from './login.component';
 import { AuthService } from '../shared/services/auth.service';
+import { MockAuthService, MockUserData, MockHttp, MockHttpResponse } from '../../testing';
 
-class MockAuthService {
-
-  login(email: string, password: string): Observable<boolean> {
-    return Observable.of(true);
-  }
-
-  signup(email: string, password: string): Observable<boolean> {
-    return Observable.of(true);
-  }
-
-  isAuthenticated(): Observable<boolean> {
-    return Observable.of(true);
-  }
-}
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -36,7 +23,10 @@ describe('LoginComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
 
       declarations: [LoginComponent],
-      providers: [{ provide: AuthService, useClass: MockAuthService }]
+      providers: [
+        MockUserData,
+        { provide: AuthService, useClass: MockAuthService }
+      ]
     })
       .compileComponents();
   }));

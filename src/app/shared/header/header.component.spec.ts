@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterLinkStubDirective, ButtonClickEvents, click } from '../../../testing';
 import { CookieModule } from 'ngx-cookie';
-import { MockHttp, MockHttpResponse } from '../../../testing';
+import { MockUserData, MockAuthService, MockHttp, MockHttpResponse } from '../../../testing';
 import { Http, Response, ResponseOptions } from '@angular/http';
 
 import { HeaderComponent } from './header.component';
@@ -16,49 +16,129 @@ let fixture: ComponentFixture<HeaderComponent>;
 let element: DebugElement;
 
 describe('HeaderComponent', () => {
-  it('can instantiate it', () => {
-    expect(this.component).not.toBeNull();
-  });
+  describe('Create Test', createTest);
   describe('Navigation Test', navigationTests);
   describe('Toggle Menu Test', toggleMenuTest);
 });
 
+function setup(triggerDetectChanges: boolean) {
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule,
+        NgbModule.forRoot(),
+        CookieModule.forRoot()
+      ],
+      declarations: [
+        HeaderComponent,
+        RouterLinkStubDirective,
+      ],
+      providers: [
+        MockUserData,
+        { provide: AuthService, useClass: MockAuthService },
+        { provide: Http, useClas: MockHttp }
+      ],
+      schemas: [NO_ERRORS_SCHEMA],  // this ensures it doesnt error on routerLink usage
+    })
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(HeaderComponent);
+        element = fixture.debugElement;
+        component = element.componentInstance;
+        return fixture.whenStable().then(() => {
+          if (triggerDetectChanges) {
+            fixture.detectChanges();
+          }
+        });
+      });
+  }));
+}
+
+function createTest() {
+  setup(true);
+  it('should be created', () => {
+    expect(component).toBeTruthy();
+  });
+}
+
 function navigationTests() {
   setup(true);
-
-  let links: RouterLinkStubDirective[];
-  let linkDes: DebugElement[];
+  let allLinks: RouterLinkStubDirective[];
+  let allLinkDes: DebugElement[];
 
   beforeEach(() => {
-    linkDes = fixture.debugElement.queryAll(By.directive(RouterLinkStubDirective));
-    links = linkDes.map(de => de.injector.get(RouterLinkStubDirective) as RouterLinkStubDirective);
+    allLinkDes = fixture.debugElement.queryAll(By.directive(RouterLinkStubDirective));
+    allLinks = allLinkDes.map(de => de.injector.get(RouterLinkStubDirective) as RouterLinkStubDirective);
   });
 
   it('should have 5 routerLinks for menu items in template', () => {
-    const logoLink = links[0];
-    const allItemsLink = links[1];
-    const unknownLink = links[2];
-    const loginLink = links[3];
-    const signupLink = links[4];
-    expect(links.length).toBe(5, 'should have 5 links');
-    expect(logoLink.linkParams).toEqual('/');
-    expect(allItemsLink.linkParams).toEqual('/');
-    expect(unknownLink.linkParams).toEqual('/unknown');
-    expect(loginLink.linkParams).toEqual('/login');
-    expect(signupLink.linkParams).toEqual('/signup');
+    expect(allLinks.length).toBe(5, 'should have 5 links');
+    expect(allLinks[0].linkParams).toEqual('/');
+    expect(allLinks[1].linkParams).toEqual('/');
+    expect(allLinks[2].linkParams).toEqual('/unknown');
+    expect(allLinks[3].linkParams).toEqual('/login');
+    expect(allLinks[4].linkParams).toEqual('/signup');
   });
 
   it('logo takes me home', () => {
-    const logoLinkDes = linkDes[0];
-    const logoLink = links[0];
+    const linkDes = allLinkDes[0];
+    const link = allLinks[0];
 
-    expect(logoLink.navigatedTo).toBeNull('link should not have navigated yet');
-    click(logoLinkDes);
-    // logoLinkDes.triggerEventHandler('click', null);
+    expect(link.navigatedTo).toBeNull('link should not have navigated yet');
+    click(linkDes);
     fixture.detectChanges();
 
-    expect(logoLink.navigatedTo).toBe('/');
+    expect(link.navigatedTo).toBe('/');
   });
+
+
+  it('all items takes me home', () => {
+    const linkDes = allLinkDes[1];
+    const link = allLinks[1];
+
+    expect(link.navigatedTo).toBeNull('link should not have navigated yet');
+    click(linkDes);
+    fixture.detectChanges();
+
+    expect(link.navigatedTo).toBe('/');
+  });
+
+
+  it('unknown takes me to unknown', () => {
+    const linkDes = allLinkDes[2];
+    const link = allLinks[2];
+
+    expect(link.navigatedTo).toBeNull('link should not have navigated yet');
+    click(linkDes);
+    fixture.detectChanges();
+
+    expect(link.navigatedTo).toBe('/unknown');
+  });
+
+
+  it('login takes me to login', () => {
+    const linkDes = allLinkDes[3];
+    const link = allLinks[3];
+
+    expect(link.navigatedTo).toBeNull('link should not have navigated yet');
+    click(linkDes);
+    fixture.detectChanges();
+
+    expect(link.navigatedTo).toBe('/login');
+  });
+
+
+  it('signup takes me to signup', () => {
+    const linkDes = allLinkDes[4];
+    const link = allLinks[4];
+
+    expect(link.navigatedTo).toBeNull('link should not have navigated yet');
+    click(linkDes);
+    fixture.detectChanges();
+
+    expect(link.navigatedTo).toBe('/signup');
+  });
+
 }
 
 function toggleMenuTest() {
@@ -67,6 +147,7 @@ function toggleMenuTest() {
   it('should show main menu', () => {
     element.query(By.css('button:first-child')).triggerEventHandler('click', null);
     fixture.detectChanges();
+
     expect(component.isCollapsed).toBe(false);
   });
 
@@ -98,39 +179,4 @@ function toggleMenuTest() {
     component.toggleMenu();
     expect(component.isCollapsed).toBeTruthy();
   });
-}
-
-function setup(triggerDetectChanges) {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
-        NgbModule.forRoot(),
-        CookieModule.forRoot()
-      ],
-      declarations: [
-        HeaderComponent,
-        RouterLinkStubDirective
-      ],
-      providers: [
-        AuthService,
-        { provide: Http, useClas: MockHttp }
-      ],
-      schemas: [NO_ERRORS_SCHEMA],  // this ensures it doesnt error on routerLink usage
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(HeaderComponent);
-        element = fixture.debugElement;
-        component = element.componentInstance;
-        return fixture.whenStable().then(() => {
-          if (triggerDetectChanges) {
-            fixture.detectChanges();
-          }
-        });
-      });
-  }));
-
-
-
 }

@@ -7,7 +7,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 import { AuthService } from './shared/services/auth.service';
 import { Http, Response, ResponseOptions } from '@angular/http';
-import { MockHttp, MockHttpResponse } from '../testing';
+import { MockAuthService, MockUserData, MockHttp, MockHttpResponse } from '../testing';
 import { CookieModule } from 'ngx-cookie';
 
 describe('AppComponent', () => {
@@ -26,7 +26,8 @@ describe('AppComponent', () => {
         FooterComponent
       ],
       providers: [
-        AuthService,
+        MockUserData,
+        { provide: AuthService, useClass: MockAuthService },
         { provide: Http, useClas: MockHttp }
       ]
     }).compileComponents();

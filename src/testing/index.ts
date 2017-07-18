@@ -4,6 +4,8 @@ import { tick, ComponentFixture } from '@angular/core/testing';
 export * from './router-stubs';
 export * from './mock-http-response';
 export * from './mock-http';
+export * from './mocks/data/mock.user.data';
+export * from './mocks/services/mock.auth.service';
 
 ///// Short utilities /////
 
