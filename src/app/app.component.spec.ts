@@ -28,7 +28,6 @@ describe('AppComponent', () => {
       providers: [
         MockUserData,
         { provide: AuthService, useClass: MockAuthService },
-        { provide: Http, useClas: MockHttp }
       ]
     }).compileComponents();
   }));

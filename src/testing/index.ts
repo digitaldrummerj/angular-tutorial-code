@@ -6,6 +6,7 @@ export * from './mock-http-response';
 export * from './mock-http';
 export * from './mocks/data/mock.user.data';
 export * from './mocks/services/mock.auth.service';
+export * from './mocks/services/mock.todo.service';
 
 ///// Short utilities /////
 

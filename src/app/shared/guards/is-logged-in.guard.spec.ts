@@ -21,7 +21,7 @@ describe('IsLoggedInGuard', () => {
         IsLoggedInGuard,
         MockUserData,
         { provide: AuthService, useClass: MockAuthService },
-        { provide: Http, useClas: MockHttp }]
+      ]
     });
   });
 

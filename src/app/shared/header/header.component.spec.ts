@@ -3,9 +3,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { RouterLinkStubDirective, ButtonClickEvents, click } from '../../../testing';
+import { MockUserData, MockAuthService, RouterLinkStubDirective, click } from '../../../testing';
+
 import { CookieModule } from 'ngx-cookie';
-import { MockUserData, MockAuthService, MockHttp, MockHttpResponse } from '../../../testing';
 import { Http, Response, ResponseOptions } from '@angular/http';
 
 import { HeaderComponent } from './header.component';
@@ -36,7 +36,6 @@ function setup(triggerDetectChanges: boolean) {
       providers: [
         MockUserData,
         { provide: AuthService, useClass: MockAuthService },
-        { provide: Http, useClas: MockHttp }
       ],
       schemas: [NO_ERRORS_SCHEMA],  // this ensures it doesnt error on routerLink usage
     })

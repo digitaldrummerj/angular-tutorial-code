@@ -6,24 +6,9 @@ import 'rxjs/add/observable/of';
 
 import { TodoService } from '../shared/services/todo.service';
 import { TodoComponent } from './todo.component';
-import { Todo } from '../shared/classes/todo';
 import { ItemTextPipe } from '../shared/pipe/item-text.pipe';
 import { DatePipe } from '@angular/common';
-
-class MockTodoService {
-  getAll(): Observable<Array<Todo>> {
-    return Observable.of([new Todo('testing')]);
-  }
-  updateTodo(todo: Todo): Observable<Todo> {
-    return Observable.of(todo);
-  }
-  save(todo: Todo): Observable<Todo> {
-    return Observable.of(todo);
-  }
-  deleteTodo(todo: Todo): Observable<Todo> {
-    return Observable.of(todo);
-   }
-}
+import { MockTodoService } from '../../testing';
 
 describe('TodoComponent', () => {
   let component: TodoComponent;
@@ -33,9 +18,14 @@ describe('TodoComponent', () => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
       schemas: [NO_ERRORS_SCHEMA],
-
-      declarations: [TodoComponent, ItemTextPipe],
-      providers: [DatePipe, { provide: TodoService, useClass: MockTodoService }]
+      declarations: [
+        TodoComponent,
+        ItemTextPipe
+      ],
+      providers: [
+        DatePipe,
+        { provide: TodoService, useClass: MockTodoService }
+      ]
     })
       .compileComponents();
   }));

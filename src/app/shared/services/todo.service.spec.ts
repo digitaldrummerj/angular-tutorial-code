@@ -23,7 +23,10 @@ describe('TodoService', () => {
 
   beforeEach(() => {
     const bed = TestBed.configureTestingModule({
-      providers: [TodoService, { provide: Http, useClass: MockHttp }]
+      providers: [
+        TodoService,
+        { provide: Http, useClass: MockHttp }
+      ]
     });
 
     http = bed.get(Http);
