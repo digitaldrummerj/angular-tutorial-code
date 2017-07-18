@@ -5,6 +5,10 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
+import { AuthService } from './shared/services/auth.service';
+import { Http, Response, ResponseOptions } from '@angular/http';
+import { MockHttp, MockHttpResponse } from '../testing';
+import { CookieModule } from 'ngx-cookie';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -13,6 +17,7 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
+        CookieModule.forRoot(),
         NgbModule.forRoot()
       ],
       declarations: [
@@ -20,6 +25,10 @@ describe('AppComponent', () => {
         HeaderComponent,
         FooterComponent
       ],
+      providers: [
+        AuthService,
+        { provide: Http, useClas: MockHttp }
+      ]
     }).compileComponents();
   }));
 

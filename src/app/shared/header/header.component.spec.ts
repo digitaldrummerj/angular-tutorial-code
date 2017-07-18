@@ -3,8 +3,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HeaderComponent } from './header.component';
 import { RouterLinkStubDirective, ButtonClickEvents, click } from '../../../testing';
+import { CookieModule } from 'ngx-cookie';
+import { MockHttp, MockHttpResponse } from '../../../testing';
+import { Http, Response, ResponseOptions } from '@angular/http';
+
+import { HeaderComponent } from './header.component';
+import { AuthService } from '../services/auth.service';
 
 let component: HeaderComponent;
 let fixture: ComponentFixture<HeaderComponent>;
@@ -100,10 +105,16 @@ function setup(triggerDetectChanges) {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        NgbModule.forRoot()],
+        NgbModule.forRoot(),
+        CookieModule.forRoot()
+      ],
       declarations: [
         HeaderComponent,
         RouterLinkStubDirective
+      ],
+      providers: [
+        AuthService,
+        { provide: Http, useClas: MockHttp }
       ],
       schemas: [NO_ERRORS_SCHEMA],  // this ensures it doesnt error on routerLink usage
     })
