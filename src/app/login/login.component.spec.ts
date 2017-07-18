@@ -1,30 +1,37 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
+import { SpyLocation } from '@angular/common/testing';
+import { Location } from '@angular/common';
+import { RouterLinkWithHref } from '@angular/router';
 
 import { LoginComponent } from './login.component';
 import { AuthService } from '../shared/services/auth.service';
-import { MockUserData, MockAuthService, RouterLinkStubDirective, click } from '../../testing';
-
+import { expectPathToBe, advance, MockUserData, MockAuthService, click } from '../../testing';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let element: DebugElement;
+  let location: SpyLocation;
+  let allLinks: DebugElement[];
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule,
+        RouterTestingModule.withRoutes([
+          { path: 'login', component: LoginComponent },
+          { path: 'signup', component: LoginComponent },
+          { path: '', component: LoginComponent }
+        ]),
         FormsModule
       ],
       schemas: [NO_ERRORS_SCHEMA],
 
       declarations: [
-        LoginComponent,
-        RouterLinkStubDirective
+        LoginComponent
       ],
       providers: [
         MockUserData,
@@ -36,7 +43,16 @@ describe('LoginComponent', () => {
         fixture = TestBed.createComponent(LoginComponent);
         element = fixture.debugElement;
         component = element.componentInstance;
+        const injector = fixture.debugElement.injector;
+        location = injector.get(Location) as SpyLocation;
+
+        //change detection triggers ngOnInit
+        fixture.detectChanges();
+
         return fixture.whenStable().then(() => {
+          // got the data and updated component
+          // change detection updates the view
+
           // if (triggerDetectChanges) {
           fixture.detectChanges();
           // }
@@ -44,34 +60,42 @@ describe('LoginComponent', () => {
       });
   }));
 
+  beforeEach(() => {
+    allLinks = fixture.debugElement.queryAll(By.directive(RouterLinkWithHref));
+  });
+
 
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
 
 
-  let allLinks: RouterLinkStubDirective[];
-  let allLinkDes: DebugElement[];
 
-  it('should have 1 routerLink in template', () => {
-    allLinkDes = fixture.debugElement.queryAll(By.directive(RouterLinkStubDirective));
-    allLinks = allLinkDes.map(de => de.injector.get(RouterLinkStubDirective) as RouterLinkStubDirective);
-
+  it('should have 1 routerLink in template', fakeAsync(() => {
     expect(allLinks.length).toBe(1, 'should have 1 links');
-    expect(allLinks[0].linkParams).toEqual('/signup');
-  });
+  }));
 
-  it('clicking signup should navigate to signup', () => {
-    allLinkDes = fixture.debugElement.queryAll(By.directive(RouterLinkStubDirective));
-    allLinks = allLinkDes.map(de => de.injector.get(RouterLinkStubDirective) as RouterLinkStubDirective);
+  it('signup link should go to signup route', fakeAsync(() => {
+    click(allLinks[0]);
+    advance(fixture);
+    expectPathToBe(location, '/signup');
+  }));
 
-    const linkDes = allLinkDes[0];
-    const link = allLinks[0];
 
-    expect(link.navigatedTo).toBeNull('link should not have navigated yet');
-    click(linkDes);
-    fixture.detectChanges();
+  it('login should redirect to home page', fakeAsync(() => {
+    // navigate to login page
+    location.go('/login');
+    advance(fixture);
 
-    expect(link.navigatedTo).toBe('/signup');
-  });
+    // verify on login route
+    expect(location.path()).toEqual('/login', 'after initial navigation');
+
+    // call login function in component
+    component.login({});
+    advance(fixture);
+
+    // validate that user was navigate back to home page
+    expect(location.path()).toEqual('/', 'after logging in');
+  }));
 });
+

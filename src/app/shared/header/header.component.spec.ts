@@ -1,12 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { MockUserData, MockAuthService, RouterLinkStubDirective, click } from '../../../testing';
+import { SpyLocation } from '@angular/common/testing';
+import { Location } from '@angular/common';
+import { Router, RouterLinkWithHref } from '@angular/router';
 
+
+import { MockUserData, MockAuthService, advance, expectPathToBe, click } from '../../../testing';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CookieModule } from 'ngx-cookie';
-import { Http, Response, ResponseOptions } from '@angular/http';
 
 import { HeaderComponent } from './header.component';
 import { AuthService } from '../services/auth.service';
@@ -14,6 +17,7 @@ import { AuthService } from '../services/auth.service';
 let component: HeaderComponent;
 let fixture: ComponentFixture<HeaderComponent>;
 let element: DebugElement;
+let location: SpyLocation;
 
 describe('HeaderComponent', () => {
   describe('Create Test', createTest);
@@ -25,13 +29,18 @@ function setup(triggerDetectChanges: boolean) {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule,
+        RouterTestingModule.withRoutes([
+          { path: '', component: HeaderComponent },
+          { path: 'login', children: [], component: HeaderComponent },
+          { path: 'signup', component: HeaderComponent },
+          { path: '**', component: HeaderComponent }
+
+        ]),
         NgbModule.forRoot(),
         CookieModule.forRoot()
       ],
       declarations: [
         HeaderComponent,
-        RouterLinkStubDirective,
       ],
       providers: [
         MockUserData,
@@ -44,7 +53,16 @@ function setup(triggerDetectChanges: boolean) {
         fixture = TestBed.createComponent(HeaderComponent);
         element = fixture.debugElement;
         component = element.componentInstance;
+        const injector = fixture.debugElement.injector;
+        location = injector.get(Location) as SpyLocation;
+
+        //change detection triggers ngOnInit
+        fixture.detectChanges();
+
         return fixture.whenStable().then(() => {
+          // got the data and updated component
+          // change detection updates the view
+
           if (triggerDetectChanges) {
             fixture.detectChanges();
           }
@@ -62,82 +80,65 @@ function createTest() {
 
 function navigationTests() {
   setup(true);
-  let allLinks: RouterLinkStubDirective[];
   let allLinkDes: DebugElement[];
 
   beforeEach(() => {
-    allLinkDes = fixture.debugElement.queryAll(By.directive(RouterLinkStubDirective));
-    allLinks = allLinkDes.map(de => de.injector.get(RouterLinkStubDirective) as RouterLinkStubDirective);
+    allLinkDes = fixture.debugElement.queryAll(By.directive(RouterLinkWithHref));
   });
 
   it('should have 5 routerLinks for menu items in template', () => {
-    expect(allLinks.length).toBe(5, 'should have 5 links');
-    expect(allLinks[0].linkParams).toEqual('/');
-    expect(allLinks[1].linkParams).toEqual('/');
-    expect(allLinks[2].linkParams).toEqual('/unknown');
-    expect(allLinks[3].linkParams).toEqual('/login');
-    expect(allLinks[4].linkParams).toEqual('/signup');
+    expect(allLinkDes.length).toBe(5, 'should have 5 links');
   });
 
-  it('logo takes me home', () => {
+  it('logo takes me home', fakeAsync(() => {
     const linkDes = allLinkDes[0];
-    const link = allLinks[0];
+    expectPathToBe(location, '', 'link should not have navigated yet');
 
-    expect(link.navigatedTo).toBeNull('link should not have navigated yet');
     click(linkDes);
-    fixture.detectChanges();
+    advance(fixture);
 
-    expect(link.navigatedTo).toBe('/');
-  });
+    expectPathToBe(location, '/');
+  }));
 
-
-  it('all items takes me home', () => {
+  it('all items takes me home', fakeAsync(() => {
     const linkDes = allLinkDes[1];
-    const link = allLinks[1];
+    expectPathToBe(location, '', 'link should not have navigated yet');
 
-    expect(link.navigatedTo).toBeNull('link should not have navigated yet');
     click(linkDes);
-    fixture.detectChanges();
+    advance(fixture);
 
-    expect(link.navigatedTo).toBe('/');
-  });
+    expectPathToBe(location, '/');
+  }));
 
-
-  it('unknown takes me to unknown', () => {
+  it('unknown takes me to unknown', fakeAsync(() => {
     const linkDes = allLinkDes[2];
-    const link = allLinks[2];
+    expectPathToBe(location, '', 'link should not have navigated yet');
 
-    expect(link.navigatedTo).toBeNull('link should not have navigated yet');
     click(linkDes);
-    fixture.detectChanges();
+    advance(fixture);
 
-    expect(link.navigatedTo).toBe('/unknown');
-  });
+    expectPathToBe(location, '/unknown');
+  }));
 
-
-  it('login takes me to login', () => {
+  it('login takes me to login', fakeAsync(() => {
     const linkDes = allLinkDes[3];
-    const link = allLinks[3];
+    expectPathToBe(location, '', 'link should not have navigated yet');
 
-    expect(link.navigatedTo).toBeNull('link should not have navigated yet');
     click(linkDes);
-    fixture.detectChanges();
+    advance(fixture);
 
-    expect(link.navigatedTo).toBe('/login');
-  });
+    expectPathToBe(location, '/login');
+  }));
 
-
-  it('signup takes me to signup', () => {
+  it('signup takes me to signup', fakeAsync(() => {
     const linkDes = allLinkDes[4];
-    const link = allLinks[4];
+    expectPathToBe(location, '', 'link should not have navigated yet');
 
-    expect(link.navigatedTo).toBeNull('link should not have navigated yet');
     click(linkDes);
-    fixture.detectChanges();
+    advance(fixture);
 
-    expect(link.navigatedTo).toBe('/signup');
-  });
-
+    expectPathToBe(location, '/signup');
+  }));
 }
 
 function toggleMenuTest() {

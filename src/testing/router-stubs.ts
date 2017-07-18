@@ -4,34 +4,34 @@ export { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/route
 import { Component, Directive, Injectable, Input } from '@angular/core';
 import { NavigationExtras } from '@angular/router';
 
-@Directive({
-  selector: '[routerLink]',
-  host: {
-    '(click)': 'onClick()'
-  }
-})
-export class RouterLinkStubDirective {
-  @Input('routerLink') linkParams: any;
-  navigatedTo: any = null;
+// @Directive({
+//   selector: '[routerLink]',
+//   host: {
+//     '(click)': 'onClick()'
+//   }
+// })
+// export class RouterLinkStubDirective {
+//   @Input('routerLink') linkParams: any;
+//   navigatedTo: any = null;
 
-  onClick() {
-    this.navigatedTo = this.linkParams;
-  }
-}
+//   onClick() {
+//     this.navigatedTo = this.linkParams;
+//   }
+// }
 
-@Component({ selector: 'router-outlet', template: '' })
-export class RouterOutletStubComponent { }
+// @Component({ selector: 'router-outlet', template: '' })
+// export class RouterOutletStubComponent { }
 
-@Injectable()
-export class RouterStub {
-  navigate(commands: any[], extras?: NavigationExtras) { }
+// @Injectable()
+// export class RouterStub {
+//   navigate(commands: any[], extras?: NavigationExtras) { }
 
-  navigateByUrl(url) {
-    return url;
-  }
+//   navigateByUrl(url) {
+//     return url;
+//   }
 
-  routerState: {}
-}
+//   routerState: {}
+// }
 
 
 // Only implements params and part of snapshot.paramMap

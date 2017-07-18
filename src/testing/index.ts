@@ -1,5 +1,6 @@
 import { DebugElement }           from '@angular/core';
 import { tick, ComponentFixture } from '@angular/core/testing';
+import { Location } from '@angular/common';
 
 export * from './router-stubs';
 export * from './mock-http-response';
@@ -9,7 +10,9 @@ export * from './mocks/services/mock.auth.service';
 export * from './mocks/services/mock.todo.service';
 
 ///// Short utilities /////
-
+export function expectPathToBe(l: Location, path: string, expectationFailOutput?: any) {
+  expect(l.path()).toEqual(path, expectationFailOutput || 'location.path()');
+}
 /** Wait a tick, then detect changes */
 export function advance(f: ComponentFixture<any>): void {
   tick();
