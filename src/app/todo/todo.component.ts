@@ -15,7 +15,17 @@ export class TodoComponent implements OnInit {
   addForm: FormGroup;
   errorMessage: string;
   todoList: Array<Todo> = [];
-  openItemCount: number = 0;
+  openItemCount = 0;
+  formErrors = {
+    'item': ''
+  };
+
+  validationMessages = {
+    'item': {
+      'required': 'Item is required.',
+      'minlength': 'Item must be at least 3 characters'
+    }
+  };
 
   constructor(private formBuilder: FormBuilder, private todoService: TodoService) { }
 
@@ -36,14 +46,20 @@ export class TodoComponent implements OnInit {
     const form = this.addForm;
 
     for (const field in this.formErrors) {
-      // clear previous error message (if any)
-      this.formErrors[field] = '';
-      const control = form.get(field);
+      if (this.formErrors.hasOwnProperty(field)) {
+        // clear previous error message (if any)
+        this.formErrors[field] = '';
+        const control = form.get(field);
+        console.log('onChange (field, dirty, valid, control)', field, control.dirty, control.valid, control);
 
-      if (control && control.dirty && !control.valid) {
-        const messages = this.validationMessages[field];
-        for (const key in control.errors) {
-          this.formErrors[field] += messages[key] + ' ';
+        if (control && control.dirty && !control.valid) {
+
+          const messages = this.validationMessages[field];
+          for (const key in control.errors) {
+            if (messages.hasOwnProperty(key)) {
+              this.formErrors[field] += this.formErrors[field] === '' ? messages[key] : messages[key] + ' ';
+            }
+          }
         }
       }
     }
@@ -99,14 +115,16 @@ export class TodoComponent implements OnInit {
   }
 
   deleteTodo(todo: Todo): void {
-    if (confirm("Are you sure you want to delete?")) {
+    if (confirm('Are you sure you want to delete?')) {
       // delete call goes here
       this.todoService.deleteTodo(todo)
         .subscribe(
         data => {
-          let index = this.todoList.indexOf(todo);
+          const index = this.todoList.indexOf(todo);
           this.todoList.splice(index, 1);
-          if (todo.completed === false) this.openItemCount--;
+          if (todo.completed === false) {
+            this.openItemCount--;
+          }
         },
         error => {
           todo.completed = !todo.completed;
@@ -119,15 +137,4 @@ export class TodoComponent implements OnInit {
   calculateOpenItems(): void {
     this.openItemCount = this.todoList.filter(item => item.completed === false).length;
   }
-
-  formErrors = {
-    'item': ''
-  };
-
-  validationMessages = {
-    'item': {
-      'required': 'Item is required.',
-      'minlength': 'Item must be at least 3 characters'
-    }
-  };
 }

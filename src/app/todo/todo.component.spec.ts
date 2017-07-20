@@ -1,19 +1,22 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { tick, async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
+import { AbstractControl, Validators } from '@angular/forms';
+
 
 import { TodoService } from '../shared/services/todo.service';
 import { TodoComponent } from './todo.component';
 import { ItemTextPipe } from '../shared/pipe/item-text.pipe';
 import { DatePipe } from '@angular/common';
-import { MockTodoService } from '../../testing';
+import { MockTodoService, click, advance } from '../../testing';
 
-describe('TodoComponent', () => {
+fdescribe('TodoComponent', () => {
   let component: TodoComponent;
   let fixture: ComponentFixture<TodoComponent>;
-
+  let itemField: AbstractControl;
+  let errors = {};
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
@@ -30,13 +33,88 @@ describe('TodoComponent', () => {
       .compileComponents();
   }));
 
+  beforeAll(() => {
+    // monkey patches debounce time to make field validation errors test past.
+    Observable.prototype.debounceTime = function () { return this; };
+  });
+
   beforeEach(() => {
     fixture = TestBed.createComponent(TodoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
+    itemField = component.addForm.controls['item'];
+    expect(itemField).toBeTruthy('item field was not found');
+    errors = {};
+    if (itemField) {
+      itemField.markAsDirty();
+      expect(itemField.dirty).toBeTruthy('field should be dirty');
+    }
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
+
+  it('form invalid when empty', () => {
+    expect(component.addForm.valid).toBeFalsy();
+  });
+
+  it('item field initial  validity', () => {
+    // check form status
+    expect(itemField.valid).toBeFalsy();
+    expect(component.addForm.valid).toBeFalsy();
+
+    // check validation errors
+    errors = itemField.errors || {};
+    expect(errors['required']).toBeTruthy();
+    expect(errors['minlength']).toBeUndefined();
+
+    // check displayed validation messages
+    expect(component.formErrors.item).toBe('');
+  });
+
+  it('item field required with blank validity', () => {
+    itemField.markAsDirty();
+    expect(itemField.dirty).toBeTruthy();
+    itemField.setValue('');
+    errors = itemField.errors || {};
+    expect(errors['required']).toBeDefined('required validator should have triggers');
+    expect(errors['minlength']).toBeUndefined('min length validator should not have fired');
+    expect(itemField.valid).toBeFalsy();
+    expect(component.addForm.valid).toBeFalsy();
+    expect(component.formErrors.item).toBe(component.validationMessages.item.required);
+  });
+
+  it('item field required passed', () => {
+
+    itemField.setValue('test');
+    errors = itemField.errors || {};
+    expect(errors['required']).toBeUndefined();
+    expect(errors['minlength']).toBeUndefined();
+    expect(itemField.valid).toBeTruthy();
+    expect(component.addForm.valid).toBeTruthy();
+
+    expect(component.formErrors.item).toBe('');
+  });
+
+  it('item field min length too short validity', () => {
+    itemField.setValue('1');
+    errors = itemField.errors || {};
+    expect(errors['minlength']).toBeDefined();
+    expect(errors['required']).toBeUndefined();
+    expect(itemField.valid).toBeFalsy();
+    expect(component.addForm.valid).toBeFalsy();
+    expect(component.formErrors.item).toBe(component.validationMessages.item.minlength);
+  });
+
+  it('item field min length passes validity', () => {
+    itemField.setValue('123');
+    errors = itemField.errors || {};
+    expect(errors['minlength']).toBeUndefined();
+    expect(errors['required']).toBeUndefined();
+    expect(itemField.valid).toBeTruthy();
+    expect(component.addForm.valid).toBeTruthy();
+    expect(component.formErrors.item).toBe('');
+  })
 });
