@@ -72,7 +72,7 @@ describe('LoginComponent', () => {
 
 
   it('should have 1 routerLink in template', fakeAsync(() => {
-    expect(allLinks.length).toBe(1, 'should have 1 links');
+    expect(allLinks.length).toBe(1, 'should have 1 link');
   }));
 
   it('signup link should go to signup route', fakeAsync(() => {
