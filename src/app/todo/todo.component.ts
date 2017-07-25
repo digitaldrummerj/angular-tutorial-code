@@ -50,7 +50,6 @@ export class TodoComponent implements OnInit {
         // clear previous error message (if any)
         this.formErrors[field] = '';
         const control = form.get(field);
-        console.log('onChange (field, dirty, valid, control)', field, control.dirty, control.valid, control);
 
         if (control && control.dirty && !control.valid) {
 
@@ -72,7 +71,6 @@ export class TodoComponent implements OnInit {
   save(): void {
     this.todoService.save(this.addForm.value.item)
       .subscribe(result => {
-        console.log('save result', result);
         this.todoList.push(result);
         this.openItemCount++;
         this.sortItems();
@@ -87,7 +85,6 @@ export class TodoComponent implements OnInit {
     this.todoService.getAll()
       .subscribe(
       data => {
-        console.log(data);
         this.todoList = data;
         this.calculateOpenItems();
         this.sortItems();

@@ -35,16 +35,15 @@ describe('TodoService', () => {
     expect(service).not.toBeUndefined('TodoService was not found');
   });
 
-  it('should be created', inject([TodoService], (service: TodoService) => {
+  it('should be created', () => {
     expect(service).toBeTruthy();
-  }));
+  });
 
   it('should get todo items', () => {
     spyOn(http, 'get').and.returnValue(MockHttpResponse.createResponse([...todoItems]));
 
     service.getAll()
       .subscribe((result => {
-        console.log('result', result);
         expect(result.length).toBe(todoItems.length);
         expect(result).toEqual(todoItems);
       }));

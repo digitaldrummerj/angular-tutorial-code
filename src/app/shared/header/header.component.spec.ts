@@ -56,7 +56,7 @@ function setup(triggerDetectChanges: boolean) {
         const injector = fixture.debugElement.injector;
         location = injector.get(Location) as SpyLocation;
 
-        //change detection triggers ngOnInit
+        // change detection triggers ngOnInit
         fixture.detectChanges();
 
         return fixture.whenStable().then(() => {

@@ -10,13 +10,19 @@ import { TodoService } from '../shared/services/todo.service';
 import { TodoComponent } from './todo.component';
 import { ItemTextPipe } from '../shared/pipe/item-text.pipe';
 import { DatePipe } from '@angular/common';
-import { MockTodoService, click, advance } from '../../testing';
+import { MockHttpResponse, MockTodoService, click, advance } from '../../testing';
 
-fdescribe('TodoComponent', () => {
-  let component: TodoComponent;
-  let fixture: ComponentFixture<TodoComponent>;
-  let itemField: AbstractControl;
-  let errors = {};
+let component: TodoComponent;
+let fixture: ComponentFixture<TodoComponent>;
+let element: DebugElement;
+let itemField: AbstractControl;
+
+describe('TodoComponent', () => {
+  describe('form validation tests', formValidationTests);
+  describe('interaction tests', interactionTests);
+});
+
+function setup(triggerDetectChanges) {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
@@ -30,19 +36,32 @@ fdescribe('TodoComponent', () => {
         { provide: TodoService, useClass: MockTodoService }
       ]
     })
-      .compileComponents();
-  }));
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(TodoComponent);
+        element = fixture.debugElement;
+        component = element.componentInstance;
 
+        return fixture.whenStable().then(() => {
+          fixture.detectChanges();
+          itemField = component.addForm.controls['item'];
+          expect(itemField).toBeTruthy('item field was not found');
+        });
+      });
+
+  }));
+}
+
+function formValidationTests() {
+
+  let errors = {};
+  setup(true);
   beforeAll(() => {
     // monkey patches debounce time to make field validation errors test past.
     Observable.prototype.debounceTime = function () { return this; };
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TodoComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-
     itemField = component.addForm.controls['item'];
     expect(itemField).toBeTruthy('item field was not found');
     errors = {};
@@ -116,5 +135,33 @@ fdescribe('TodoComponent', () => {
     expect(itemField.valid).toBeTruthy();
     expect(component.addForm.valid).toBeTruthy();
     expect(component.formErrors.item).toBe('');
+  });
+};
+
+function interactionTests() {
+  setup(true);
+  beforeEach(() => {
+
   })
-});
+  // add
+  // it('save test', () => {
+  //   const injector = fixture.debugElement.injector;
+  //   const service: TodoService = injector.get(TodoService);
+  //   expect(service).not.toBeUndefined('TodoService Mock Class was not found');
+
+  //   spyOn(service, 'getAll').and.returnValue(MockHttpResponse.createResponse([]));
+
+  //   expect(component.todoList.length).toBe(0, 'todo list should be empty');
+  //   expect(component.openItemCount).toBe(0, 'openItemCount should be 0');
+
+  //   itemField.setValue('save test');
+  //   // component.save();
+  // })
+  // completed
+
+  // delete
+
+  // get
+
+  // sort
+}
