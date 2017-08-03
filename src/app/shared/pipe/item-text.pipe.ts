@@ -17,7 +17,7 @@ export class ItemTextPipe implements PipeTransform {
       throw new Error('todo is null')
     }
 
-    if (todo instanceof Todo == false) {
+    if (todo instanceof Todo === false) {
       throw new Error('parameter todo is not an instance of a Todo class');
     }
 
