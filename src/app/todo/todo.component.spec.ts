@@ -62,8 +62,6 @@ function formValidationTests() {
   });
 
   beforeEach(() => {
-    itemField = component.addForm.controls['item'];
-    expect(itemField).toBeTruthy('item field was not found');
     errors = {};
     if (itemField) {
       itemField.markAsDirty();
@@ -94,8 +92,6 @@ function formValidationTests() {
   });
 
   it('item field required with blank validity', () => {
-    itemField.markAsDirty();
-    expect(itemField.dirty).toBeTruthy();
     itemField.setValue('');
     errors = itemField.errors || {};
     expect(errors['required']).toBeDefined('required validator should have triggers');
