@@ -4,7 +4,7 @@
   <form autocomplete="off" novalidate #loginForm="ngForm" (ngSubmit)="login(loginForm.value)">
     <div class="form-group">
       <label for="email">Email:</label>
-      <input name="email" id="email" type="text" class="form-control" placeholder="Email..." (ngModel)="email" required #email="ngModel"
+      <input name="email" id="email" type="text" class="form-control" placeholder="Email..." (ngModel)="email" required email #email="ngModel"
         email />
       <div *ngIf="email.errors && (email.dirty || email.touched)" class="alert alert-danger">
         <div [hidden]="!email.errors.required">

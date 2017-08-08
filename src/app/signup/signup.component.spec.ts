@@ -37,30 +37,19 @@ describe('SignupComponent', () => {
         { provide: AuthService, useClass: MockAuthService }
       ]
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(SignupComponent);
-        element = fixture.debugElement;
-        component = element.componentInstance;
-        const injector = fixture.debugElement.injector;
-        location = injector.get(Location) as SpyLocation;
-
-        //change detection triggers ngOnInit
-        fixture.detectChanges();
-
-        return fixture.whenStable().then(() => {
-          // got the data and updated component
-          // change detection updates the view
-
-          // if (triggerDetectChanges) {
-          fixture.detectChanges();
-          // }
-        });
-      });
+      .compileComponents();
   }));
 
   beforeEach(() => {
+    fixture = TestBed.createComponent(SignupComponent);
+    element = fixture.debugElement;
+    component = element.componentInstance;
+    const injector = fixture.debugElement.injector;
+    location = injector.get(Location) as SpyLocation;
+
+    fixture.detectChanges();
     allLinks = fixture.debugElement.queryAll(By.directive(RouterLinkWithHref));
+
   });
 
   it('should be created', () => {
@@ -70,7 +59,6 @@ describe('SignupComponent', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
-
 
   it('should have 1 routerLink in template', fakeAsync(() => {
     expect(allLinks.length).toBe(1, 'should have 1 links');
@@ -82,7 +70,7 @@ describe('SignupComponent', () => {
     expectPathToBe(location, '/login');
   }));
 
-it('signup should redirect to home page', fakeAsync(() => {
+  it('signup should redirect to home page', fakeAsync(() => {
     // navigate to login page
     location.go('/signup');
     advance(fixture);

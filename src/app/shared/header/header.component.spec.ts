@@ -20,12 +20,13 @@ let element: DebugElement;
 let location: SpyLocation;
 
 describe('HeaderComponent', () => {
+  setup();
   describe('Create Test', createTest);
   describe('Navigation Test', navigationTests);
   describe('Toggle Menu Test', toggleMenuTest);
 });
 
-function setup(triggerDetectChanges: boolean) {
+function setup() {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -48,38 +49,28 @@ function setup(triggerDetectChanges: boolean) {
       ],
       schemas: [NO_ERRORS_SCHEMA],  // this ensures it doesnt error on routerLink usage
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(HeaderComponent);
-        element = fixture.debugElement;
-        component = element.componentInstance;
-        const injector = fixture.debugElement.injector;
-        location = injector.get(Location) as SpyLocation;
-
-        // change detection triggers ngOnInit
-        fixture.detectChanges();
-
-        return fixture.whenStable().then(() => {
-          // got the data and updated component
-          // change detection updates the view
-
-          if (triggerDetectChanges) {
-            fixture.detectChanges();
-          }
-        });
-      });
+      .compileComponents();
   }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HeaderComponent);
+    element = fixture.debugElement;
+    component = element.componentInstance;
+    const injector = fixture.debugElement.injector;
+    location = injector.get(Location) as SpyLocation;
+
+    // change detection triggers ngOnInit
+    fixture.detectChanges();
+  });
 }
 
 function createTest() {
-  setup(true);
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
 }
 
 function navigationTests() {
-  setup(true);
   let allLinkDes: DebugElement[];
 
   beforeEach(() => {
@@ -142,8 +133,6 @@ function navigationTests() {
 }
 
 function toggleMenuTest() {
-  setup(true);
-
   it('should show main menu', () => {
     element.query(By.css('button:first-child')).triggerEventHandler('click', null);
     fixture.detectChanges();

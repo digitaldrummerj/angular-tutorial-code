@@ -12,7 +12,6 @@ describe('AuthService', () => {
     TestBed.configureTestingModule({
       imports: [
         CookieModule.forRoot()
-
       ],
       providers: [
         AuthService,

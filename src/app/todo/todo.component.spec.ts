@@ -18,11 +18,13 @@ let element: DebugElement;
 let itemField: AbstractControl;
 
 describe('TodoComponent', () => {
+  setup();
+  describe('component create tests', createTests);
   describe('form validation tests', formValidationTests);
   describe('interaction tests', interactionTests);
 });
 
-function setup(triggerDetectChanges) {
+function setup() {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
@@ -36,26 +38,25 @@ function setup(triggerDetectChanges) {
         { provide: TodoService, useClass: MockTodoService }
       ]
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(TodoComponent);
-        element = fixture.debugElement;
-        component = element.componentInstance;
-
-        return fixture.whenStable().then(() => {
-          fixture.detectChanges();
-          itemField = component.addForm.controls['item'];
-          expect(itemField).toBeTruthy('item field was not found');
-        });
-      });
-
+      .compileComponents();
   }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TodoComponent);
+    element = fixture.debugElement;
+    component = element.componentInstance;
+    fixture.detectChanges();
+  });
+}
+
+function createTests() {
+  it('should be created', () => {
+    expect(component).toBeTruthy();
+  });
 }
 
 function formValidationTests() {
-
   let errors = {};
-  setup(true);
   beforeAll(() => {
     // monkey patches debounce time to make field validation errors test past.
     Observable.prototype.debounceTime = function () { return this; };
@@ -63,14 +64,14 @@ function formValidationTests() {
 
   beforeEach(() => {
     errors = {};
+    itemField = component.addForm.controls['item'];
+    expect(itemField).toBeTruthy('item field was not found');
+
     if (itemField) {
       itemField.markAsDirty();
       expect(itemField.dirty).toBeTruthy('field should be dirty');
+      fixture.detectChanges();
     }
-  });
-
-  it('should be created', () => {
-    expect(component).toBeTruthy();
   });
 
   it('form invalid when empty', () => {
@@ -92,7 +93,9 @@ function formValidationTests() {
   });
 
   it('item field required with blank validity', () => {
+
     itemField.setValue('');
+
     errors = itemField.errors || {};
     expect(errors['required']).toBeDefined('required validator should have triggers');
     expect(errors['minlength']).toBeUndefined('min length validator should not have fired');
@@ -135,7 +138,6 @@ function formValidationTests() {
 };
 
 function interactionTests() {
-  setup(true);
   beforeEach(() => {
 
   })

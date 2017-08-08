@@ -8,9 +8,13 @@ import { Todo } from '../classes/todo';
 describe('ItemTextPipe', () => {
   let pipe: ItemTextPipe;
   let datePipe: DatePipe;
+
   beforeEach(() =>
     TestBed.configureTestingModule({
-      providers: [ItemTextPipe, DatePipe,]
+      providers: [
+        ItemTextPipe,
+        DatePipe,
+    ]
     }));
 
   beforeEach(inject([ItemTextPipe, DatePipe], (i, d) => {

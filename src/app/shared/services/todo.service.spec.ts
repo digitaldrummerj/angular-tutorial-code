@@ -30,9 +30,9 @@ describe('TodoService', () => {
     });
 
     http = bed.get(Http);
-    expect(http).not.toBeUndefined('Http Mock Class was not found');
+    expect(http).toBeDefined('Http Mock Class was not found');
     service = bed.get(TodoService);
-    expect(service).not.toBeUndefined('TodoService was not found');
+    expect(service).toBeDefined('TodoService was not found');
   });
 
   it('should be created', () => {
