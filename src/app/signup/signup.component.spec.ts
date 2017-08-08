@@ -10,7 +10,7 @@ import { SpyLocation } from '@angular/common/testing';
 import { SignupComponent } from './signup.component';
 import { AuthService } from '../shared/services/auth.service';
 
-import { expectPathToBe, advance, MockAuthService, MockUserData, click } from '../../testing';
+import { expectPathToBe, advance, MockAuthService, click } from '../../testing';
 
 describe('SignupComponent', () => {
   let component: SignupComponent;
@@ -33,7 +33,6 @@ describe('SignupComponent', () => {
         SignupComponent
       ],
       providers: [
-        MockUserData,
         { provide: AuthService, useClass: MockAuthService }
       ]
     })

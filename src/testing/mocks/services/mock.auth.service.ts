@@ -3,12 +3,14 @@ import { MockUserData, User } from '../data/mock.user.data';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 
+const mockUserData: MockUserData = new MockUserData();
+
 @Injectable()
 export class MockAuthService {
-  constructor(private userMockData: MockUserData) { }
+  constructor() { }
 
   public getUser(): User {
-    return this.userMockData.ExistingUser1;
+    return mockUserData.ExistingUser1;
   }
 
   private setUser(value: User): void {

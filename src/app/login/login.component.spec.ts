@@ -9,7 +9,7 @@ import { RouterLinkWithHref } from '@angular/router';
 
 import { LoginComponent } from './login.component';
 import { AuthService } from '../shared/services/auth.service';
-import { expectPathToBe, advance, MockUserData, MockAuthService, click } from '../../testing';
+import { expectPathToBe, advance, MockAuthService, click } from '../../testing';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -34,7 +34,6 @@ describe('LoginComponent', () => {
         LoginComponent
       ],
       providers: [
-        MockUserData,
         { provide: AuthService, useClass: MockAuthService }
       ]
     })

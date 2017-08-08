@@ -7,7 +7,7 @@ import { Location } from '@angular/common';
 import { Router, RouterLinkWithHref } from '@angular/router';
 
 
-import { MockUserData, MockAuthService, advance, expectPathToBe, click } from '../../../testing';
+import {  MockAuthService, advance, expectPathToBe, click } from '../../../testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CookieModule } from 'ngx-cookie';
 
@@ -44,7 +44,6 @@ function setup() {
         HeaderComponent,
       ],
       providers: [
-        MockUserData,
         { provide: AuthService, useClass: MockAuthService },
       ],
       schemas: [NO_ERRORS_SCHEMA],  // this ensures it doesnt error on routerLink usage
