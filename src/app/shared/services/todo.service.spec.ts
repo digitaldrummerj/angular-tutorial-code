@@ -1,51 +1,51 @@
-import { TestBed, inject } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import { Http, Response, ResponseOptions } from '@angular/http';
+import { async, TestBed, inject } from '@angular/core/testing';
+import { BaseRequestOptions, Http, Response, ResponseOptions } from '@angular/http';
 import { TodoService } from './todo.service';
-import { MockHttp, MockHttpResponse } from '../../../testing';
-
-const user = {
-  id: 1,
-  email: 'foo@foo.com'
-};
-
-const todoItems = [
-  { item: 'Research Unit Testing', completed: true, user: user.id },
-  { item: 'Write Unit Test Code', completed: false, user: user.id },
-  { item: 'Present Unit Test Code', completed: false, user: user.id },
-  { item: 'Get a Good Night Sleep', completed: false, user: user.id },
-];
+import { MockBackend } from '@angular/http/testing';
+import { MockTodoData } from '../../../testing';
 
 describe('TodoService', () => {
   let service: TodoService;
-  let http: Http;
+  let mockBackend: MockBackend;
+  const mockTodoData: MockTodoData = new MockTodoData();
 
   beforeEach(() => {
     const bed = TestBed.configureTestingModule({
       providers: [
         TodoService,
-        { provide: Http, useClass: MockHttp }
+        MockBackend,
+        BaseRequestOptions,
+        {
+          provide: Http,
+          useFactory: (backend, options) => new Http(backend, options),
+          deps: [MockBackend, BaseRequestOptions]
+        }
       ]
     });
 
-    http = bed.get(Http);
-    expect(http).toBeDefined('Http Mock Class was not found');
     service = bed.get(TodoService);
-    expect(service).toBeDefined('TodoService was not found');
+    mockBackend = bed.get(MockBackend);
   });
 
-  it('should be created', () => {
+  it('Todo Service should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should get todo items', () => {
-    spyOn(http, 'get').and.returnValue(MockHttpResponse.createResponse([...todoItems]));
+  it('MockBackend should be created', () => {
+    expect(mockBackend).toBeTruthy();
+  });
+
+  it('should get todo items', async(() => {
+    mockBackend.connections.subscribe(conn => {
+      conn.mockRespond(new Response(new ResponseOptions({
+        body: mockTodoData.todoItems
+      })));
+    });
 
     service.getAll()
       .subscribe((result => {
-        expect(result.length).toBe(todoItems.length);
-        expect(result).toEqual(todoItems);
+        expect(result.length).toBe(mockTodoData.todoItems.length);
+        expect(result).toEqual(mockTodoData.todoItems);
       }));
-  });
+  }));
 });

@@ -22,11 +22,11 @@ export class TodoService {
       });
   }
 
-  getAll(): Observable<Array<Todo>> {
+  getAll(): Observable<Todo[]> {
     let url = this.url;
     return this.http.get(url, this.options)
       .map((res: Response) => {
-        return <Array<Todo>>res.json();
+        return <Todo[]>res.json();
       })
       .catch(error => {
         console.log('get error', error);

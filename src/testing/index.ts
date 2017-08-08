@@ -6,6 +6,7 @@ export * from './mock-http';
 export * from './mocks/data/mock.user.data';
 export * from './mocks/services/mock.auth.service';
 export * from './mocks/services/mock.todo.service';
+export * from './mocks/data/mock.todo.data';
 
 ///// Short utilities /////
 export function expectPathToBe(l: Location, path: string, expectationFailOutput?: any) {

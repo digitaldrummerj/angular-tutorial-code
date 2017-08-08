@@ -8,13 +8,15 @@ export class Todo {
 
   constructor(
     item: string,
-    id?: string,
     completed?: boolean,
+    userId?: string,
+    id?: string,
     createdAt?: Date,
     updatedAt?: Date) {
-    this.id = id;
     this.item = item;
     this.completed = completed ? completed : false;
+    this.user = userId;
+    this.id = id;
     this.createdAt = createdAt ? createdAt : new Date();
     this.updatedAt = updatedAt ? updatedAt : new Date();
   }

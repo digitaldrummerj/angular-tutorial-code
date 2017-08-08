@@ -29,7 +29,7 @@ describe('ItemTextPipe', () => {
   it('check value', () => {
     const createdAt = new Date();
     const updatedAt = new Date();
-    const todo = new Todo('testing', '1', false, createdAt, updatedAt);
+    const todo = new Todo('testing', false, '1', '1', createdAt, updatedAt);
     expect(this.pipe.transform(todo)).toBe(`${todo.item} <small>created: ${this.datePipe.transform(createdAt, 'short')}</small>`);
   });
 

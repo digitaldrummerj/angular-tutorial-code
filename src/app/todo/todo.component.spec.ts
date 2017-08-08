@@ -4,13 +4,14 @@ import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import { AbstractControl, Validators } from '@angular/forms';
+import { FieldSorter } from '../shared/classes/field-sorter';
 
 
 import { TodoService } from '../shared/services/todo.service';
 import { TodoComponent } from './todo.component';
 import { ItemTextPipe } from '../shared/pipe/item-text.pipe';
 import { DatePipe } from '@angular/common';
-import { MockHttpResponse, MockTodoService, click, advance } from '../../testing';
+import { Todo, MockTodoData, MockHttpResponse, MockTodoService, click, advance } from '../../testing';
 
 let component: TodoComponent;
 let fixture: ComponentFixture<TodoComponent>;
@@ -26,7 +27,7 @@ describe('TodoComponent', () => {
 
 function setup() {
   beforeEach(async(() => {
-    TestBed.configureTestingModule({
+    const bed = TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [
@@ -45,6 +46,7 @@ function setup() {
     fixture = TestBed.createComponent(TodoComponent);
     element = fixture.debugElement;
     component = element.componentInstance;
+
     fixture.detectChanges();
   });
 }
@@ -66,7 +68,6 @@ function formValidationTests() {
     errors = {};
     itemField = component.addForm.controls['item'];
     expect(itemField).toBeTruthy('item field was not found');
-
     if (itemField) {
       itemField.markAsDirty();
       expect(itemField.dirty).toBeTruthy('field should be dirty');
@@ -138,23 +139,57 @@ function formValidationTests() {
 };
 
 function interactionTests() {
+  let injector;
+  let service: TodoService;
+  let mockTodoData: MockTodoData;
+
   beforeEach(() => {
+    injector = fixture.debugElement.injector;
+    service = injector.get(TodoService);
+    mockTodoData = new MockTodoData();
+  });
 
-  })
+  it('service created', () => {
+    expect(service).toBeTruthy();
+  });
+
+  it('ngOnInit open item count', () => {
+    expect(component.openItemCount).toBe(3);
+  });
+
+  it('ngOnInit sort items', () => {
+    mockTodoData.todoItems.sort(FieldSorter.sort(['completed', 'item'], true));
+
+    expect(component.todoList).toEqual(mockTodoData.todoItems);
+  });
+
   // add
-  // it('save test', () => {
-  //   const injector = fixture.debugElement.injector;
-  //   const service: TodoService = injector.get(TodoService);
-  //   expect(service).not.toBeUndefined('TodoService Mock Class was not found');
+  it('save test', () => {
+    // get original counts
+    const initialOpenItemCount = component.openItemCount;
+    const initialItemCount = component.todoList.length;
+    const newItemText = '1 - save test';
 
-  //   spyOn(service, 'getAll').and.returnValue(MockHttpResponse.createResponse([]));
+    // set field value and save
+    itemField.setValue(newItemText);
+    component.save();
+    fixture.detectChanges();
 
-  //   expect(component.todoList.length).toBe(0, 'todo list should be empty');
-  //   expect(component.openItemCount).toBe(0, 'openItemCount should be 0');
+    // make sure that we have a new item
+    expect(component.todoList.length).toBe(initialItemCount + 1);
+    expect(component.openItemCount).toBe(initialOpenItemCount + 1);
 
-  //   itemField.setValue('save test');
-  //   // component.save();
-  // })
+    // validate that the 1st item is the new one since 1 comes before a
+    expect(component.todoList[0].item).toBe(newItemText);
+
+    // add new item to the mock data and sort it
+    mockTodoData.todoItems.push(new Todo(newItemText));
+    mockTodoData.todoItems.sort(FieldSorter.sort(['completed', 'item'], true));
+
+    // verify todo items
+    expect(component.todoList).toEqual(mockTodoData.todoItems);
+  });
+
   // completed
 
   // delete
