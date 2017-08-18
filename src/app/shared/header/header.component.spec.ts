@@ -4,10 +4,10 @@ import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { SpyLocation } from '@angular/common/testing';
 import { Location } from '@angular/common';
-import { Router, RouterLinkWithHref } from '@angular/router';
+import { RouterLinkWithHref } from '@angular/router';
 
 
-import {  MockAuthService, advance, expectPathToBe, click } from '../../../testing';
+import { MockAuthService, advance, expectPathToBe, click } from '../../../testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CookieModule } from 'ngx-cookie';
 
@@ -21,6 +21,8 @@ let location: SpyLocation;
 
 describe('HeaderComponent', () => {
   setup();
+
+
   describe('Create Test', createTest);
   describe('Navigation Test', navigationTests);
   describe('Toggle Menu Test', toggleMenuTest);

@@ -10,7 +10,7 @@ export * from './mocks/data/mock.todo.data';
 
 ///// Short utilities /////
 export function expectPathToBe(l: Location, path: string, expectationFailOutput?: any) {
-  expect(l.path()).toEqual(path, expectationFailOutput || 'location.path()');
+  expect(l.path()).toEqual(path, expectationFailOutput || l.path());
 }
 
 /** Wait a tick, then detect changes */

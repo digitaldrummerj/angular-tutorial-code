@@ -10,6 +10,7 @@ import { AuthService } from './shared/services/auth.service';
 import { SignupComponent } from './signup/signup.component';
 import { TodoComponent } from './todo/todo.component';
 import { TodoService } from './shared/services/todo.service';
+import { GreetingService } from './shared/services/greeting.service';
 import { IsLoggedInGuard } from './shared/guards/is-logged-in.guard';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { HeaderComponent } from './shared/header/header.component';
@@ -17,6 +18,9 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { CookieModule } from 'ngx-cookie';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ItemTextPipe } from './shared/pipe/item-text.pipe';
+import { SimpleComponent } from './simple/simple.component';
+import { SimpleComponentWithServiceComponent } from './simple-component-with-service/simple-component-with-service.component';
+import { SimpleComponentWithAsyncServiceComponent } from './simple-component-with-async-service/simple-component-with-async-service.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +31,10 @@ import { ItemTextPipe } from './shared/pipe/item-text.pipe';
     NotFoundComponent,
     HeaderComponent,
     FooterComponent,
-    ItemTextPipe
+    ItemTextPipe,
+    SimpleComponent,
+    SimpleComponentWithServiceComponent,
+    SimpleComponentWithAsyncServiceComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +45,7 @@ import { ItemTextPipe } from './shared/pipe/item-text.pipe';
     CookieModule.forRoot(),
     NgbModule.forRoot()
   ],
-  providers: [AuthService, TodoService, IsLoggedInGuard],
+  providers: [AuthService, TodoService, IsLoggedInGuard, GreetingService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -14,5 +14,7 @@ export class MockTodoData {
 
   ];
 
+  public newTodoItem: Todo = new Todo('0 - new todo item', false, this.mockUserData.ExistingUser1.id, '0', this.defaultDate, this.defaultDate);
+
   constructor() { }
 }

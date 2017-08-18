@@ -71,6 +71,7 @@ export class TodoComponent implements OnInit {
   save(): void {
     this.todoService.save(this.addForm.value.item)
       .subscribe(result => {
+        console.log('result', result);
         this.todoList.push(result);
         this.openItemCount++;
         this.sortItems();

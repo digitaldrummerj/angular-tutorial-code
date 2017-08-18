@@ -1,8 +1,8 @@
 import { tick, async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
+import { ReactiveFormsModule } from '@angular/forms';
 import { AbstractControl, Validators } from '@angular/forms';
 import { FieldSorter } from '../shared/classes/field-sorter';
 
@@ -27,7 +27,7 @@ describe('TodoComponent', () => {
 
 function setup() {
   beforeEach(async(() => {
-    const bed = TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [
@@ -168,26 +168,25 @@ function interactionTests() {
     // get original counts
     const initialOpenItemCount = component.openItemCount;
     const initialItemCount = component.todoList.length;
-    const newItemText = '1 - save test';
+
 
     // set field value and save
-    itemField.setValue(newItemText);
+    itemField.setValue(mockTodoData.newTodoItem.item);
     component.save();
     fixture.detectChanges();
 
     // make sure that we have a new item
     expect(component.todoList.length).toBe(initialItemCount + 1);
     expect(component.openItemCount).toBe(initialOpenItemCount + 1);
-
     // validate that the 1st item is the new one since 1 comes before a
-    expect(component.todoList[0].item).toBe(newItemText);
+    expect(component.todoList[0].item).toBe(mockTodoData.newTodoItem.item);
 
     // add new item to the mock data and sort it
-    mockTodoData.todoItems.push(new Todo(newItemText));
+    mockTodoData.todoItems.push(mockTodoData.newTodoItem);
     mockTodoData.todoItems.sort(FieldSorter.sort(['completed', 'item'], true));
 
     // verify todo items
-    expect(component.todoList).toEqual(mockTodoData.todoItems);
+    expect(component.todoList).toEqual(mockTodoData.todoItems, 'verify todo items');
   });
 
   // completed
