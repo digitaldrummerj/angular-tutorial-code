@@ -11,7 +11,7 @@ import { TodoService } from '../shared/services/todo.service';
 import { TodoComponent } from './todo.component';
 import { ItemTextPipe } from '../shared/pipe/item-text.pipe';
 import { DatePipe } from '@angular/common';
-import { Todo, MockTodoData, MockHttpResponse, MockTodoService, click, advance } from '../../testing';
+import { Todo, MockTodoData, MockTodoService, click, advance } from '../../testing';
 
 let component: TodoComponent;
 let fixture: ComponentFixture<TodoComponent>;
