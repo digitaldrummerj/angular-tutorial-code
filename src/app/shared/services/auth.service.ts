@@ -1,43 +1,57 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptions } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import { tap, catchError } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
+
+const requestOptions = {
+  withCredentials: true,
+};
 
 @Injectable()
 export class AuthService {
-  private options = new RequestOptions({ withCredentials: true });
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: Http) {
+  login(email: string, password: string): Observable<boolean | Response> {
+    console.log('auth.service login');
+
+    const loginInfo = { email: email, password: password };
+
+    return this.http
+      .put('https://dj-sails-todo.azurewebsites.net/user/login', loginInfo, requestOptions)
+      .pipe(
+        tap((res: Response) => {
+          if (res) {
+            console.log('logged in');
+            return of(true);
+          }
+
+          console.log('not logged in');
+          return of(false);
+        }),
+        catchError(error => {
+          console.log('login error', error);
+          return of(false);
+        })
+      );
   }
 
-  login(email: string, password: string): Observable<boolean> {
-    let loginInfo = { "email": email, "password": password };
-    return this.http.put("https://dj-sails-todo.azurewebsites.net/user/login", loginInfo, this.options)
-      .do((res: Response) => {
-        if (res) {
-          return Observable.of(true);
-        }
+  signup(email: string, password: string): Observable<boolean | Response> {
+    const loginInfo = { email: email, password: password };
+    return this.http
+      .post('https://dj-sails-todo.azurewebsites.net/user/', loginInfo, requestOptions)
+      .pipe(
+        tap((res: Response) => {
+          if (res) {
+            return of(true);
+          }
 
-        return Observable.of(false);
-      })
-      .catch(error => {
-        console.log('login error', error);
-        return Observable.of(false);
-      });
-  }
-
-  signup(email: string, password: string): Observable<boolean> {
-    let loginInfo = { "email": email, "password": password };
-    return this.http.post("https://dj-sails-todo.azurewebsites.net/user/", loginInfo, this.options)
-      .do((res: Response) => {
-        if (res) {
-          return Observable.of(true);
-        }
-
-        return Observable.of(false);
-      })
-      .catch(error => {
-        console.log('signup error', error);
-        return Observable.of(false);
-      });
+          return of(false);
+        }),
+        catchError(error => {
+          console.log('signup error', error);
+          return of(false);
+        })
+      );
   }
 }
