@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,24 +10,25 @@ import { AuthService } from './shared/services/auth.service';
 import { SignupComponent } from './signup/signup.component';
 import { TodoComponent } from './todo/todo.component';
 import { TodoService } from './shared/services/todo.service';
- import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faTrashAlt, faSquare, faCheckSquare } from '@fortawesome/free-regular-svg-icons';
+
+library.add(faTrashAlt, faCheckSquare, faSquare);
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    SignupComponent,
-    TodoComponent
-  ],
+  declarations: [AppComponent, LoginComponent, SignupComponent, TodoComponent],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule,
+    HttpClientModule,
     AppRoutingModule,
-     NgbModule.forRoot()
+    NgbModule.forRoot(),
+    FontAwesomeModule,
   ],
   providers: [AuthService, TodoService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,52 +1,34 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptions } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import { Todo } from '../classes/todo';
 
+const requestOptions = { withCredentials: true };
+
 @Injectable()
 export class TodoService {
-  private options = new RequestOptions({ withCredentials: true });
-  constructor(private http: Http) { }
+  constructor(private http: HttpClient) {}
 
   save(item: string): Observable<Todo> {
-    return this.http.post('https://dj-sails-todo.azurewebsites.net/todo', new Todo(item), this.options)
-      .map((res: Response) => {
-        return <Todo>res.json();
-      })
-      .catch(error => {
-        console.log('save error', error)
-        return error;
-      });
+    return this.http.post<Todo>(
+      'https://dj-sails-todo.azurewebsites.net/todo',
+      new Todo(item),
+      requestOptions
+    );
   }
 
-  getAll(): Observable<Array<Todo>> {
-    let url = "https://dj-sails-todo.azurewebsites.net/todo";
-    return this.http.get(url, this.options)
-      .map((res: Response) => {
-        return <Array<Todo>>res.json();
-      })
-      .catch(error => {
-        console.log('get error', error);
-        return error;
-      });
+  getAll(): Observable<Todo[]> {
+    return this.http.get<Todo[]>('https://dj-sails-todo.azurewebsites.net/todo', requestOptions);
   }
 
   updateTodo(todo: Todo): Observable<Todo> {
-    let url = `https://dj-sails-todo.azurewebsites.net/todo/${todo.id}`;
-    return this.http.put(url, todo, this.options)
-      .map((res: Response) => <Todo>res.json())
-      .catch(error => {
-        console.log('update error', error);
-        return error;
-      });
+    const url = `https://dj-sails-todo.azurewebsites.net/todo/${todo.id}`;
+
+    return this.http.put<Todo>(url, todo, requestOptions);
   }
 
-  deleteTodo(todo: Todo): Observable<Response> {
-    let url = `https://dj-sails-todo.azurewebsites.net/todo/${todo.id}`;
-    return this.http.delete(url, this.options)
-      .catch(error => {
-        console.log('delete error', error);
-        return error;
-      });
+  deleteTodo(todo: Todo): Observable<Todo> {
+    const url = `https://dj-sails-todo.azurewebsites.net/todo/${todo.id}`;
+    return this.http.delete<Todo>(url, requestOptions);
   }
 }
