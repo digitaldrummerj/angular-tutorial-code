@@ -9,6 +9,7 @@ import { LoginComponent } from './login/login.component';
 import { AuthService } from './shared/services/auth.service';
 import { SignupComponent } from './signup/signup.component';
  import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { SignupComponent } from './signup/signup.component';
     FormsModule,
     HttpModule,
     AppRoutingModule,
-     NgbModule.forRoot()
+     NgbModule.forRoot(),
+     FontAwesomeModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]
