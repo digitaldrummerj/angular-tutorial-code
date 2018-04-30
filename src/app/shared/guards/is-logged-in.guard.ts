@@ -5,14 +5,15 @@ import { AuthService } from '../services/auth.service';
 
 @Injectable()
 export class IsLoggedInGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    let isLoggedIn = new Observable<boolean>(observer => {
-      this.authService.isAuthenticated()
-        .subscribe((res: boolean) => {
+    state: RouterStateSnapshot
+  ): Observable<boolean> | Promise<boolean> | boolean {
+    const isLoggedIn = new Observable<boolean>(observer => {
+      this.authService.isAuthenticated().subscribe(
+        (res: boolean) => {
           if (res) {
             observer.next(true);
             observer.complete();
@@ -21,11 +22,13 @@ export class IsLoggedInGuard implements CanActivate {
             observer.next(false);
             observer.complete();
           }
-        }, error => {
+        },
+        error => {
           this.router.navigate(['/login']);
           observer.next(false);
           observer.complete();
-        });
+        }
+      );
     });
 
     return isLoggedIn;
