@@ -14,6 +14,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTrashAlt, faSquare, faCheckSquare } from '@fortawesome/free-regular-svg-icons';
+import { IsLoggedInGuard } from './shared/guards/is-logged-in.guard';
 
 library.add(faTrashAlt, faCheckSquare, faSquare);
 
@@ -28,7 +29,7 @@ library.add(faTrashAlt, faCheckSquare, faSquare);
     NgbModule.forRoot(),
     FontAwesomeModule,
   ],
-  providers: [AuthService, TodoService],
-  bootstrap: [AppComponent],
+  providers: [AuthService, TodoService, IsLoggedInGuard],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}
