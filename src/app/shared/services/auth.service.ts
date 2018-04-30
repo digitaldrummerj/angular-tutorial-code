@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { tap, catchError } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
@@ -55,21 +55,26 @@ export class AuthService {
       );
   }
 
-  isAuthenticated(): Observable<boolean> {
-    return this.http.get("https://dj-sails-todo.azurewebsites.net/user/identity", this.options)
-      .map((res: Response) => {
-        if (res) {
-          return Observable.of(true);
-        }
+  isAuthenticated(): Observable<boolean | Response> {
+    return this.http
+      .get('https://dj-sails-todo.azurewebsites.net/user/identity', requestOptions)
+      .pipe(
+        tap((res: Response) => {
+          if (res) {
+            console.log('logged in');
+            return of(true);
+          }
 
-        return Observable.of(false);
-      })
-      .catch((error: Response) => {
-        if (error.status !== 403) {
-          console.log('isAuthenticated error', error);
-        }
-
-        return Observable.of(false);
-      });
+          console.log('not logged in');
+          return of(false);
+        }),
+        catchError((error: HttpErrorResponse) => {
+          if (error.status !== 403) {
+            console.log('isAuthenticated error', error);
+          }
+          console.log('not logged in', error);
+          return of(false);
+        })
+      );
   }
 }
