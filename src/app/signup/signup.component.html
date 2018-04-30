@@ -9,7 +9,7 @@
          <div [hidden]="!email.errors.required">
              Email is required
          </div>
-         <div [hidden]="email.errors.required || !email.errors.email">
+         <div [hidden]="!email.errors.email">
              Must be an email address
          </div>
      </div>

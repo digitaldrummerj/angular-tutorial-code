@@ -1,4 +1,4 @@
- @import "../../assets/bootstrap/variables";
+ @import "../../variables";
  div.todo {
      width: 100%;
      padding-bottom: .2em;
@@ -11,7 +11,7 @@
          color: $gray-light;
      }
 
-     i {
+     fa-icon {
          width: 40px;
          padding-right: 10px;
          vertical-align: middle

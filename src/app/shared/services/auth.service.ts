@@ -1,62 +1,82 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptions } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
- import { environment } from '../../../environments/environment';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import { tap, catchError } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
+import { environment } from '../../../environments/environment';
+
+const requestOptions = {
+  withCredentials: true,
+};
 
 @Injectable()
 export class AuthService {
-  private options = new RequestOptions({ withCredentials: true });
-   private url: string = `${environment.apiBaseUrl}/user`;
-  constructor(private http: Http) {
+   private url = `${environment.apiBaseUrl}/user`;
+  constructor(private http: HttpClient) {}
+
+  login(email: string, password: string): Observable<boolean | Response> {
+    console.log('auth.service login');
+
+    const loginInfo = { email: email, password: password };
+
+    return this.http
+      .put(`${this.url}/login`, loginInfo, requestOptions)
+      .pipe(
+        tap((res: Response) => {
+          if (res) {
+            console.log('logged in');
+            return of(true);
+          }
+
+          console.log('not logged in');
+          return of(false);
+        }),
+        catchError(error => {
+          console.log('login error', error);
+          return of(false);
+        })
+      );
   }
 
-  login(email: string, password: string): Observable<boolean> {
-    let loginInfo = { "email": email, "password": password };
-    return this.http.put(`${this.url}/login`, loginInfo, this.options)
-      .do((res: Response) => {
-        if (res) {
-          return Observable.of(true);
-        }
+  signup(email: string, password: string): Observable<boolean | Response> {
+    const loginInfo = { email: email, password: password };
+    return this.http
+      .post(this.url, loginInfo, requestOptions)
+      .pipe(
+        tap((res: Response) => {
+          if (res) {
+            return of(true);
+          }
 
-        return Observable.of(false);
-      })
-      .catch(error => {
-        console.log('login error', error);
-        return Observable.of(false);
-      });
+          return of(false);
+        }),
+        catchError(error => {
+          console.log('signup error', error);
+          return of(false);
+        })
+      );
   }
 
-  signup(email: string, password: string): Observable<boolean> {
-    let loginInfo = { "email": email, "password": password };
-    return this.http.post(this.url, loginInfo, this.options)
-      .do((res: Response) => {
-        if (res) {
-          return Observable.of(true);
-        }
+  isAuthenticated(): Observable<boolean | Response> {
+    return this.http
+      .get(`${this.url}/identity`, requestOptions)
+      .pipe(
+        tap((res: Response) => {
+          if (res) {
+            console.log('logged in');
+            return of(true);
+          }
 
-        return Observable.of(false);
-      })
-      .catch(error => {
-        console.log('signup error', error);
-        return Observable.of(false);
-      });
-  }
-
-  isAuthenticated(): Observable<boolean> {
-    return this.http.get(`${ this.url }/identity`, this.options)
-      .map((res: Response) => {
-        if (res) {
-          return Observable.of(true);
-        }
-
-        return Observable.of(false);
-      })
-      .catch((error: Response) => {
-        if (error.status !== 403) {
-          console.log('isAuthenticated error', error);
-        }
-
-        return Observable.of(false);
-      });
+          console.log('not logged in');
+          return of(false);
+        }),
+        catchError((error: HttpErrorResponse) => {
+          if (error.status !== 403) {
+            console.log('isAuthenticated error', error);
+          }
+          console.log('not logged in', error);
+          return of(false);
+        })
+      );
   }
 }
