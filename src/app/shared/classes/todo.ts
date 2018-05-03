@@ -2,8 +2,8 @@ export class Todo {
   id: string;
   item: string;
   completed: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Number;
+  updatedAt: Number;
   user: string;
 
   constructor(
@@ -15,9 +15,7 @@ export class Todo {
     updatedAt?: Date) {
     this.item = item;
     this.completed = completed ? completed : false;
-    this.user = userId;
-    this.id = id;
-    this.createdAt = createdAt ? createdAt : new Date();
-    this.updatedAt = updatedAt ? updatedAt : new Date();
+    this.createdAt = createdAt ? createdAt.getTime() : new Date().getTime();
+    this.updatedAt = updatedAt ? updatedAt.getTime() : new Date().getTime();
   }
 }

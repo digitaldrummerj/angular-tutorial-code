@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit {
-  loginInvalid: boolean = false;
+  loginInvalid = false;
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
@@ -20,6 +20,7 @@ export class SignupComponent implements OnInit {
         if (!result) {
           this.loginInvalid = true;
         } else {
+          this.loginInvalid = false;
           this.router.navigate(['/']);
         }
       });

@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,16 +11,21 @@ import { SignupComponent } from './signup/signup.component';
 import { TodoComponent } from './todo/todo.component';
 import { TodoService } from './shared/services/todo.service';
 import { GreetingService } from './shared/services/greeting.service';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faTrashAlt, faSquare, faCheckSquare } from '@fortawesome/free-regular-svg-icons';
 import { IsLoggedInGuard } from './shared/guards/is-logged-in.guard';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { CookieModule } from 'ngx-cookie';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ItemTextPipe } from './shared/pipe/item-text.pipe';
 import { SimpleComponent } from './simple/simple.component';
 import { SimpleComponentWithServiceComponent } from './simple-component-with-service/simple-component-with-service.component';
 import { SimpleComponentWithAsyncServiceComponent } from './simple-component-with-async-service/simple-component-with-async-service.component';
+
+library.add(faTrashAlt, faCheckSquare, faSquare);
 
 @NgModule({
   declarations: [
@@ -40,12 +45,13 @@ import { SimpleComponentWithAsyncServiceComponent } from './simple-component-wit
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule,
+    HttpClientModule,
     AppRoutingModule,
     CookieModule.forRoot(),
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    FontAwesomeModule,
   ],
   providers: [AuthService, TodoService, IsLoggedInGuard, GreetingService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
