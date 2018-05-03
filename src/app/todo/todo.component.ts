@@ -119,9 +119,11 @@ export class TodoComponent implements OnInit {
         data => {
           const index = this.todoList.indexOf(todo);
           this.todoList.splice(index, 1);
+          if (todo.completed === false) {
+            this.openItemCount--;
+          }
         },
         (error: HttpErrorResponse) => {
-          todo.completed = !todo.completed;
           this.errorMessage = `${error.status} ${error.statusText}. ${error.message}`;
         }
       );
