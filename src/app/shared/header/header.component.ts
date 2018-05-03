@@ -8,7 +8,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  isCollapsed: boolean = true;
+  isCollapsed = true;
+  loggedInUser = this.authService.getUser();
 
   constructor(private authService: AuthService, private router: Router) { }
 

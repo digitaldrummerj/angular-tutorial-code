@@ -1,20 +1,24 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptions } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import { tap, catchError } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
 import { environment } from '../../../environments/environment';
 import { User } from '../classes/user';
 import { CookieService } from 'ngx-cookie';
 
+const requestOptions = {
+  withCredentials: true,
+};
+
 @Injectable()
 export class AuthService {
-  private options = new RequestOptions({ withCredentials: true });
-  private url: string = `${environment.apiBaseUrl}/user`;
-  private cookieKey: string = "currentUser";
-
-  constructor(private http: Http, private cookieService: CookieService) { }
+  private url = `${environment.apiBaseUrl}/user`;
+  private cookieKey = 'currentUser';
+  constructor(private http: HttpClient, private cookieService: CookieService) {}
 
   public getUser(): User {
-    return <User>this.cookieService.getObject(this.cookieKey)
+    return <User>this.cookieService.getObject(this.cookieKey);
   }
 
   private setUser(value: User): void {
@@ -25,78 +29,89 @@ export class AuthService {
     this.cookieService.remove(this.cookieKey);
   }
 
-  login(email: string, password: string): Observable<boolean> {
-    let loginInfo = { "email": email, "password": password };
-    return this.http.put(`${this.url}/login`, loginInfo, this.options)
-      .do((res: Response) => {
-        if (res) {
-          this.setUser(<User>res.json());
-          return Observable.of(true);
+  login(email: string, password: string): Observable<boolean | User> {
+    console.log('auth.service login');
+
+    const loginInfo = { email: email, password: password };
+
+    return this.http.put<User>(`${this.url}/login`, loginInfo, requestOptions).pipe(
+      tap((user: User) => {
+        if (user) {
+          console.log('logged in');
+          this.setUser(user);
+          return of(true);
         }
+
+        console.log('not logged in');
         this.clearUser();
-        return Observable.of(false);
-      })
-      .catch(error => {
+        return of(false);
+      }),
+      catchError(error => {
         console.log('login error', error);
         this.clearUser();
-        return Observable.of(false);
-      });
+        return of(false);
+      })
+    );
   }
 
-  signup(email: string, password: string): Observable<boolean> {
-    let loginInfo = { "email": email, "password": password };
-    return this.http.post(this.url, loginInfo, this.options)
-      .do((res: Response) => {
-        if (res) {
-          this.setUser(<User>res.json());
-          return Observable.of(true);
+  signup(email: string, password: string): Observable<boolean | User> {
+    const loginInfo = { email: email, password: password };
+    return this.http.post<User>(this.url, loginInfo, requestOptions).pipe(
+      tap((user: User) => {
+        if (user) {
+          this.setUser(user);
+          return of(true);
         }
 
         this.clearUser();
-        return Observable.of(false);
-      })
-      .catch(error => {
+        return of(false);
+      }),
+      catchError(error => {
         console.log('signup error', error);
         this.clearUser();
-        return Observable.of(false);
-      });
+        return of(false);
+      })
+    );
   }
 
-  isAuthenticated(): Observable<boolean> {
-    return this.http.get(`${this.url}/identity`, this.options)
-      .map((res: Response) => {
-        if (res) {
-          this.setUser(<User>res.json());
-          return Observable.of(true);
+  isAuthenticated(): Observable<boolean | User> {
+    return this.http.get<User>(`${this.url}/identity`, requestOptions).pipe(
+      tap((user: User) => {
+        if (user) {
+          console.log('logged in');
+          this.setUser(user);
+          return of(true);
         }
 
+        console.log('not logged in');
         this.clearUser();
-        return Observable.of(false);
-      })
-      .catch((error: Response) => {
+        return of(false);
+      }),
+      catchError((error: HttpErrorResponse) => {
         if (error.status !== 403) {
           console.log('isAuthenticated error', error);
         }
+        console.log('not logged in', error);
         this.clearUser();
-        return Observable.of(false);
-      });
+        return of(false);
+      })
+    );
   }
 
-  logout(): Observable<boolean> {
-    return this.http.get(`${this.url}/logout`, this.options)
-      .map((res: Response) => {
+  logout(): Observable<boolean | Response> {
+    return this.http.get(`${this.url}/logout`, requestOptions).pipe(
+      tap((res: Response) => {
         this.clearUser();
-
         if (res.ok) {
           return Observable.of(true);
         }
 
         return Observable.of(false);
-      })
-      .catch(error => {
-        console.log('logout error', error)
+      }),
+      catchError((error: HttpErrorResponse) => {
         this.clearUser();
-        return Observable.of(false);
-      });
+        return of(false);
+      })
+    );
   }
 }
