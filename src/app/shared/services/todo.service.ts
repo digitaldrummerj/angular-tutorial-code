@@ -1,55 +1,37 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptions } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import { Todo } from '../classes/todo';
 import { environment } from '../../../environments/environment';
 
+const requestOptions = { withCredentials: true };
+
 @Injectable()
 export class TodoService {
-  private options = new RequestOptions({ withCredentials: true });
-  private url: string = `${environment.apiBaseUrl}/todo`;
+  private url = `${environment.apiBaseUrl}/todo`;
 
-  constructor(private http: Http) { }
+  constructor(private http: HttpClient) {}
 
   save(item: string): Observable<Todo> {
-    return this.http.post(this.url, new Todo(item), this.options)
-      .map((res: Response) => {
-        return <Todo>res.json();
-      })
-      .catch(error => {
-        console.log('save error', error)
-        return error;
-      });
+    return this.http.post<Todo>(
+      this.url,
+      new Todo(item),
+      requestOptions
+    );
   }
 
-  getAll(): Observable<Array<Todo>> {
-    let url = this.url;
-    return this.http.get(url, this.options)
-      .map((res: Response) => {
-        return <Array<Todo>>res.json();
-      })
-      .catch(error => {
-        console.log('get error', error);
-        return error;
-      });
+  getAll(): Observable<Todo[]> {
+    return this.http.get<Todo[]>(this.url, requestOptions);
   }
 
   updateTodo(todo: Todo): Observable<Todo> {
-    let url = `${this.url}/${todo.id}`;
-    return this.http.put(url, todo, this.options)
-      .map((res: Response) => <Todo>res.json())
-      .catch(error => {
-        console.log('update error', error);
-        return error;
-      });
+    const url = `${this.url}/${todo.id}`;
+
+    return this.http.put<Todo>(url, todo, requestOptions);
   }
 
-  deleteTodo(todo: Todo): Observable<Response> {
-    let url = `${this.url}/${todo.id}`;
-    return this.http.delete(url, this.options)
-      .catch(error => {
-        console.log('delete error', error);
-        return error;
-      });
+  deleteTodo(todo: Todo): Observable<Todo> {
+    const url = `${this.url}/${todo.id}`;
+    return this.http.delete<Todo>(url, requestOptions);
   }
 }
