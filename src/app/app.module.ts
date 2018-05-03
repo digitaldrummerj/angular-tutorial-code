@@ -24,6 +24,7 @@ import { ItemTextPipe } from './shared/pipe/item-text.pipe';
 import { SimpleComponent } from './simple/simple.component';
 import { SimpleComponentWithServiceComponent } from './simple-component-with-service/simple-component-with-service.component';
 import { SimpleComponentWithAsyncServiceComponent } from './simple-component-with-async-service/simple-component-with-async-service.component';
+import { DatePipe } from '@angular/common';
 
 library.add(faTrashAlt, faCheckSquare, faSquare);
 
@@ -33,10 +34,10 @@ library.add(faTrashAlt, faCheckSquare, faSquare);
     LoginComponent,
     SignupComponent,
     TodoComponent,
+    ItemTextPipe,
     NotFoundComponent,
     HeaderComponent,
     FooterComponent,
-    ItemTextPipe,
     SimpleComponent,
     SimpleComponentWithServiceComponent,
     SimpleComponentWithAsyncServiceComponent
@@ -51,7 +52,7 @@ library.add(faTrashAlt, faCheckSquare, faSquare);
     NgbModule.forRoot(),
     FontAwesomeModule,
   ],
-  providers: [AuthService, TodoService, IsLoggedInGuard, GreetingService],
+  providers: [DatePipe, AuthService, TodoService, IsLoggedInGuard, GreetingService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

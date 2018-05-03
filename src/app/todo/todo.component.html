@@ -27,9 +27,6 @@
     </div>
     <div class="col-10 done-{{todoItem.completed}}">
       {{todoItem | itemText}}
-      {{todoItem.item}}
-      <br />
-      <small>created: {{ todoItem.createdAt | date:'short'}}</small>
     </div>
     <div class="col-1" (click)="deleteTodo(todoItem)">
       <fa-icon [icon]="['far', 'trash-alt']"></fa-icon>
