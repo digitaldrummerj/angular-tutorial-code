@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
 
 const requestOptions = {
   withCredentials: true,
