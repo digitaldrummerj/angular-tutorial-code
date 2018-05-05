@@ -59,6 +59,9 @@
             "browserTarget": "ngws:build"
           },
           "configurations": {
+            "local": {
+              "browserTarget": "ngws:build:local"
+            },
             "production": {
               "browserTarget": "ngws:build:production"
             }
