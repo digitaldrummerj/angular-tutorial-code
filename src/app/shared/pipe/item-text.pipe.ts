@@ -25,6 +25,6 @@ export class ItemTextPipe implements PipeTransform {
       throw new Error('todo.item is a required parameter and cannot be null');
     }
 
-    return `${todo.item}<small>created: ${this.datePipe.transform(todo.createdAt, 'short')}</small>`;
+    return `${todo.item} <small>created: ${this.datePipe.transform(todo.createdAt, 'short')}</small>`;
   }
 }

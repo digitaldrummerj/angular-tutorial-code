@@ -135,7 +135,7 @@ function navigationTests() {
 
 function toggleMenuTest() {
   it('should show main menu', () => {
-    element.query(By.css('button:first-child')).triggerEventHandler('click', null);
+    element.query(By.css('button')).triggerEventHandler('click', null);
     fixture.detectChanges();
 
     expect(component.isCollapsed).toBe(false);
@@ -146,7 +146,7 @@ function toggleMenuTest() {
     fixture.detectChanges();
     expect(component.isCollapsed).toBe(false);
 
-    element.query(By.css('button:first-child')).triggerEventHandler('click', null);
+    element.query(By.css('button')).triggerEventHandler('click', null);
     fixture.detectChanges();
     expect(component.isCollapsed).toBe(true);
   });

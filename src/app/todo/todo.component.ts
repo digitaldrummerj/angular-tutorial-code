@@ -58,7 +58,8 @@ export class TodoComponent implements OnInit {
           const messages = this.validationMessages[field];
           for (const key in messages) {
             if (messages.hasOwnProperty(key) && control.hasError(key)) {
-              this.formErrors[field] += `${messages[key]} `;
+              this.formErrors[field] += this.formErrors[field] === '' ? messages[key] : messages[key] + ' ';
+
             }
           }
         }

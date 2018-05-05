@@ -1,25 +1,29 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
-import { Http, Response, ResponseOptions } from '@angular/http';
 import { CookieModule } from 'ngx-cookie';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
-import { MockHttp, MockHttpResponse } from '../../../testing';
 import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
+  let service: AuthService;
+  let httpClient: HttpClient;
+  let httpTestingController: HttpTestingController;
+
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        CookieModule.forRoot()
-      ],
-      providers: [
-        AuthService,
-        { provide: Http, useClas: MockHttp }]
+    const bed = TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, CookieModule.forRoot()],
+      providers: [AuthService],
     });
+
+    service = bed.get(AuthService);
+    httpClient = TestBed.get(HttpClient);
+    httpTestingController = TestBed.get(HttpTestingController);
   });
 
-  it('should be created', inject([AuthService], (service: AuthService) => {
+  it('should be created', () => {
     expect(service).toBeTruthy();
-  }));
+  });
 });

@@ -47,10 +47,6 @@ describe('ItemTextPipe', () => {
     expect(() => this.pipe.transform(null)).toThrowError('todo is null');
   });
 
-  it('should throw with not instane of todo', () => {
-    expect(() => this.pipe.transform({})).toThrowError('parameter todo is not an instance of a Todo class');
-  });
-
   it('should throw with null item value', () => {
     expect(() => this.pipe.transform(new Todo(null))).toThrowError('todo.item is a required parameter and cannot be null');
   });
