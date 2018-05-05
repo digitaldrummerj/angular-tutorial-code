@@ -1,6 +1,8 @@
+
+import {debounceTime} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import 'rxjs/add/operator/debounceTime';
+
 import { TodoService } from '../shared/services/todo.service';
 import { Todo } from '../shared/classes/todo';
 import { FieldSorter } from '../shared/classes/field-sorter';
@@ -35,7 +37,7 @@ export class TodoComponent implements OnInit {
       item: ['', [Validators.required, Validators.minLength(3)]],
     });
 
-    this.addForm.valueChanges.debounceTime(1000).subscribe(data => this.onValueChanged(data));
+    this.addForm.valueChanges.pipe(debounceTime(1000)).subscribe(data => this.onValueChanged(data));
 
     this.onValueChanged();
 
