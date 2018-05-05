@@ -22,22 +22,30 @@ describe('TodoService', () => {
     httpTestingController = TestBed.get(HttpTestingController);
   });
 
+  afterEach(() => {
+      // Finally, assert that there are no outstanding requests.
+      httpTestingController.verify();
+  })
+
   it('Todo Service should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should get todo items', async(() => {
-    httpClient.get<Todo[]>('/todo').subscribe(data => {
-      // When observable resolves, result should match test data
-      expect(data).toEqual( mockTodoData.todoItems);
-      expect(data.length).toBe(mockTodoData.todoItems.length);
+  fit('should get todo items', async(() => {
+    // httpClient.get<Todo[]>('/todo').subscribe(data => {
+    //   // When observable resolves, result should match test data
+    //   expect(data).toEqual( mockTodoData.todoItems);
+    //   expect(data.length).toBe(mockTodoData.todoItems.length);
+    // });
+    service.getAll().subscribe(result => {
+      expect(result).toEqual( mockTodoData.todoItems);
+      expect(result.length).toBe(mockTodoData.todoItems.length);
     });
 
     // The following `expectOne()` will match the request's URL.
     // If no requests or multiple requests matched that URL
     // `expectOne()` would throw.
-    const req = httpTestingController.expectOne('/todo');
-
+    const req = httpTestingController.expectOne('https://dj-sails-todo.azurewebsites.net/todo');
     // Assert that the request is a GET.
     expect(req.request.method).toEqual('GET');
 
@@ -45,11 +53,5 @@ describe('TodoService', () => {
     // Subscribe callback asserts that correct data was returned.
     req.flush( mockTodoData.todoItems);
 
-    // Finally, assert that there are no outstanding requests.
-    httpTestingController.verify();
-    service.getAll().subscribe(result => {
-      expect(result).toEqual( mockTodoData.todoItems);
-      expect(result.length).toBe(mockTodoData.todoItems.length);
-    });
   }));
 });
