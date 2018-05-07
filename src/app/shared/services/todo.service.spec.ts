@@ -31,7 +31,7 @@ describe('TodoService', () => {
     expect(service).toBeTruthy();
   });
 
-  fit('should get todo items', async(() => {
+  it('should get todo items', async(() => {
     // httpClient.get<Todo[]>('/todo').subscribe(data => {
     //   // When observable resolves, result should match test data
     //   expect(data).toEqual( mockTodoData.todoItems);

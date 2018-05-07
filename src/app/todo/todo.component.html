@@ -25,8 +25,7 @@
     <div class="col-1" (click)="completeTodo(todoItem)">
       <fa-icon [icon]="['far', todoItem.completed  ? 'check-square' : 'square']"></fa-icon>
     </div>
-    <div class="col-10 done-{{todoItem.completed}}">
-      {{todoItem | itemText}}
+    <div class="col-10 done-{{todoItem.completed}}" [innerHtml]="todoItem | itemText">
     </div>
     <div class="col-1" (click)="deleteTodo(todoItem)">
       <fa-icon [icon]="['far', 'trash-alt']"></fa-icon>

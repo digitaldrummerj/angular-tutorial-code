@@ -1,20 +1,21 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform, SecurityContext } from '@angular/core';
 import { Todo } from '../classes/todo';
 import { DatePipe } from '@angular/common';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Pipe({
-  name: 'itemText'
+  name: 'itemText',
 })
 export class ItemTextPipe implements PipeTransform {
-  constructor(private datePipe: DatePipe) { }
+  constructor(private datePipe: DatePipe, private sanitizer: DomSanitizer) {}
 
-  transform(todo: Todo, args?: any): any {
+  transform(todo: Todo, args?: any): SafeHtml {
     if (todo === undefined) {
-      throw new Error('todo is undefined')
+      throw new Error('todo is undefined');
     }
 
     if (todo === null) {
-      throw new Error('todo is null')
+      throw new Error('todo is null');
     }
 
     // if (todo instanceof Todo === false) {
@@ -25,6 +26,9 @@ export class ItemTextPipe implements PipeTransform {
       throw new Error('todo.item is a required parameter and cannot be null');
     }
 
-    return `${todo.item} <small>created: ${this.datePipe.transform(todo.createdAt, 'short')}</small>`;
+    return this.sanitizer.sanitize (
+      SecurityContext.HTML,
+      `${todo.item} <small>created: ${this.datePipe.transform(todo.createdAt, 'short')}</small>`
+    );
   }
 }
