@@ -20,7 +20,7 @@ describe('SignupComponent', () => {
   let allLinks: DebugElement[];
 
   beforeEach(async(() => {
-    TestBed.configureTestingModule({
+    const testBed = TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes([
           { path: 'login', component: SignupComponent },
@@ -35,16 +35,16 @@ describe('SignupComponent', () => {
       providers: [
         { provide: AuthService, useClass: MockAuthService }
       ]
-    })
-      .compileComponents();
+    });
+      testBed.compileComponents();
+
+      location = testBed.get(Location) as SpyLocation;
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SignupComponent);
     element = fixture.debugElement;
     component = element.componentInstance;
-    const injector = fixture.debugElement.injector;
-    location = injector.get(Location) as SpyLocation;
 
     fixture.detectChanges();
     allLinks = fixture.debugElement.queryAll(By.directive(RouterLinkWithHref));

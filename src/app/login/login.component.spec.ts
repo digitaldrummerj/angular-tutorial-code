@@ -19,33 +19,30 @@ describe('LoginComponent', () => {
   let allLinks: DebugElement[];
 
   beforeEach(async(() => {
-    TestBed.configureTestingModule({
+    const testBed = TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes([
           { path: 'login', component: LoginComponent },
           { path: 'signup', component: LoginComponent },
-          { path: '', component: LoginComponent }
+          { path: '', component: LoginComponent },
         ]),
-        FormsModule
+        FormsModule,
       ],
       schemas: [NO_ERRORS_SCHEMA],
 
-      declarations: [
-        LoginComponent
-      ],
-      providers: [
-        { provide: AuthService, useClass: MockAuthService }
-      ]
-    })
-      .compileComponents();
+      declarations: [LoginComponent],
+      providers: [{ provide: AuthService, useClass: MockAuthService }],
+    });
+
+    testBed.compileComponents();
+
+    location = testBed.get(Location) as SpyLocation;
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginComponent);
     element = fixture.debugElement;
     component = element.componentInstance;
-    const injector = fixture.debugElement.injector;
-    location = injector.get(Location) as SpyLocation;
 
     allLinks = fixture.debugElement.queryAll(By.directive(RouterLinkWithHref));
     fixture.detectChanges();
@@ -55,30 +52,38 @@ describe('LoginComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have 1 routerLink in template', fakeAsync(() => {
-    expect(allLinks.length).toBe(1, 'should have 1 link');
-  }));
+  it(
+    'should have 1 routerLink in template',
+    fakeAsync(() => {
+      expect(allLinks.length).toBe(1, 'should have 1 link');
+    })
+  );
 
-  it('signup link should go to signup route', fakeAsync(() => {
-    click(allLinks[0]);
-    advance(fixture);
-    expectPathToBe(location, '/signup');
-  }));
+  it(
+    'signup link should go to signup route',
+    fakeAsync(() => {
+      click(allLinks[0]);
+      advance(fixture);
+      expectPathToBe(location, '/signup');
+    })
+  );
 
-  it('login should redirect to home page', fakeAsync(() => {
-    // navigate to login page
-    location.go('/login');
-    advance(fixture);
+  it(
+    'login should redirect to home page',
+    fakeAsync(() => {
+      // navigate to login page
+      location.go('/login');
+      advance(fixture);
 
-    // verify on login route
-    expect(location.path()).toEqual('/login', 'after initial navigation');
+      // verify on login route
+      expect(location.path()).toEqual('/login', 'after initial navigation');
 
-    // call login function in component
-    component.login({});
-    advance(fixture);
+      // call login function in component
+      component.login({});
+      advance(fixture);
 
-    // validate that user was navigate back to home page
-    expect(location.path()).toEqual('/', 'after logging in');
-  }));
+      // validate that user was navigate back to home page
+      expect(location.path()).toEqual('/', 'after logging in');
+    })
+  );
 });
-

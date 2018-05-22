@@ -17,19 +17,20 @@ describe('SimpleComponentWithServiceComponent', () => {
   let greetingService: GreetingService;
 
   beforeEach(async(() => {
-    TestBed.configureTestingModule({
+    const testBed = TestBed.configureTestingModule({
       declarations: [SimpleComponentWithServiceComponent],
       // providers: [{ provide: GreetingService, useClass: GreetingServiceStub }]
       providers: [GreetingService]
-    })
-      .compileComponents();
+    });
+      testBed.compileComponents();
+
+      greetingService = testBed.get(GreetingService);
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SimpleComponentWithServiceComponent);
     component = fixture.componentInstance;
     element = fixture.debugElement;
-    greetingService = element.injector.get(GreetingService);
   });
 
   it('should be created', () => {

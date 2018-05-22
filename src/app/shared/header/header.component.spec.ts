@@ -30,7 +30,7 @@ describe('HeaderComponent', () => {
 
 function setup() {
   beforeEach(async(() => {
-    TestBed.configureTestingModule({
+    const testBed = TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes([
           { path: '', component: HeaderComponent },
@@ -49,16 +49,17 @@ function setup() {
         { provide: AuthService, useClass: MockAuthService },
       ],
       schemas: [NO_ERRORS_SCHEMA],  // this ensures it doesnt error on routerLink usage
-    })
-      .compileComponents();
+    });
+
+      testBed.compileComponents();
+
+      location = testBed.get(Location) as SpyLocation;
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HeaderComponent);
     element = fixture.debugElement;
     component = element.componentInstance;
-    const injector = fixture.debugElement.injector;
-    location = injector.get(Location) as SpyLocation;
 
     // change detection triggers ngOnInit
     fixture.detectChanges();

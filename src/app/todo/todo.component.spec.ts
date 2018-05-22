@@ -17,6 +17,7 @@ let component: TodoComponent;
 let fixture: ComponentFixture<TodoComponent>;
 let element: DebugElement;
 let itemField: AbstractControl;
+let service: TodoService;
 
 describe('TodoComponent', () => {
   setup();
@@ -27,7 +28,7 @@ describe('TodoComponent', () => {
 
 function setup() {
   beforeEach(async(() => {
-    TestBed.configureTestingModule({
+    const testBed = TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [
@@ -38,8 +39,10 @@ function setup() {
         DatePipe,
         { provide: TodoService, useClass: MockTodoService }
       ]
-    })
-      .compileComponents();
+    });
+      testBed.compileComponents();
+
+      service = testBed.get(TodoService);
   }));
 
   beforeEach(() => {
@@ -146,13 +149,9 @@ function formValidationTests() {
 };
 
 function interactionTests() {
-  let injector;
-  let service: TodoService;
   let mockTodoData: MockTodoData;
 
   beforeEach(() => {
-    injector = fixture.debugElement.injector;
-    service = injector.get(TodoService);
     mockTodoData = new MockTodoData();
   });
 
