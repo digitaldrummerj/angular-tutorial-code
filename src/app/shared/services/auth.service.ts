@@ -102,10 +102,10 @@ export class AuthService {
       tap((res: Response) => {
         this.clearUser();
         if (res.ok) {
-          return Observable.of(true);
+          return of(true);
         }
 
-        return Observable.of(false);
+        return of(false);
       }),
       catchError((error: HttpErrorResponse) => {
         this.clearUser();
