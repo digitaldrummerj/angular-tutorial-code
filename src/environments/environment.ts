@@ -6,5 +6,5 @@
 export const environment = {
   production: false,
   environmentName: 'Development',
-  apiBaseUrl: 'https://sails-ws.herokuapp.com/'
+  apiBaseUrl: 'https://sails-ws.herokuapp.com'
 };
