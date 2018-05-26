@@ -1,7 +1,7 @@
 
 import {of as observableOf} from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class GreetingService {
