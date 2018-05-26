@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import { Todo } from '../classes/todo';
 
@@ -11,24 +11,31 @@ export class TodoService {
 
   save(item: string): Observable<Todo> {
     return this.http.post<Todo>(
-      'https://dj-sails-todo.azurewebsites.net/todo',
+      'https://sails-ws.herokuapp.com/todo',
       new Todo(item),
       requestOptions
     );
   }
 
   getAll(): Observable<Todo[]> {
-    return this.http.get<Todo[]>('https://dj-sails-todo.azurewebsites.net/todo', requestOptions);
+    return this.http.get<Todo[]>('https://sails-ws.herokuapp.com/todo', requestOptions);
   }
 
-  updateTodo(todo: Todo): Observable<Todo> {
-    const url = `https://dj-sails-todo.azurewebsites.net/todo/${todo.id}`;
+  updateTodo(todo: Todo): Observable<string> {
+    const url = `https://sails-ws.herokuapp.com/todo/${todo.id}`;
 
-    return this.http.put<Todo>(url, todo, requestOptions);
+    return this.http.patch(url, todo, {
+      withCredentials: true,
+      responseType: 'text',
+    });
   }
 
-  deleteTodo(todo: Todo): Observable<Todo> {
-    const url = `https://dj-sails-todo.azurewebsites.net/todo/${todo.id}`;
-    return this.http.delete<Todo>(url, requestOptions);
+  deleteTodo(todo: Todo): Observable<string> {
+    const url = `https://sails-ws.herokuapp.com/todo/${todo.id}`;
+
+    return this.http.delete(url, {
+      withCredentials: true,
+      responseType: 'text',
+    });
   }
 }

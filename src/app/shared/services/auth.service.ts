@@ -17,7 +17,7 @@ export class AuthService {
     const loginInfo = { email: email, password: password };
 
     return this.http
-      .put('https://dj-sails-todo.azurewebsites.net/user/login', loginInfo, requestOptions)
+      .put('https://sails-ws.herokuapp.com/user/login', loginInfo, requestOptions)
       .pipe(
         tap((res: Response) => {
           if (res) {
@@ -38,7 +38,7 @@ export class AuthService {
   signup(email: string, password: string): Observable<boolean | Response> {
     const loginInfo = { email: email, password: password };
     return this.http
-      .post('https://dj-sails-todo.azurewebsites.net/user/', loginInfo, requestOptions)
+      .post('https://sails-ws.herokuapp.com/user/', loginInfo, requestOptions)
       .pipe(
         tap((res: Response) => {
           if (res) {
