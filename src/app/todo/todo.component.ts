@@ -1,5 +1,4 @@
 
-import {debounceTime} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -34,14 +33,14 @@ export class TodoComponent implements OnInit {
       item: ['', [Validators.required, Validators.minLength(3)]],
     });
 
-    this.addForm.valueChanges.pipe(debounceTime(1000)).subscribe(data => this.onValueChanged(data));
+    this.addForm.statusChanges.subscribe(data => this.onStatusChange(data));
 
-    this.onValueChanged();
+    this.onStatusChange();
 
     this.getTodoListAll();
   }
 
-  onValueChanged(data?: any) {
+  onStatusChange(data?: any) {
     if (!this.addForm) {
       return;
     }
@@ -91,11 +90,12 @@ export class TodoComponent implements OnInit {
   completeTodo(todo: Todo): void {
     todo.completed = !todo.completed;
     this.todoService.updateTodo(todo).subscribe(
-      (data: Todo) => {
+      (data: string) => {
         // do nothing
-        console.log('updated todo', todo);
+        console.log('updated todo', data, todo);
       },
       (error: HttpErrorResponse) => {
+        console.log('error', error);
         todo.completed = !todo.completed;
         this.errorMessage = `${error.status} ${error.statusText}. ${error.message}`;
       }
@@ -104,7 +104,8 @@ export class TodoComponent implements OnInit {
 
   deleteTodo(todo: Todo): void {
     this.todoService.deleteTodo(todo).subscribe(
-      data => {
+      (data: string) => {
+        console.log('deleteTodo response', data, todo);
         const index = this.todoList.indexOf(todo);
         this.todoList.splice(index, 1);
       },
