@@ -21,7 +21,7 @@ export class TodoService {
   }
 
   updateTodo(todo: Todo): Observable<string> {
-    const url = `https://sails-ws.herokuapp.com/todo/${todo.id}`;
+    const url = `${this.url}/${todo.id}`;
 
     return this.http.patch(url, todo, {
       withCredentials: true,
