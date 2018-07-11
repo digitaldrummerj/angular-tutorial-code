@@ -8,7 +8,7 @@
     "build": "ng build",
     "build:prod": "ng build --prod",
     "test": "ng test",
-    "test:ci": "ng test --single-run --code-coverage=true --browsers ChromeHeadless",
+    "test:ci": "ng test --code-coverage=true --browsers ChromeHeadless",
     "lint": "ng lint -t stylish",
     "lint:ci": "ng lint --format tslint-teamcity-reporter",
     "e2e": "ng e2e",
@@ -35,6 +35,7 @@
     "core-js": "^2.4.1",
     "ngx-cookie": "^1.0.0",
     "rxjs": "^6.1.0",
+    "rxjs-compat": "^6.2.0",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
