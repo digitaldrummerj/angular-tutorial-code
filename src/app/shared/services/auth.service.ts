@@ -53,12 +53,14 @@ export class AuthService {
   }
 
   isAuthenticated(): Observable<boolean | Response> {
-    return this.http.get(`${this.url}/identity`, requestOptions).pipe(
-      tap((res: Response) => {
-        if (res) {
-          console.log('logged in');
-          return of(true);
-        }
+    return this.http
+      .get('https://sails-ws.herokuapp.com/user/identity', requestOptions)
+      .pipe(
+        tap((res: Response) => {
+          if (res) {
+            console.log('logged in');
+            return of(true);
+          }
 
         console.log('not logged in');
         return of(false);
