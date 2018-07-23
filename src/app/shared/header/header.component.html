@@ -24,10 +24,10 @@
           <a class="nav-link" routerLink="/signup">Signup</a>
         </li>
       </ul>
-      <ul class="navbar-nav navbar-light navbar-expand-md">
-        <li class="nav-item nav-link">Welcome {{ loggedInUser?.email }}</li>
-        <li class="nav-item">
-          <a class="nav-link" [hidden]="!loggedInUser" (click)="logout()">logout</a>
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active nav-link">Welcome {{ loggedInUser?.email }}</li>
+        <li class="nav-item active" (click)="logout()" [hidden]="!loggedInUser" >
+          <a class="nav-link" routerLink="">logout</a>
         </li>
       </ul>
     </div>
