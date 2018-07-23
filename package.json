@@ -8,11 +8,7 @@
     "build": "ng build",
     "build:prod": "ng build --prod",
     "test": "ng test",
-<<<<<<< HEAD
-    "test:ci": "ng test --code-coverage=true --browsers ChromeHeadless",
-=======
     "test:ci": "ng test --watch=false --code-coverage=true --browsers ChromeHeadless",
->>>>>>> chapter-additional-login
     "lint": "ng lint -t stylish",
     "lint:ci": "ng lint",
     "e2e": "ng e2e",

@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { TodoComponent } from './todo/todo.component';
-import { IsLoggedInGuard } from './shared/guards/is-logged-in.guard'
+import { IsLoggedInGuard } from './shared/guards/is-logged-in.guard';
 import { NotFoundComponent } from './not-found/not-found.component';
 
 const routes: Routes = [
