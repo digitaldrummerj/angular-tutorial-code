@@ -9,7 +9,7 @@
     "build:prod": "ng build --prod",
     "test": "ng test",
     "test:ci": "ng test --watch=false --code-coverage=true --browsers ChromeHeadless",
-    "lint": "ng lint -t stylish",
+    "lint": "ng lint",
     "lint:ci": "ng lint",
     "e2e": "ng e2e",
     "e2e:ci": "ng e2e -c ci",
