@@ -15,11 +15,22 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTrashAlt, faSquare, faCheckSquare } from '@fortawesome/free-regular-svg-icons';
 import { IsLoggedInGuard } from './shared/guards/is-logged-in.guard';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { HeaderComponent } from './shared/header/header.component';
+import { FooterComponent } from './shared/footer/footer.component';
 
 library.add(faTrashAlt, faCheckSquare, faSquare);
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, SignupComponent, TodoComponent],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    SignupComponent,
+    TodoComponent,
+    NotFoundComponent,
+    HeaderComponent,
+    FooterComponent
+  ],
   imports: [
     BrowserModule,
     FormsModule,

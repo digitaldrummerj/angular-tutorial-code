@@ -1,0 +1,27 @@
+<header>
+  <nav class="navbar navbar-expand-md navbar-light bg-faded">
+    <a class="navbar-brand" routerLink="/"><img class="navbar-logo" src="./assets/todo_logo.png" alt="Logo"></a>
+
+    <button  (click)="toggleMenu()" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse">
+         <span class="navbar-toggler-icon"></span>
+     </button>
+
+    <div [ngbCollapse]="isCollapsed" class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a  (click)="toggleMenu()" class="nav-link" routerLink="/">All Items</a>
+        </li>
+        <li (click)="toggleMenu()" class="nav-item active">
+          <a class="nav-link" routerLink="/unknown">"Unknown"</a>
+        </li>
+        <li (click)="toggleMenu()" class="nav-item active">
+          <a class="nav-link" routerLink="/login">Login</a>
+        </li>
+
+        <li (click)="toggleMenu()" class="nav-item active">
+          <a class="nav-link" routerLink="/signup">Signup</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
