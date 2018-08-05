@@ -4,7 +4,7 @@
   <form #signupForm="ngForm" (ngSubmit)="signup(signupForm.value)" autocomplete="off" novalidate>
     <div class="form-group">
       <label for="userName">Email:</label>
-      <input #email="ngModel" (ngModel)="email" name="email" id="email" required email id="email" type="text" class="form-control"
+      <input #email="ngModel" (ngModel)="email" name="email" id="email" required email id="email" type="text" autocomplete="email" class="form-control"
         placeholder="Email..." />
       <div *ngIf="email.errors && (email.dirty || email.touched)" class="alert alert-danger">
         <div [hidden]="!email.errors.required">
@@ -18,7 +18,7 @@
     <div class="form-group">
       <label for="password">Password:</label>
       <input #password="ngModel" (ngModel)="password" name="password" id="password" required minlength="6" id="password" type="password"
-        class="form-control" placeholder="Password..." />
+        autocomplete="new-password" class="form-control" placeholder="Password..." />
       <div *ngIf="password.errors && (password.dirty || password.touched)" class="alert alert-danger">
         <div [hidden]="!password.errors.required">
           Password is required
