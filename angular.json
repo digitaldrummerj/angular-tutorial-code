@@ -31,14 +31,6 @@
             "scripts": []
           },
           "configurations": {
-            "local": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.local.ts"
-                }
-              ]
-            },
             "production": {
               "optimization": true,
               "outputHashing": "all",
@@ -64,9 +56,6 @@
             "browserTarget": "ngws:build"
           },
           "configurations": {
-            "local": {
-              "browserTarget": "ngws:build:local"
-            },
             "production": {
               "browserTarget": "ngws:build:production"
             }
