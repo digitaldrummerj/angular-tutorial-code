@@ -21,15 +21,15 @@
     "@angular/platform-browser": "^6.1.0",
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
-    "core-js": "^2.5.4",
-    "rxjs": "^6.0.0",
-    "zone.js": "^0.8.26",
     "@fortawesome/angular-fontawesome": "^0.1.0-10",
     "@fortawesome/fontawesome-svg-core": "^1.2.0-11",
     "@fortawesome/free-regular-svg-icons": "^5.1.0-8",
     "@fortawesome/free-solid-svg-icons": "^5.1.0-8",
-    "@ng-bootstrap/ng-bootstrap": "^2.0.0",
-    "bootstrap": "^4.1.1"
+    "bootstrap": "^4.1.1",
+    "core-js": "^2.5.4",
+    "ngx-bootstrap": "^3.0.1",
+    "rxjs": "^6.0.0",
+    "zone.js": "^0.8.26"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.7.0",
