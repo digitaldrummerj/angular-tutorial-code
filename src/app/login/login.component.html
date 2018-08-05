@@ -4,7 +4,7 @@
   <form autocomplete="off" novalidate #loginForm="ngForm" (ngSubmit)="login(loginForm.value)">
     <div class="form-group">
       <label for="email">Email:</label>
-      <input name="email" id="email" type="text" class="form-control" placeholder="Email..." (ngModel)="email" required #email="ngModel"
+      <input name="email" id="email" type="text" autocomplete="email" class="form-control" placeholder="Email..." (ngModel)="email" required #email="ngModel"
         email />
       <div *ngIf="email.errors && (email.dirty || email.touched)" class="alert alert-danger">
         <div [hidden]="!email.errors.required">
@@ -17,7 +17,7 @@
     </div>
     <div class="form-group">
       <label for="password">Password:</label>
-      <input name="password" id="password" type="password" class="form-control" placeholder="Password..." (ngModel)="password"
+      <input name="password" id="password" type="password" autocomplete="current-password" class="form-control" placeholder="Password..." (ngModel)="password"
         required #password="ngModel" />
       <div *ngIf="password.errors && (password.dirty || password.touched)" class="alert alert-danger">
         <div [hidden]="!password.errors.required">
