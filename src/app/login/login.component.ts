@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
           console.log('login.component user not found');
           this.invalidLogin = true;
         } else {
-          console.log('login.component logged in. redirecting to home page')
+          console.log('login.component logged in. redirecting to home page');
           this.invalidLogin = false;
           this.router.navigate(['/']);
         }
