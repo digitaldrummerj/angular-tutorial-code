@@ -23,21 +23,21 @@ export class MockAuthService {
 
 
   login(email: string, password: string): Observable<boolean> {
-    return Observable.of(true);
+    return of(true);
 
   }
 
   signup(email: string, password: string): Observable<boolean> {
-    return Observable.of(true);
+    return of(true);
 
   }
 
   isAuthenticated(): Observable<boolean> {
-    return Observable.of(true);
+    return of(true);
   }
 
   logout(): Observable<boolean> {
-    return Observable.of(true);
+    return of(true);
   }
 
 }

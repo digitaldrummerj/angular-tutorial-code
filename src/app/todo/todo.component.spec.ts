@@ -1,7 +1,6 @@
 import { tick, async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
+import { Observable, of } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AbstractControl, Validators } from '@angular/forms';
 import { FieldSorter } from '../shared/classes/field-sorter';

@@ -4,7 +4,7 @@
 
 // export class MockHttpResponse {
 //   static createResponse(body) {
-//     return Observable.of(
+//     return of(
 //       new Response(new ResponseOptions({ body: JSON.stringify(body) }))
 //     );
 //   }

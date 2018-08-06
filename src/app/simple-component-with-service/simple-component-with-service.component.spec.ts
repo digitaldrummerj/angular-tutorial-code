@@ -3,8 +3,7 @@ import { SimpleComponentWithServiceComponent } from './simple-component-with-ser
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { GreetingService } from '../shared/services/greeting.service';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
+import { Observable, of } from 'rxjs';
 
 export class GreetingServiceStub {
   public subject = 'Test World';
@@ -38,9 +37,9 @@ describe('SimpleComponentWithServiceComponent', () => {
   });
 
   it('greets the subject', async(() => {
-    spyOn(greetingService, 'getGreeting').and.returnValue(Observable.of('Hello'));
-    spyOn(greetingService, 'getSubject').and.returnValue(Observable.of('World'));
-    spyOn(greetingService, 'getPunctuation').and.returnValue(Observable.of('!'));
+    spyOn(greetingService, 'getGreeting').and.returnValue(of('Hello'));
+    spyOn(greetingService, 'getSubject').and.returnValue(of('World'));
+    spyOn(greetingService, 'getPunctuation').and.returnValue(of('!'));
     fixture.detectChanges();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
@@ -50,9 +49,9 @@ describe('SimpleComponentWithServiceComponent', () => {
   }));
 
   it('updates greeting and display', async(() => {
-    spyOn(greetingService, 'getGreeting').and.returnValue(Observable.of('hello'));
-    spyOn(greetingService, 'getSubject').and.returnValue(Observable.of('cosmos'));
-    spyOn(greetingService, 'getPunctuation').and.returnValue(Observable.of(' :)'));
+    spyOn(greetingService, 'getGreeting').and.returnValue(of('hello'));
+    spyOn(greetingService, 'getSubject').and.returnValue(of('cosmos'));
+    spyOn(greetingService, 'getPunctuation').and.returnValue(of(' :)'));
 
     fixture.detectChanges();
     fixture.whenStable().then(() => {
@@ -63,7 +62,7 @@ describe('SimpleComponentWithServiceComponent', () => {
   }));
 
   it('spying on greets', async(() => {
-    spyOn(greetingService, 'getGreeting').and.returnValue(Observable.of('hello'));
+    spyOn(greetingService, 'getGreeting').and.returnValue(of('hello'));
     fixture.detectChanges();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
@@ -72,7 +71,7 @@ describe('SimpleComponentWithServiceComponent', () => {
   }));
 
   it('spying on subject', async(() => {
-    spyOn(greetingService, 'getSubject').and.returnValue(Observable.of('cosmos'));
+    spyOn(greetingService, 'getSubject').and.returnValue(of('cosmos'));
     fixture.detectChanges();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
@@ -81,7 +80,7 @@ describe('SimpleComponentWithServiceComponent', () => {
   }));
 
   it('spying on puncuation', async(() => {
-    spyOn(greetingService, 'getPunctuation').and.returnValue(Observable.of(' :)'));
+    spyOn(greetingService, 'getPunctuation').and.returnValue(of(' :)'));
     fixture.detectChanges();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
@@ -90,9 +89,9 @@ describe('SimpleComponentWithServiceComponent', () => {
   }));
 
   it('fakeasync ui test', fakeAsync(() => {
-    spyOn(greetingService, 'getGreeting').and.returnValue(Observable.of('Hello'));
-    spyOn(greetingService, 'getSubject').and.returnValue(Observable.of('World'));
-    spyOn(greetingService, 'getPunctuation').and.returnValue(Observable.of('!'));
+    spyOn(greetingService, 'getGreeting').and.returnValue(of('Hello'));
+    spyOn(greetingService, 'getSubject').and.returnValue(of('World'));
+    spyOn(greetingService, 'getPunctuation').and.returnValue(of('!'));
 
     fixture.detectChanges();
     tick();
@@ -103,7 +102,7 @@ describe('SimpleComponentWithServiceComponent', () => {
   }));
 
   it('fakeasync test', fakeAsync(() => {
-    spyOn(greetingService, 'getPunctuation').and.returnValue(Observable.of(' :)'));
+    spyOn(greetingService, 'getPunctuation').and.returnValue(of(' :)'));
     fixture.detectChanges();
     tick();
     fixture.detectChanges();
