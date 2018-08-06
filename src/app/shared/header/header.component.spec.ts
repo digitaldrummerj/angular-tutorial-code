@@ -6,7 +6,6 @@ import { SpyLocation } from '@angular/common/testing';
 import { Location } from '@angular/common';
 import { RouterLinkWithHref } from '@angular/router';
 
-
 import { MockAuthService, advance, expectPathToBe, click } from '../../../testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CookieModule } from 'ngx-cookie';
@@ -22,7 +21,6 @@ let location: SpyLocation;
 describe('HeaderComponent', () => {
   setup();
 
-
   describe('Create Test', createTest);
   describe('Navigation Test', navigationTests);
   describe('Toggle Menu Test', toggleMenuTest);
@@ -36,24 +34,19 @@ function setup() {
           { path: '', component: HeaderComponent },
           { path: 'login', children: [], component: HeaderComponent },
           { path: 'signup', component: HeaderComponent },
-          { path: '**', component: HeaderComponent }
-
+          { path: '**', component: HeaderComponent },
         ]),
         NgbModule.forRoot(),
-        CookieModule.forRoot()
+        CookieModule.forRoot(),
       ],
-      declarations: [
-        HeaderComponent,
-      ],
-      providers: [
-        { provide: AuthService, useClass: MockAuthService },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],  // this ensures it doesnt error on routerLink usage
+      declarations: [HeaderComponent],
+      providers: [{ provide: AuthService, useClass: MockAuthService }],
+      schemas: [NO_ERRORS_SCHEMA], // this ensures it doesnt error on routerLink usage
     });
 
-      testBed.compileComponents();
+    testBed.compileComponents();
 
-      location = testBed.get(Location) as SpyLocation;
+    location = testBed.get(Location) as SpyLocation;
   }));
 
   beforeEach(() => {
@@ -79,59 +72,74 @@ function navigationTests() {
     allLinkDes = fixture.debugElement.queryAll(By.directive(RouterLinkWithHref));
   });
 
-  it('should have 5 routerLinks for menu items in template', () => {
-    expect(allLinkDes.length).toBe(5, 'should have 5 links');
+  it('should have 6 routerLinks for menu items in template', () => {
+    expect(allLinkDes.length).toBe(6, 'should have 6 links');
   });
 
-  it('logo takes me home', fakeAsync(() => {
-    const linkDes = allLinkDes[0];
-    expectPathToBe(location, '', 'link should not have navigated yet');
+  it(
+    'logo takes me home',
+    fakeAsync(() => {
+      const linkDes = allLinkDes[0];
+      expectPathToBe(location, '', 'link should not have navigated yet');
 
-    click(linkDes);
-    advance(fixture);
+      click(linkDes);
+      advance(fixture);
 
-    expectPathToBe(location, '/');
-  }));
+      expectPathToBe(location, '/');
+    })
+  );
 
-  it('all items takes me home', fakeAsync(() => {
-    const linkDes = allLinkDes[1];
-    expectPathToBe(location, '', 'link should not have navigated yet');
+  it(
+    'all items takes me home',
+    fakeAsync(() => {
+      const linkDes = allLinkDes[1];
+      expectPathToBe(location, '', 'link should not have navigated yet');
 
-    click(linkDes);
-    advance(fixture);
+      click(linkDes);
+      advance(fixture);
 
-    expectPathToBe(location, '/');
-  }));
+      expectPathToBe(location, '/');
+    })
+  );
 
-  it('unknown takes me to unknown', fakeAsync(() => {
-    const linkDes = allLinkDes[2];
-    expectPathToBe(location, '', 'link should not have navigated yet');
+  it(
+    'unknown takes me to unknown',
+    fakeAsync(() => {
+      const linkDes = allLinkDes[2];
+      expectPathToBe(location, '', 'link should not have navigated yet');
 
-    click(linkDes);
-    advance(fixture);
+      click(linkDes);
+      advance(fixture);
 
-    expectPathToBe(location, '/unknown');
-  }));
+      expectPathToBe(location, '/unknown');
+    })
+  );
 
-  it('login takes me to login', fakeAsync(() => {
-    const linkDes = allLinkDes[3];
-    expectPathToBe(location, '', 'link should not have navigated yet');
+  it(
+    'login takes me to login',
+    fakeAsync(() => {
+      const linkDes = allLinkDes[3];
+      expectPathToBe(location, '', 'link should not have navigated yet');
 
-    click(linkDes);
-    advance(fixture);
+      click(linkDes);
+      advance(fixture);
 
-    expectPathToBe(location, '/login');
-  }));
+      expectPathToBe(location, '/login');
+    })
+  );
 
-  it('signup takes me to signup', fakeAsync(() => {
-    const linkDes = allLinkDes[4];
-    expectPathToBe(location, '', 'link should not have navigated yet');
+  it(
+    'signup takes me to signup',
+    fakeAsync(() => {
+      const linkDes = allLinkDes[4];
+      expectPathToBe(location, '', 'link should not have navigated yet');
 
-    click(linkDes);
-    advance(fixture);
+      click(linkDes);
+      advance(fixture);
 
-    expectPathToBe(location, '/signup');
-  }));
+      expectPathToBe(location, '/signup');
+    })
+  );
 }
 
 function toggleMenuTest() {
