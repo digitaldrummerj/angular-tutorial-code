@@ -12,6 +12,18 @@
     "alias": "user"
   },
   {
+    "url": "http://localhost:1337/user/login",
+    "method": "PUT",
+    "data": {
+      "createdAt": 1551738475242,
+      "updatedAt": 1551738475242,
+      "id": 1,
+      "email": "foo@foo.com"
+    },
+    "status": 200,
+    "alias": "login"
+  },
+  {
     "url": "http://localhost:1337/user/identity",
     "method": "GET",
     "data": {
