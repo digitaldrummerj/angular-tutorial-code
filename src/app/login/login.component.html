@@ -6,11 +6,8 @@
       <label for="email">Email:</label>
       <input name="email" id="email" type="text" autocomplete="email" class="form-control" placeholder="Email..." (ngModel)="email" required #email="ngModel" email />
       <div *ngIf="email.errors && (email.dirty || email.touched)" class="alert alert-danger">
-        <div [hidden]="!email.errors.required">
-          Email is required
-        </div>
-        <div [hidden]="email.errors.required || !email.errors.email">
-          Must be an email address
+        <div [hidden]="!email.errors.required">Email is required</div>
+        <div [hidden]="email.errors.required || !email.errors.email">Must be an email
         </div>
       </div>
     </div>
@@ -19,16 +16,12 @@
       <input name="password" id="password" type="password" autocomplete="current-password" class="form-control" placeholder="Password..." (ngModel)="password"
         required #password="ngModel" />
       <div *ngIf="password.errors && (password.dirty || password.touched)" class="alert alert-danger">
-        <div [hidden]="!password.errors.required">
-          Password is required
-        </div>
+        <div [hidden]="!password.errors.required">Password is required</div>
       </div>
     </div>
       <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">Login</button>
       <button type="button" class="btn btn-default">Cancel</button>
       <a routerLink="/signup" class="btn btn-link">create account</a>
-    <div *ngIf="invalidLogin" class="alert alert-danger">
-      Invalid Login
-    </div>
+    <div *ngIf="invalidLogin" class="alert alert-danger">Invalid Login</div>
   </form>
 </div>
