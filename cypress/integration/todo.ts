@@ -98,10 +98,14 @@ describe('Todo', () => {
         .get('.alert')
         .should('contain', 'Item must be at least 3 characters');
 
+      cy.get('.btn').should('be.disabled');
+
       cy.get('.form-control')
         .type('123')
         .get('.alert')
         .should('not.be.visible');
+
+      cy.get('.btn').should('not.be.disabled');
     });
 
     it('Required Validation', () => {
@@ -111,16 +115,22 @@ describe('Todo', () => {
         .get('.alert')
         .should('contain', 'Item is required.');
 
+      cy.get('.btn').should('be.disabled');
+
       cy.get('.form-control')
         .type('1')
         .get('.alert')
         .should('contain', 'Item must be at least 3 characters');
+
+      cy.get('.btn').should('be.disabled');
 
       cy.get('.form-control')
         .clear()
         .type('123')
         .get('alert')
         .should('not.be.visible');
+
+      cy.get('.btn').should('not.be.disabled');
     });
   });
 });
