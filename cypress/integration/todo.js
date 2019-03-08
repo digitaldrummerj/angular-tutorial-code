@@ -16,37 +16,38 @@ describe('Todo', () => {
     owner: 2,
   };
 
-  before(() => {
-    cy.visit('/login');
-    cy.get('#email').type('foo@foo.com');
-    cy.get('#password').type('123456');
-    cy.get('.btn-primary')
-      .should('have.text', 'Login')
-      .click();
 
-    cy.location('pathname').should('eq', '/');
 
-    cy.server();
+  describe('CRUD', () => {
+    beforeEach(() => {
+      cy.visit('/');
+      cy.get('#email').type('foo@foo.com');
+      cy.get('#password').type('123456');
+      cy.get('.btn-primary')
+        .should('have.text', 'Login')
+        .click();
 
-    cy.route({
-      url: '/todo',
-      status: 200,
-      method: 'POST',
-      response: addResponse,
-    }).as('addtodo');
+      cy.location('pathname').should('eq', '/');
 
-    cy.get('.form-control').type(todoText);
+      cy.server();
 
-    cy.get('.btn')
-      .should('contain', 'Add')
-      .click();
+      cy.route({
+        url: '/todo',
+        status: 200,
+        method: 'POST',
+        response: addResponse,
+      }).as('addtodo');
 
-    cy.wait('@addtodo');
-  });
+      cy.get('.form-control').type(todoText);
 
-  describe.only('Delete Todo', () => {
+      cy.get('.btn')
+        .should('contain', 'Add')
+        .click();
+
+      cy.wait('@addtodo');
+    });
+
     it('Delete Todo', () => {
-
       let count = 0;
       cy.on('window:confirm', str => {
         count += 1;
@@ -70,10 +71,7 @@ describe('Todo', () => {
         }
       });
 
-      cy.get('.row.todo')
-      .first()
-      .get('[data-cy="trash-icon"] svg[data-icon="trash-alt"]')
-      .click();
+      cy.get('.row.todo:first [data-cy="trash-icon"] svg[data-icon="trash-alt"]').click();
 
       cy.get('.row.todo').should('exist');
 
@@ -83,21 +81,14 @@ describe('Todo', () => {
         response: 'OK',
       }).as('delete');
 
-      cy.get('.row.todo')
-      .first()
-      .get('[data-cy="trash-icon"] svg[data-icon="trash-alt"]')
-      .click();
+      cy.get('.row.todo:first [data-cy="trash-icon"] svg[data-icon="trash-alt"]').click();
 
       cy.wait('@delete');
 
       cy.get('.row.todo').should('not.exist');
     });
-  });
 
-  describe('Complete Todo', () => {
     it('Complete Item', () => {
-      const firstRow = cy.get('.row.todo').first();
-
       cy.route({
         method: 'PATCH',
         url: '/todo/*',
@@ -105,43 +96,59 @@ describe('Todo', () => {
       }).as('todo-complete');
 
       // Toggle to Completed
-      firstRow
-        .get('[data-cy="check-icon"] svg[data-icon="square"]')
+      cy.get('.row.todo:first [data-cy="check-icon"] svg[data-icon="square"]')
         .and('be.visible')
         .click();
 
       cy.wait('@todo-complete');
 
-      firstRow.get('[data-cy="check-icon"] svg[data-icon="check-square"]').and('be.visible');
+      cy.get('.row.todo:first [data-cy="check-icon"] svg[data-icon="check-square"]').and(
+        'be.visible'
+      );
 
-      firstRow.get('[data-cy="check-icon"] svg[data-icon="square"]').and('not.be.visible');
+      cy.get('.row.todo:first [data-cy="check-icon"] svg[data-icon="square"]').and(
+        'not.be.visible'
+      );
 
       // Toggle to Uncompleted
-      firstRow.get('[data-cy="check-icon"] svg[data-icon="check-square"]').click();
+      cy.get('.row.todo:first [data-cy="check-icon"] svg[data-icon="check-square"]').click();
 
       cy.wait('@todo-complete');
 
-      firstRow.get('[data-cy="check-icon"] svg[data-icon="square"]').and('be.visible');
+      cy.get('.row.todo:first [data-cy="check-icon"] svg[data-icon="square"]').and('be.visible');
 
-      firstRow.get('[data-cy="check-icon"] svg[data-icon="check-square"]').and('not.be.visible');
+      cy.get('.row.todo:first [data-cy="check-icon"] svg[data-icon="check-square"]').and(
+        'not.be.visible'
+      );
     });
-  });
 
-  describe('Add Todo', () => {
-    // recordReplayCommands('AddTodo', 0);
     it('Add', () => {
-      const firstRow = cy.get('.row.todo').first();
-      firstRow.find('[data-cy=todo-text]').should('contain', todoText);
+      cy.get('.row.todo:first [data-cy=todo-text]').should('contain', todoText);
 
-      firstRow.get('[data-cy="check-icon"] svg[data-icon="square"]').and('be.visible');
+      cy.get('.row.todo:first [data-cy="check-icon"] svg[data-icon="square"]').and('be.visible');
 
-      firstRow.get('[data-cy="check-icon"] svg[data-icon="check-square"]').and('not.be.visible');
+      cy.get('.row.todo:first [data-cy="check-icon"] svg[data-icon="check-square"]').and(
+        'not.be.visible'
+      );
 
-      firstRow.get('[data-cy="trash-icon"] svg[data-icon="trash-alt"]').and('be.visible');
+      cy.get('.row.todo:first [data-cy="trash-icon"] svg[data-icon="trash-alt"]').and('be.visible');
 
       cy.get('.lead').should('contain', "You've got 1 things to do");
     });
+  });
 
+  describe('Add Todo Form Validation', () => {
+    // recordReplayCommands('AddTodo', 0);
+    before(() => {
+      cy.visit('/login');
+      cy.get('#email').type('foo@foo.com');
+      cy.get('#password').type('123456');
+      cy.get('.btn-primary')
+        .should('have.text', 'Login')
+        .click();
+
+      cy.location('pathname').should('eq', '/');
+    });
     it('MinLength Validation', () => {
       cy.get('.form-control')
         .type('1')
