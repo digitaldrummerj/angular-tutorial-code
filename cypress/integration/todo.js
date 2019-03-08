@@ -35,7 +35,6 @@ describe('Todo', () => {
       response: addResponse,
     }).as('addtodo');
 
-
     cy.get('.form-control').type(todoText);
 
     cy.get('.btn')
@@ -43,6 +42,56 @@ describe('Todo', () => {
       .click();
 
     cy.wait('@addtodo');
+  });
+
+  describe.only('Delete Todo', () => {
+    it('Delete Todo', () => {
+
+      let count = 0;
+      cy.on('window:confirm', str => {
+        count += 1;
+
+        switch (count) {
+          case 1:
+            expect(str).to.eq('Are you sure you want to delete?');
+            console.log('test 1', count);
+            // reject the confirmation
+            return false;
+          case 2:
+            expect(str).to.eq('Are you sure you want to delete?');
+            console.log('test 2', count);
+            // accepts the confirmation
+            return true;
+
+            // using mocha's async done callback to finish
+            // this test so we are guaranteed everything
+            // got to this point okay without throwing an error
+            done();
+        }
+      });
+
+      cy.get('.row.todo')
+      .first()
+      .get('[data-cy="trash-icon"] svg[data-icon="trash-alt"]')
+      .click();
+
+      cy.get('.row.todo').should('exist');
+
+      cy.route({
+        method: 'DELETE',
+        url: '/todo/*',
+        response: 'OK',
+      }).as('delete');
+
+      cy.get('.row.todo')
+      .first()
+      .get('[data-cy="trash-icon"] svg[data-icon="trash-alt"]')
+      .click();
+
+      cy.wait('@delete');
+
+      cy.get('.row.todo').should('not.exist');
+    });
   });
 
   describe('Complete Todo', () => {
@@ -56,24 +105,25 @@ describe('Todo', () => {
       }).as('todo-complete');
 
       // Toggle to Completed
-      cy.get('[data-cy="check-icon"] svg[data-icon="square"]')
+      firstRow
+        .get('[data-cy="check-icon"] svg[data-icon="square"]')
         .and('be.visible')
         .click();
 
       cy.wait('@todo-complete');
 
-      cy.get('[data-cy="check-icon"] svg[data-icon="check-square"]').and('be.visible');
+      firstRow.get('[data-cy="check-icon"] svg[data-icon="check-square"]').and('be.visible');
 
-      cy.get('[data-cy="check-icon"] svg[data-icon="square"]').and('not.be.visible');
+      firstRow.get('[data-cy="check-icon"] svg[data-icon="square"]').and('not.be.visible');
 
       // Toggle to Uncompleted
-      cy.get('[data-cy="check-icon"] svg[data-icon="check-square"]').click();
+      firstRow.get('[data-cy="check-icon"] svg[data-icon="check-square"]').click();
 
       cy.wait('@todo-complete');
 
-      cy.get('[data-cy="check-icon"] svg[data-icon="square"]').and('be.visible');
+      firstRow.get('[data-cy="check-icon"] svg[data-icon="square"]').and('be.visible');
 
-      cy.get('[data-cy="check-icon"] svg[data-icon="check-square"]').and('not.be.visible');
+      firstRow.get('[data-cy="check-icon"] svg[data-icon="check-square"]').and('not.be.visible');
     });
   });
 
@@ -83,11 +133,11 @@ describe('Todo', () => {
       const firstRow = cy.get('.row.todo').first();
       firstRow.find('[data-cy=todo-text]').should('contain', todoText);
 
-      cy.get('[data-cy="check-icon"] svg[data-icon="square"]').and('be.visible');
+      firstRow.get('[data-cy="check-icon"] svg[data-icon="square"]').and('be.visible');
 
-      cy.get('[data-cy="check-icon"] svg[data-icon="check-square"]').and('not.be.visible');
+      firstRow.get('[data-cy="check-icon"] svg[data-icon="check-square"]').and('not.be.visible');
 
-      cy.get('[data-cy="trash-icon"] svg[data-icon="trash-alt"]').and('be.visible');
+      firstRow.get('[data-cy="trash-icon"] svg[data-icon="trash-alt"]').and('be.visible');
 
       cy.get('.lead').should('contain', "You've got 1 things to do");
     });
