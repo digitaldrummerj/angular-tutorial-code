@@ -1,4 +1,4 @@
-export function recordReplayCommands(dataFile: string, delay: number): void {
+export function recordReplayCommands(dataFile, delay) {
   const xhrData = [];
 
   after(() => {
