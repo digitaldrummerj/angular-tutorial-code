@@ -18,14 +18,6 @@ describe('Todo', () => {
 
   describe('CRUD', () => {
     beforeEach(() => {
-      cy.visit('/');
-      cy.get('[data-cy="email"]').type('foo@foo.com');
-      cy.get('[data-cy="password"]').type('123456');
-      cy.get('[data-cy="loginBtn"]')
-        .should('have.text', 'Login')
-        .click();
-
-      cy.location('pathname').should('eq', '/');
 
       cy.server();
 
@@ -35,6 +27,23 @@ describe('Todo', () => {
         method: 'POST',
         response: addResponse,
       }).as('addtodo');
+
+      cy.route({
+        url: '/todo',
+        method: 'GET',
+        response: []
+      }).as('initialGetTodo');
+
+      cy.visit('/');
+      cy.get('[data-cy="email"]').type('foo@foo.com');
+      cy.get('[data-cy="password"]').type('123456');
+      cy.get('[data-cy="loginBtn"]')
+        .should('have.text', 'Login')
+        .click();
+
+      cy.wait('@initialGetTodo');
+
+      cy.location('pathname').should('eq', '/');
 
       cy.get('[data-cy="todoInput"]').type(todoText);
 
@@ -104,6 +113,9 @@ describe('Todo', () => {
 
       cy.wait('@todo-complete');
 
+      cy.get('[data-cy="todoItems"]:first [data-cy="todo-text"]')
+        .and('have.class', 'done-true');
+
       cy.get(
         '[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="check-square"]'
       ).and('be.visible');
@@ -119,6 +131,9 @@ describe('Todo', () => {
 
       cy.wait('@todo-complete');
 
+      cy.get('[data-cy="todoItems"]:first [data-cy="todo-text"]')
+      .and('have.class', 'done-false');
+
       cy.get('[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="square"]').and(
         'be.visible'
       );
@@ -129,21 +144,84 @@ describe('Todo', () => {
     });
 
     it('Add', () => {
-      cy.get('[data-cy="todoItems"]:first [data-cy=todo-text]').should('contain', todoText);
+      cy.get('[data-cy="todoItems"]:first [data-cy=todo-text]')
+      .should('contain', todoText)
+      .and('have.class', 'done-false');
 
-      cy.get('[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="square"]').and(
+      cy.get('[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="square"]').should(
         'be.visible'
       );
 
       cy.get(
         '[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="check-square"]'
-      ).and('not.be.visible');
+      ).should('not.be.visible');
 
-      cy.get('[data-cy="todoItems"]:first [data-cy="trash-icon"] svg[data-icon="trash-alt"]').and(
+      cy.get('[data-cy="todoItems"]:first [data-cy="trash-icon"] svg[data-icon="trash-alt"]').should(
         'be.visible'
       );
 
       cy.get('.lead').should('contain', "You've got 1 things to do");
+    });
+
+    it('Test Sorting', () => {
+      cy.route({
+        url: '/todo',
+        method: 'GET',
+        status: 200,
+        response: [
+          addResponse,
+          {...addResponse, item: 'zzz test 2'}
+        ]
+      }).as('gettodo');
+
+      cy.reload();
+      cy.wait('@gettodo');
+
+      cy.get('[data-cy="todoItems').should('have.length', 2);
+
+        cy.get('[data-cy="todoItems"]:first [data-cy=todo-text]').should('contain', todoText);
+
+        cy.get('[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="square"]').should(
+          'be.visible'
+        );
+
+        cy.get(
+          '[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="check-square"]'
+        ).should('not.be.visible');
+
+        cy.get('[data-cy="todoItems"]:first [data-cy="trash-icon"] svg[data-icon="trash-alt"]').and(
+          'be.visible'
+        );
+
+        cy.get('.lead')
+          .should('contain', "You've got 2 things to do");
+
+        cy.get('[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="square"]')
+          .click();
+
+        cy.get('[data-cy="todoItems"]:first [data-cy=todo-text]')
+          .should('contain', 'zzz test 2')
+          .and('have.class', 'done-false');
+
+        cy.get('[data-cy="todoItems"]:eq(1) [data-cy=todo-text]')
+          .should('contain', todoText)
+          .and('have.class', 'done-true');
+
+        cy.get('[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="square"]')
+          .should('be.visible');
+
+        cy.get(
+          '[data-cy="todoItems"]:eq(1) [data-cy="check-icon"] svg[data-icon="check-square"]'
+        ).should('be.visible')
+        .click();
+
+        cy.get('[data-cy="todoItems"]:eq(1) [data-cy=todo-text]')
+          .should('contain', 'zzz test 2');
+
+        cy.get('[data-cy="todoItems"]:first [data-cy=todo-text]')
+          .should('contain', todoText);
+
+
     });
   });
 
