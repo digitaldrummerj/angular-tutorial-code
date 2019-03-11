@@ -88,13 +88,24 @@ describe('Account Test', () => {
 
     cy.get('[data-cy="loginErrorMsg"]').should('have.text', 'Invalid Login');
   });
+});
 
+describe.only('Form Validation', () => {
   describe('Login Form Validation', () => {
     before(() => {
       cy.visit('/login');
     });
 
     it('Email Validation', () => {
+      cy.get('[data-cy="email"]')
+        .focus()
+        .blur()
+        .get('[data-cy="emailValidation"]')
+        .should('contain', 'Email is required')
+        .should('be.visible')
+        .get('[data-cy="loginBtn"]')
+        .should('be.disabled');
+
       cy.get('[data-cy="email"]')
         .type('1')
         .get('[data-cy="emailValidation"]')
@@ -121,27 +132,36 @@ describe('Account Test', () => {
 
     it('Password Validation', () => {
       cy.get('[data-cy="password"]')
-      .type('1')
-      .get('[data-cy="passwordValidation"]')
-      .should('contain', 'Password must be at least 6 characters long')
-      .should('be.visible')
-      .get('[data-cy="loginBtn"]')
-      .should('be.disabled');
-
-    cy.get('[data-cy="password"]')
-      .clear()
-      .get('[data-cy="passwordValidation"]')
-      .should('contain', 'Password is required')
-      .should('be.visible')
-      .get('[data-cy="loginBtn"]')
-      .should('be.disabled');
+        .focus()
+        .blur()
+        .get('[data-cy="passwordValidation"]')
+        .should('contain', 'Password is required')
+        .should('be.visible')
+        .get('[data-cy="loginBtn"]')
+        .should('be.disabled');
 
       cy.get('[data-cy="password"]')
-      .type('123456')
-      .get('[data-cy="passwordValidation"]')
-      .should('not.be.visible')
-      .get('[data-cy="loginBtn"]')
-      .should('not.be.disabled');
+        .type('1')
+        .get('[data-cy="passwordValidation"]')
+        .should('contain', 'Password must be at least 6 characters long')
+        .should('be.visible')
+        .get('[data-cy="loginBtn"]')
+        .should('be.disabled');
+
+      cy.get('[data-cy="password"]')
+        .clear()
+        .get('[data-cy="passwordValidation"]')
+        .should('contain', 'Password is required')
+        .should('be.visible')
+        .get('[data-cy="loginBtn"]')
+        .should('be.disabled');
+
+      cy.get('[data-cy="password"]')
+        .type('123456')
+        .get('[data-cy="passwordValidation"]')
+        .should('not.be.visible')
+        .get('[data-cy="loginBtn"]')
+        .should('not.be.disabled');
     });
   });
 
@@ -151,6 +171,14 @@ describe('Account Test', () => {
     });
 
     it('Email Validation', () => {
+      cy.get('[data-cy="email"]')
+        .focus()
+        .blur()
+        .get('[data-cy="emailValidation"]')
+        .should('contain', 'Email is required')
+        .should('be.visible')
+        .get('[data-cy="signupBtn"]')
+        .should('be.disabled');
       cy.get('[data-cy="email"]')
         .type('1')
         .get('[data-cy="emailValidation"]')
@@ -177,6 +205,14 @@ describe('Account Test', () => {
 
     it('Password Validation', () => {
       cy.get('[data-cy="password"]')
+        .focus()
+        .blur()
+        .get('[data-cy="passwordValidation"]')
+        .should('contain', 'Password is required')
+        .should('be.visible')
+        .get('[data-cy="signupBtn"]')
+        .should('be.disabled');
+      cy.get('[data-cy="password"]')
         .type('1')
         .get('[data-cy="passwordValidation"]')
         .should('contain', 'Password must be at least 6 characters long')
@@ -192,7 +228,7 @@ describe('Account Test', () => {
         .get('[data-cy="signupBtn"]')
         .should('be.disabled');
 
-        cy.get('[data-cy="password"]')
+      cy.get('[data-cy="password"]')
         .type('123456')
         .get('[data-cy="passwordValidation"]')
         .should('not.be.visible')
