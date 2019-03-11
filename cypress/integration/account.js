@@ -90,7 +90,7 @@ describe('Account Test', () => {
   });
 });
 
-describe.only('Form Validation', () => {
+describe('Form Validation', () => {
   describe('Login Form Validation', () => {
     before(() => {
       cy.visit('/login');

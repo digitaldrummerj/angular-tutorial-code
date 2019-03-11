@@ -147,7 +147,7 @@ describe('Todo', () => {
     });
   });
 
-  describe.only('Add Todo Form Validation', () => {
+  describe('Add Todo Form Validation', () => {
     // recordReplayCommands('AddTodo', 0);
     before(() => {
       cy.visit('/login');
