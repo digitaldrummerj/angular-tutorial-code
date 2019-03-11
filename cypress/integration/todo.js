@@ -16,8 +16,6 @@ describe('Todo', () => {
     owner: 2,
   };
 
-
-
   describe('CRUD', () => {
     beforeEach(() => {
       cy.visit('/');
