@@ -40,8 +40,10 @@ describe('Account Test', () => {
       .click()
       .location('pathname').should('eq', '/');
 
-    cy.get('.nav-item.nav-link').should('have.text', `Welcome ${userName}`);
-    cy.get(':nth-child(2) > :nth-child(2) > .nav-link')
+    cy.get('[data-cy="rightMenu"] .nav-link').eq(0)
+      .should('have.text', `Welcome ${userName}`);
+
+    cy.get('[data-cy="rightMenu"] .nav-link').eq(1)
       .should('have.text', 'logout')
       .click()
       .should('not.be.visible')
