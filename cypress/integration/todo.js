@@ -71,7 +71,9 @@ describe('Todo', () => {
         }
       });
 
-      cy.get('[data-cy="todoItems"]:first [data-cy="trash-icon"] svg[data-icon="trash-alt"]').click();
+      cy.get(
+        '[data-cy="todoItems"]:first [data-cy="trash-icon"] svg[data-icon="trash-alt"]'
+      ).click();
 
       cy.get('[data-cy="todoItems"]').should('exist');
 
@@ -81,7 +83,9 @@ describe('Todo', () => {
         response: 'OK',
       }).as('delete');
 
-      cy.get('[data-cy="todoItems"]:first [data-cy="trash-icon"] svg[data-icon="trash-alt"]').click();
+      cy.get(
+        '[data-cy="todoItems"]:first [data-cy="trash-icon"] svg[data-icon="trash-alt"]'
+      ).click();
 
       cy.wait('@delete');
 
@@ -102,42 +106,50 @@ describe('Todo', () => {
 
       cy.wait('@todo-complete');
 
-      cy.get('[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="check-square"]').and(
-        'be.visible'
-      );
+      cy.get(
+        '[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="check-square"]'
+      ).and('be.visible');
 
       cy.get('[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="square"]').and(
         'not.be.visible'
       );
 
       // Toggle to Uncompleted
-      cy.get('[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="check-square"]').click();
+      cy.get(
+        '[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="check-square"]'
+      ).click();
 
       cy.wait('@todo-complete');
 
-      cy.get('[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="square"]').and('be.visible');
-
-      cy.get('[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="check-square"]').and(
-        'not.be.visible'
+      cy.get('[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="square"]').and(
+        'be.visible'
       );
+
+      cy.get(
+        '[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="check-square"]'
+      ).and('not.be.visible');
     });
 
     it('Add', () => {
       cy.get('[data-cy="todoItems"]:first [data-cy=todo-text]').should('contain', todoText);
 
-      cy.get('[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="square"]').and('be.visible');
-
-      cy.get('[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="check-square"]').and(
-        'not.be.visible'
+      cy.get('[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="square"]').and(
+        'be.visible'
       );
 
-      cy.get('[data-cy="todoItems"]:first [data-cy="trash-icon"] svg[data-icon="trash-alt"]').and('be.visible');
+      cy.get(
+        '[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="check-square"]'
+      ).and('not.be.visible');
+
+      cy.get('[data-cy="todoItems"]:first [data-cy="trash-icon"] svg[data-icon="trash-alt"]').and(
+        'be.visible'
+      );
 
       cy.get('.lead').should('contain', "You've got 1 things to do");
     });
   });
 
-  describe('Add Todo Form Validation', () => {
+  describe.only('Add Todo Form Validation', () => {
     // recordReplayCommands('AddTodo', 0);
     before(() => {
       cy.visit('/login');
@@ -153,7 +165,8 @@ describe('Todo', () => {
       cy.get('[data-cy="todoInput"]')
         .type('1')
         .get('[data-cy="formValidationError"]')
-        .should('contain', 'Item must be at least 3 characters');
+        .should('contain', 'Item must be at least 3 characters')
+        .get('[data-cy="todoInput"]');
 
       cy.get('[data-cy="addBtn"]').should('be.disabled');
 
@@ -167,27 +180,18 @@ describe('Todo', () => {
 
     it('Required Validation', () => {
       cy.get('[data-cy="todoInput"]')
-        .type('1')
         .clear()
         .get('[data-cy="formValidationError"]')
-        .should('contain', 'Item is required.');
-
-      cy.get('[data-cy="addBtn"]').should('be.disabled');
-
-      cy.get('[data-cy="todoInput"]')
-        .type('1')
-        .get('[data-cy="formValidationError"]')
-        .should('contain', 'Item must be at least 3 characters');
-
-      cy.get('[data-cy="addBtn"]').should('be.disabled');
+        .should('contain', 'Item is required.')
+        .get('[data-cy="addBtn"]')
+        .should('be.disabled');
 
       cy.get('[data-cy="todoInput"]')
-        .clear()
         .type('123')
         .get('[data-cy="formValidationError"]')
-        .should('not.be.visible');
-
-      cy.get('[data-cy="addBtn"]').should('not.be.disabled');
+        .should('not.be.visible')
+        .get('[data-cy="addBtn"]')
+        .should('not.be.disabled');
     });
   });
 });
