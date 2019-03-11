@@ -21,9 +21,9 @@ describe('Todo', () => {
   describe('CRUD', () => {
     beforeEach(() => {
       cy.visit('/');
-      cy.get('#email').type('foo@foo.com');
-      cy.get('#password').type('123456');
-      cy.get('.btn-primary')
+      cy.get('[data-cy="email"]').type('foo@foo.com');
+      cy.get('[data-cy="password"]').type('123456');
+      cy.get('[data-cy="loginBtn"]')
         .should('have.text', 'Login')
         .click();
 
@@ -38,9 +38,9 @@ describe('Todo', () => {
         response: addResponse,
       }).as('addtodo');
 
-      cy.get('.form-control').type(todoText);
+      cy.get('[data-cy="todoInput"]').type(todoText);
 
-      cy.get('.btn')
+      cy.get('[data-cy="addBtn"]')
         .should('contain', 'Add')
         .click();
 
@@ -71,9 +71,9 @@ describe('Todo', () => {
         }
       });
 
-      cy.get('.row.todo:first [data-cy="trash-icon"] svg[data-icon="trash-alt"]').click();
+      cy.get('[data-cy="todoItems"]:first [data-cy="trash-icon"] svg[data-icon="trash-alt"]').click();
 
-      cy.get('.row.todo').should('exist');
+      cy.get('[data-cy="todoItems"]').should('exist');
 
       cy.route({
         method: 'DELETE',
@@ -81,11 +81,11 @@ describe('Todo', () => {
         response: 'OK',
       }).as('delete');
 
-      cy.get('.row.todo:first [data-cy="trash-icon"] svg[data-icon="trash-alt"]').click();
+      cy.get('[data-cy="todoItems"]:first [data-cy="trash-icon"] svg[data-icon="trash-alt"]').click();
 
       cy.wait('@delete');
 
-      cy.get('.row.todo').should('not.exist');
+      cy.get('[data-cy="todoItems"]').should('not.exist');
     });
 
     it('Complete Item', () => {
@@ -96,42 +96,42 @@ describe('Todo', () => {
       }).as('todo-complete');
 
       // Toggle to Completed
-      cy.get('.row.todo:first [data-cy="check-icon"] svg[data-icon="square"]')
+      cy.get('[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="square"]')
         .and('be.visible')
         .click();
 
       cy.wait('@todo-complete');
 
-      cy.get('.row.todo:first [data-cy="check-icon"] svg[data-icon="check-square"]').and(
+      cy.get('[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="check-square"]').and(
         'be.visible'
       );
 
-      cy.get('.row.todo:first [data-cy="check-icon"] svg[data-icon="square"]').and(
+      cy.get('[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="square"]').and(
         'not.be.visible'
       );
 
       // Toggle to Uncompleted
-      cy.get('.row.todo:first [data-cy="check-icon"] svg[data-icon="check-square"]').click();
+      cy.get('[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="check-square"]').click();
 
       cy.wait('@todo-complete');
 
-      cy.get('.row.todo:first [data-cy="check-icon"] svg[data-icon="square"]').and('be.visible');
+      cy.get('[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="square"]').and('be.visible');
 
-      cy.get('.row.todo:first [data-cy="check-icon"] svg[data-icon="check-square"]').and(
+      cy.get('[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="check-square"]').and(
         'not.be.visible'
       );
     });
 
     it('Add', () => {
-      cy.get('.row.todo:first [data-cy=todo-text]').should('contain', todoText);
+      cy.get('[data-cy="todoItems"]:first [data-cy=todo-text]').should('contain', todoText);
 
-      cy.get('.row.todo:first [data-cy="check-icon"] svg[data-icon="square"]').and('be.visible');
+      cy.get('[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="square"]').and('be.visible');
 
-      cy.get('.row.todo:first [data-cy="check-icon"] svg[data-icon="check-square"]').and(
+      cy.get('[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="check-square"]').and(
         'not.be.visible'
       );
 
-      cy.get('.row.todo:first [data-cy="trash-icon"] svg[data-icon="trash-alt"]').and('be.visible');
+      cy.get('[data-cy="todoItems"]:first [data-cy="trash-icon"] svg[data-icon="trash-alt"]').and('be.visible');
 
       cy.get('.lead').should('contain', "You've got 1 things to do");
     });
@@ -143,51 +143,51 @@ describe('Todo', () => {
       cy.visit('/login');
       cy.get('#email').type('foo@foo.com');
       cy.get('#password').type('123456');
-      cy.get('.btn-primary')
+      cy.get('[data-cy="loginBtn"]')
         .should('have.text', 'Login')
         .click();
 
       cy.location('pathname').should('eq', '/');
     });
     it('MinLength Validation', () => {
-      cy.get('.form-control')
+      cy.get('[data-cy="todoInput"]')
         .type('1')
-        .get('.alert')
+        .get('[data-cy="formValidationError"]')
         .should('contain', 'Item must be at least 3 characters');
 
-      cy.get('.btn').should('be.disabled');
+      cy.get('[data-cy="addBtn"]').should('be.disabled');
 
-      cy.get('.form-control')
+      cy.get('[data-cy="todoInput"]')
         .type('123')
-        .get('.alert')
+        .get('[data-cy="formValidationError"]')
         .should('not.be.visible');
 
-      cy.get('.btn').should('not.be.disabled');
+      cy.get('[data-cy="addBtn"]').should('not.be.disabled');
     });
 
     it('Required Validation', () => {
-      cy.get('.form-control')
+      cy.get('[data-cy="todoInput"]')
         .type('1')
         .clear()
-        .get('.alert')
+        .get('[data-cy="formValidationError"]')
         .should('contain', 'Item is required.');
 
-      cy.get('.btn').should('be.disabled');
+      cy.get('[data-cy="addBtn"]').should('be.disabled');
 
-      cy.get('.form-control')
+      cy.get('[data-cy="todoInput"]')
         .type('1')
-        .get('.alert')
+        .get('[data-cy="formValidationError"]')
         .should('contain', 'Item must be at least 3 characters');
 
-      cy.get('.btn').should('be.disabled');
+      cy.get('[data-cy="addBtn"]').should('be.disabled');
 
-      cy.get('.form-control')
+      cy.get('[data-cy="todoInput"]')
         .clear()
         .type('123')
-        .get('alert')
+        .get('[data-cy="formValidationError"]')
         .should('not.be.visible');
 
-      cy.get('.btn').should('not.be.disabled');
+      cy.get('[data-cy="addBtn"]').should('not.be.disabled');
     });
   });
 });

@@ -5,7 +5,7 @@ describe('Navigation: Login and Create Account Pages', () => {
     cy.visit('login');
     cy.location('pathname').should('eq', '/login');
 
-    cy.get('.btn-link')
+    cy.get('[data-cy="createAccountLink"]')
       .should('have.text', 'create account')
       .click();
 
@@ -16,7 +16,7 @@ describe('Navigation: Login and Create Account Pages', () => {
     cy.visit('signup');
     cy.location('pathname').should('eq', '/signup');
 
-    cy.get('.btn-link')
+    cy.get('[data-cy="loginLink')
       .should('have.text', 'login to existing account')
       .click();
 
@@ -33,9 +33,9 @@ describe('Account Test', () => {
       .location('pathname')
       .should('include', '/signup');
 
-    cy.get('#email').type(userName);
-    cy.get('#password').type(password);
-    cy.get('.btn-primary')
+    cy.get('[data-cy="email"]').type(userName);
+    cy.get('[data-cy="password"]').type(password);
+    cy.get('[data-cy="signupBtn"]')
       .should('have.text', 'Sign Up')
       .click()
       .location('pathname').should('eq', '/');
@@ -47,9 +47,9 @@ describe('Account Test', () => {
       .should('not.be.visible')
       .location('pathname').should('eq', '/login');
 
-    cy.get('#email').type(userName);
-    cy.get('#password').type(password);
-    cy.get('.btn-primary')
+    cy.get('[data-cy="email"]').type(userName);
+    cy.get('[data-cy="password"]').type(password);
+    cy.get('[data-cy="loginBtn"]')
       .should('have.text', 'Login')
       .click()
       .location('pathname').should('eq', '/');
@@ -73,12 +73,12 @@ describe('Account Test', () => {
         .toString(36)
         .substring(2, 15);
 
-    cy.get('#email').type(bogusUserName);
-    cy.get('#password').type(bogusPassword);
-    cy.get('.btn-primary')
+    cy.get('[data-cy="email"]').type(bogusUserName);
+    cy.get('[data-cy="password"]').type(bogusPassword);
+    cy.get('[data-cy="loginBtn"]')
       .should('have.text', 'Login')
       .click();
 
-    cy.get('.alert.alert-danger').should('have.text', 'Invalid Login');
+    cy.get('[data-cy="loginErrorMsg"]').should('have.text', 'Invalid Login');
   });
 });

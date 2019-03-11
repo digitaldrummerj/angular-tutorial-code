@@ -10,6 +10,7 @@
       <div class="col-sm-10">
         <input
           type="text"
+          data-cy="todoInput"
           [ngClass]="{ 'is-invalid': formErrors.item }"
           class="form-control form-control-lg"
           formControlName="item"
@@ -17,18 +18,18 @@
         />
       </div>
       <div class="col-sm-2">
-        <button type="submit" class="btn btn-primary btn-lg btn-block" [disabled]="addForm.invalid">
+        <button type="submit" data-cy="addBtn" class="btn btn-primary btn-lg btn-block" [disabled]="addForm.invalid">
           Add
         </button>
       </div>
     </div>
   </form>
-  <div *ngIf="formErrors.item" class="alert alert-danger">{{ formErrors.item }}</div>
-  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+  <div *ngIf="formErrors.item" data-cy="formValidationError" class="alert alert-danger">{{ formErrors.item }}</div>
+  <div *ngIf="errorMessage" data-cy="savingError" class="alert alert-danger" role="alert">
     <h3>Error Saving</h3>
     {{ errorMessage }}
   </div>
-  <div class="row todo" *ngFor="let todoItem of todoList">
+  <div class="row todo" data-cy="todoItems" *ngFor="let todoItem of todoList">
     <div class="col-1" (click)="completeTodo(todoItem)" data-cy="check-icon">
       <fa-icon [icon]="['far', todoItem.completed ? 'check-square' : 'square']"></fa-icon>
     </div>
