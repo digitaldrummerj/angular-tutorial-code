@@ -1,4 +1,4 @@
-import {recordReplayCommands } from '../support/recordReplayCommands';
+import { recordReplayCommands } from '../support/recordReplayCommands';
 
 describe('Navigation: Login and Create Account Pages', () => {
   it('Login to Signup', () => {
@@ -38,23 +38,28 @@ describe('Account Test', () => {
     cy.get('[data-cy="signupBtn"]')
       .should('have.text', 'Sign Up')
       .click()
-      .location('pathname').should('eq', '/');
+      .location('pathname')
+      .should('eq', '/');
 
-    cy.get('[data-cy="rightMenu"] .nav-link').eq(0)
+    cy.get('[data-cy="rightMenu"] .nav-link')
+      .eq(0)
       .should('have.text', `Welcome ${userName}`);
 
-    cy.get('[data-cy="rightMenu"] .nav-link').eq(1)
+    cy.get('[data-cy="rightMenu"] .nav-link')
+      .eq(1)
       .should('have.text', 'logout')
       .click()
       .should('not.be.visible')
-      .location('pathname').should('eq', '/login');
+      .location('pathname')
+      .should('eq', '/login');
 
     cy.get('[data-cy="email"]').type(userName);
     cy.get('[data-cy="password"]').type(password);
     cy.get('[data-cy="loginBtn"]')
       .should('have.text', 'Login')
       .click()
-      .location('pathname').should('eq', '/');
+      .location('pathname')
+      .should('eq', '/');
   });
 
   it('Login to Non-Existent Account', () => {
@@ -83,4 +88,54 @@ describe('Account Test', () => {
 
     cy.get('[data-cy="loginErrorMsg"]').should('have.text', 'Invalid Login');
   });
+
+  describe.only('Login Form Validation', () => {
+    before(() => {
+      cy.visit('/login');
+    });
+
+    it('Valid is Email', () => {
+      cy.get('[data-cy="email"]')
+        .type('1')
+        .get('[data-cy="emailValidation"]')
+        .should('contain', 'Must be an email')
+        .should('be.visible')
+        .get('[data-cy="loginBtn"')
+        .should('be.disabled');
+
+      cy.get('[data-cy="email"]')
+        .clear()
+        .get('[data-cy="emailValidation"]')
+        .should('contain', 'Email is required')
+        .should('be.visible')
+        .get('[data-cy="loginBtn"]')
+        .should('be.disabled');
+
+      cy.get('[data-cy="email"]')
+        .type('123@foo.com')
+        .get('[data-cy="emailValidation"]')
+        .should('not.be.visible')
+        .get('[data-cy="loginBtn"]')
+        .should('be.disabled');
+    });
+
+    it('Required Validation', () => {
+      cy.get('[data-cy="password"]')
+        .type('1')
+        .get('[data-cy="passwordValidation"]')
+        .should('not.be.visible')
+        .get('[data-cy="loginBtn"]')
+        .should('not.be.disabled');
+
+      cy.get('[data-cy="password"]')
+        .clear()
+        .get('[data-cy="passwordValidation"]')
+        .should('contain', 'Password is required')
+        .should('be.visible')
+        .get('[data-cy="loginBtn"]')
+        .should('be.disabled');
+    });
+  });
+
+  describe('Signup Form Validation', () => {});
 });
