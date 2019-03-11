@@ -14,9 +14,13 @@
     <div class="form-group">
       <label for="password">Password:</label>
       <input name="password" id="password" type="password" autocomplete="current-password" class="form-control" placeholder="Password..." (ngModel)="password"
-        required #password="ngModel" data-cy="password" />
+        required #password="ngModel" data-cy="password" minlength="6"  />
       <div *ngIf="password.errors && (password.dirty || password.touched)" class="alert alert-danger" data-cy="passwordValidation">
         <div [hidden]="!password.errors.required">Password is required</div>
+        <div [hidden]="!password.errors.minlength">
+          Password must be at least 6 characters long
+        </div>
+
       </div>
     </div>
       <button type="submit" data-cy="loginBtn" class="btn btn-primary" [disabled]="loginForm.invalid">Login</button>

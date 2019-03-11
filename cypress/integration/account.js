@@ -89,12 +89,12 @@ describe('Account Test', () => {
     cy.get('[data-cy="loginErrorMsg"]').should('have.text', 'Invalid Login');
   });
 
-  describe.only('Login Form Validation', () => {
+  describe('Login Form Validation', () => {
     before(() => {
       cy.visit('/login');
     });
 
-    it('Valid is Email', () => {
+    it('Email Validation', () => {
       cy.get('[data-cy="email"]')
         .type('1')
         .get('[data-cy="emailValidation"]')
@@ -119,23 +119,85 @@ describe('Account Test', () => {
         .should('be.disabled');
     });
 
-    it('Required Validation', () => {
+    it('Password Validation', () => {
+      cy.get('[data-cy="password"]')
+      .type('1')
+      .get('[data-cy="passwordValidation"]')
+      .should('contain', 'Password must be at least 6 characters long')
+      .should('be.visible')
+      .get('[data-cy="loginBtn"]')
+      .should('be.disabled');
+
+    cy.get('[data-cy="password"]')
+      .clear()
+      .get('[data-cy="passwordValidation"]')
+      .should('contain', 'Password is required')
+      .should('be.visible')
+      .get('[data-cy="loginBtn"]')
+      .should('be.disabled');
+
+      cy.get('[data-cy="password"]')
+      .type('123456')
+      .get('[data-cy="passwordValidation"]')
+      .should('not.be.visible')
+      .get('[data-cy="loginBtn"]')
+      .should('not.be.disabled');
+    });
+  });
+
+  describe('Signup Form Validation', () => {
+    before(() => {
+      cy.visit('/signup');
+    });
+
+    it('Email Validation', () => {
+      cy.get('[data-cy="email"]')
+        .type('1')
+        .get('[data-cy="emailValidation"]')
+        .should('contain', 'Must be an email')
+        .should('be.visible')
+        .get('[data-cy="signupBtn"')
+        .should('be.disabled');
+
+      cy.get('[data-cy="email"]')
+        .clear()
+        .get('[data-cy="emailValidation"]')
+        .should('contain', 'Email is required')
+        .should('be.visible')
+        .get('[data-cy="signupBtn"]')
+        .should('be.disabled');
+
+      cy.get('[data-cy="email"]')
+        .type('123@foo.com')
+        .get('[data-cy="emailValidation"]')
+        .should('not.be.visible')
+        .get('[data-cy="signupBtn"]')
+        .should('be.disabled');
+    });
+
+    it('Password Validation', () => {
       cy.get('[data-cy="password"]')
         .type('1')
         .get('[data-cy="passwordValidation"]')
-        .should('not.be.visible')
-        .get('[data-cy="loginBtn"]')
-        .should('not.be.disabled');
+        .should('contain', 'Password must be at least 6 characters long')
+        .should('be.visible')
+        .get('[data-cy="signupBtn"]')
+        .should('be.disabled');
 
       cy.get('[data-cy="password"]')
         .clear()
         .get('[data-cy="passwordValidation"]')
         .should('contain', 'Password is required')
         .should('be.visible')
-        .get('[data-cy="loginBtn"]')
+        .get('[data-cy="signupBtn"]')
         .should('be.disabled');
+
+        cy.get('[data-cy="password"]')
+        .type('123456')
+        .get('[data-cy="passwordValidation"]')
+        .should('not.be.visible')
+        .get('[data-cy="signupBtn"]')
+        .should('not.be.disabled');
     });
   });
-
-  describe('Signup Form Validation', () => {});
 });
