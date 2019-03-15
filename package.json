@@ -28,7 +28,6 @@
     "@angular/platform-browser": "^7.0.3",
     "@angular/platform-browser-dynamic": "^7.0.3",
     "@angular/router": "^7.0.3",
-    "@briebug/cypress-schematic": "^1.0.2",
     "@fortawesome/angular-fontawesome": "^0.1.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.2",
     "@fortawesome/free-regular-svg-icons": "^5.2.0",
