@@ -27,6 +27,22 @@ describe('Navigation: Login and Create Account Pages', () => {
 describe('Account Test', () => {
   recordReplayCommands('account-test', 0);
   it('Create Account, Verify Header, Logout and Login', () => {
+    cy.server();
+
+    cy.route({
+      url: '/user',
+      status: 200,
+      method: 'POST',
+      response: {
+        "createdAt": 1552670656025,
+        "updatedAt": 1552670656025,
+        "id": 3,
+        "email": "testuser@test.com"
+      }
+    }).as('signup');
+
+
+
     const userName = 'au0muoxay6jshfn9hwiwi8@uitest.com';
     const password = 'r5zjxp8vmqrb5tbdodjfp';
     cy.visit('/signup')
@@ -38,6 +54,7 @@ describe('Account Test', () => {
     cy.get('[data-cy="signupBtn"]')
       .should('have.text', 'Sign Up')
       .click()
+      .wait('@signup')
       .location('pathname')
       .should('eq', '/');
 
@@ -53,16 +70,50 @@ describe('Account Test', () => {
       .location('pathname')
       .should('eq', '/login');
 
+      cy.route({
+        url: '/user/login',
+        status: 200,
+        method: 'PUT',
+        response: {
+          createdAt: 1551738475242,
+          updatedAt: 1551738475242,
+          id: 1,
+          email: 'foo@foo.com',
+        },
+      }).as('login');
+
+      cy.route({
+        url: '/user/identity',
+        status: 200,
+        method: 'GET',
+        response: {
+          createdAt: 1551738475242,
+          updatedAt: 1551738475242,
+          id: 1,
+          email: 'foo@foo.com',
+        },
+      }).as('identity');
+
     cy.get('[data-cy="email"]').type(userName);
     cy.get('[data-cy="password"]').type(password);
     cy.get('[data-cy="loginBtn"]')
       .should('have.text', 'Login')
       .click()
+      .wait('@login')
+      .wait('@identity')
       .location('pathname')
       .should('eq', '/');
   });
 
   it('Login to Non-Existent Account', () => {
+    cy.server();
+    cy.route({
+      url: '/user/login',
+      method: 'PUT',
+      status: 401,
+      response: 'Forbidden'
+    }).as('login-invalid');
+
     cy.visit('/login')
       .location('pathname')
       .should('eq', '/login');
@@ -79,12 +130,13 @@ describe('Account Test', () => {
       Math.random()
         .toString(36)
         .substring(2, 15);
-
     cy.get('[data-cy="email"]').type(bogusUserName);
     cy.get('[data-cy="password"]').type(bogusPassword);
     cy.get('[data-cy="loginBtn"]')
       .should('have.text', 'Login')
       .click();
+
+    cy.wait('@login-invalid');
 
     cy.get('[data-cy="loginErrorMsg"]').should('have.text', 'Invalid Login');
   });

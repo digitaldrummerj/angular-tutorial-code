@@ -34,12 +34,27 @@ describe('Todo', () => {
         response: []
       }).as('initialGetTodo');
 
+      cy.route({
+        url: '/user/identity',
+        status: 200,
+        method: 'GET',
+        response: {
+          createdAt: 1551738475242,
+          updatedAt: 1551738475242,
+          id: 1,
+          email: 'foo@foo.com',
+        },
+      }).as('identity');
+
+      cy.route({
+        method: 'PATCH',
+        url: '/todo/*',
+        status: 200,
+        response: 'OK',
+      }).as('todo-complete');
+
       cy.visit('/');
-      cy.get('[data-cy="email"]').type('foo@foo.com');
-      cy.get('[data-cy="password"]').type('123456');
-      cy.get('[data-cy="loginBtn"]')
-        .should('have.text', 'Login')
-        .click();
+      cy.wait('@identity');
 
       cy.wait('@initialGetTodo');
 
@@ -100,16 +115,11 @@ describe('Todo', () => {
     });
 
     it('Complete Item', () => {
-      cy.route({
-        method: 'PATCH',
-        url: '/todo/*',
-        response: 'OK',
-      }).as('todo-complete');
 
       // Toggle to Completed
       cy.get('[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="square"]')
         .and('be.visible')
-        .click();
+        .click()
 
       cy.wait('@todo-complete');
 
@@ -197,7 +207,8 @@ describe('Todo', () => {
           .should('contain', "You've got 2 things to do");
 
         cy.get('[data-cy="todoItems"]:first [data-cy="check-icon"] svg[data-icon="square"]')
-          .click();
+          .click()
+          .wait('@todo-complete');
 
         cy.get('[data-cy="todoItems"]:first [data-cy=todo-text]')
           .should('contain', 'zzz test 2')
@@ -213,7 +224,8 @@ describe('Todo', () => {
         cy.get(
           '[data-cy="todoItems"]:eq(1) [data-cy="check-icon"] svg[data-icon="check-square"]'
         ).should('be.visible')
-        .click();
+        .click()
+        .wait('@todo-complete');
 
         cy.get('[data-cy="todoItems"]:eq(1) [data-cy=todo-text]')
           .should('contain', 'zzz test 2');
@@ -228,15 +240,31 @@ describe('Todo', () => {
   describe('Add Todo Form Validation', () => {
     // recordReplayCommands('AddTodo', 0);
     before(() => {
-      cy.visit('/login');
-      cy.get('#email').type('foo@foo.com');
-      cy.get('#password').type('123456');
-      cy.get('[data-cy="loginBtn"]')
-        .should('have.text', 'Login')
-        .click();
+      cy.server();
+      cy.route({
+        url: '/user/identity',
+        status: 200,
+        method: 'GET',
+        response: {
+          createdAt: 1551738475242,
+          updatedAt: 1551738475242,
+          id: 1,
+          email: 'foo@foo.com',
+        },
+      }).as('identity');
+      cy.route({
+        url: '/todo',
+        method: 'GET',
+        response: []
+      }).as('initialGetTodo');
+      cy.visit('/');
+
+      cy.wait('@identity')
+      .wait('@initialGetTodo');
 
       cy.location('pathname').should('eq', '/');
     });
+
     it('MinLength Validation', () => {
       cy.get('[data-cy="todoInput"]')
         .type('1')
