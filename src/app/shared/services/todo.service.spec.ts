@@ -22,7 +22,7 @@ describe('TodoService', () => {
   afterEach(() => {
       // Finally, assert that there are no outstanding requests.
       httpTestingController.verify();
-  })
+  });
 
   it('Todo Service should be created', () => {
     expect(service).toBeTruthy();

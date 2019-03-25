@@ -23,6 +23,7 @@ import { CookieModule } from 'ngx-cookie';
 import { ItemTextPipe } from './shared/pipe/item-text.pipe';
 import { SimpleComponent } from './simple/simple.component';
 import { SimpleComponentWithServiceComponent } from './simple-component-with-service/simple-component-with-service.component';
+// tslint:disable-next-line: max-line-length
 import { SimpleComponentWithAsyncServiceComponent } from './simple-component-with-async-service/simple-component-with-async-service.component';
 import { DatePipe } from '@angular/common';
 
