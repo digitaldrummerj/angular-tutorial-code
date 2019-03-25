@@ -25,11 +25,12 @@ install:
 
 script:
   - npm run ci
+  - npx angular-cli-ghpages --dir=dist/ngws --repo=https://GITHUB_TOKEN@github.com/digitaldrummerj/angular-tutorial-code.git
 
-deploy:
-  provider: pages
-  skip_cleanup: true # To avoid cleanup of the artifact generated during script
-  github_token: $GITHUB_TOKEN # Provided as an environment variable in travis
-  local_dir: dist/ngws # Replace this with your project name
-  on:
-    branch: chapter-ui-tests
+# deploy:
+#   provider: pages
+#   skip_cleanup: true # To avoid cleanup of the artifact generated during script
+#   github_token: $GITHUB_TOKEN # Provided as an environment variable in travis
+#   local_dir: dist/ngws # Replace this with your project name
+#   on:
+#     branch: chapter-ui-tests
