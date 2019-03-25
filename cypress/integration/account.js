@@ -25,7 +25,7 @@ describe('Navigation: Login and Create Account Pages', () => {
 });
 
 describe('Account Test', () => {
-  recordReplayCommands('account-test', 0);
+  // recordReplayCommands('account-test', 0);
   it('Create Account, Verify Header, Logout and Login', () => {
     const userName = 'au0muoxay6jshfn9hwiwi8@uitest.com';
     const password = 'r5zjxp8vmqrb5tbdodjfp';
