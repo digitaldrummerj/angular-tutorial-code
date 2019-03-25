@@ -48,8 +48,8 @@ function setup() {
     fixture = TestBed.createComponent(TodoComponent);
     element = fixture.debugElement;
     component = element.componentInstance;
-
     fixture.detectChanges();
+    itemField = component.addForm.controls['item'];
   });
 }
 
@@ -68,7 +68,6 @@ function formValidationTests() {
 
   beforeEach(() => {
     errors = {};
-    itemField = component.addForm.controls['item'];
     expect(itemField).toBeTruthy('item field was not found');
     if (itemField) {
       itemField.markAsDirty();
@@ -145,7 +144,7 @@ function formValidationTests() {
     expect(component.addForm.valid).toBeTruthy();
     expect(component.formErrors.item).toBe('');
   }));
-};
+}
 
 function interactionTests() {
   let mockTodoData: MockTodoData;
