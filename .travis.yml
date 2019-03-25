@@ -25,3 +25,11 @@ install:
 
 script:
   - npm run ci
+
+deploy:
+  provider: pages
+  skip_cleanup: true # To avoid cleanup of the artifact generated during script
+  github_token: $GITHUB_TOKEN # Provided as an environment variable in travis
+  local_dir: dist/ngws # Replace this with your project name
+  on:
+    branch: chapter-ui-tests
