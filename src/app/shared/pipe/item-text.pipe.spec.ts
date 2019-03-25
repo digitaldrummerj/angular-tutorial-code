@@ -6,7 +6,9 @@ import { ItemTextPipe } from './item-text.pipe';
 import { Todo } from '../classes/todo';
 
 describe('ItemTextPipe', () => {
+// tslint:disable-next-line: prefer-const
   let pipe: ItemTextPipe;
+// tslint:disable-next-line: prefer-const
   let datePipe: DatePipe;
 
   beforeEach(() =>
@@ -40,7 +42,7 @@ describe('ItemTextPipe', () => {
   });
 
   it('should throw with undefined todo', () => {
-    expect(() => { this.pipe.transform(undefined) }).toThrowError('todo is undefined');
+    expect(() => { this.pipe.transform(undefined); }).toThrowError('todo is undefined');
   });
 
   it('should throw with null todo', () => {
