@@ -25,7 +25,7 @@ install:
 
 script:
   - npm run ci
-  - npx angular-cli-ghpages --dir=dist/ngws --repo=https://$GITHUB_TOKEN@github.com/digitaldrummerj/angular-tutorial-code.git
+  - npx ngh --dir=dist/ngws --repo=https://$GITHUB_TOKEN@github.com/digitaldrummerj/angular-tutorial-code.git
 
 # deploy:
 #   provider: pages
