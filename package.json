@@ -17,8 +17,8 @@
     "e2e:ci": "ng e2e -c ci",
     "ci:cy-run": "start-server-and-test ci:start-server http://localhost:4200 cy:run",
     "ci:start-server": "angular-http-server --path ./dist/ngws -p 4200",
-    "cy:open": "cypress open",
-    "cy:run": "cypress run -c video=false",
+    "cy:open": "cypress open -c baseUrl=http://localhost:4200/angular-tutorial-code",
+    "cy:run": "cypress run -c video=false,baseUrl=http://localhost:4200/angular-tutorial-code",
     "cy:verify": "cypress verify",
     "ci": "run-s lint:ci test:ci build:prod ci:cy-run"
   },
