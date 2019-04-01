@@ -3,24 +3,24 @@ import { recordReplayCommands } from '../support/recordReplayCommands';
 describe('Navigation: Login and Create Account Pages', () => {
   it('Login to Signup', () => {
     cy.visit('login');
-    cy.location('pathname').should('eq', `${Cypress.env('baseHref')}/login`);
+    cy.location('pathname').should('eq', '/login');
 
     cy.get('[data-cy="createAccountLink"]')
       .should('have.text', 'create account')
       .click();
 
-    cy.location('pathname').should('eq', `${Cypress.env('baseHref')}/signup`);
+    cy.location('pathname').should('eq', '/signup');
   });
 
   it('Signup to Login', () => {
     cy.visit('signup');
-    cy.location('pathname').should('eq', `${Cypress.env('baseHref')}/signup`);
+    cy.location('pathname').should('eq', '/signup');
 
     cy.get('[data-cy="loginLink')
       .should('have.text', 'login to existing account')
       .click();
 
-    cy.location('pathname').should('eq', `${Cypress.env('baseHref')}/login`);
+    cy.location('pathname').should('eq', '/login');
   });
 });
 
@@ -65,7 +65,7 @@ describe('Account Test', () => {
 
     cy.visit('/signup')
       .location('pathname')
-      .should('eq', `${Cypress.env('baseHref')}/signup`);
+      .should('eq', '/signup');
 
     cy.get('[data-cy="email"]').type(userName);
     cy.get('[data-cy="password"]').type(password);
@@ -76,7 +76,7 @@ describe('Account Test', () => {
       .wait('@identity')
       .wait('@todo')
       .location('pathname')
-      .should('eq', `${Cypress.env('baseHref')}/`);
+      .should('eq', '/');
 
     cy.get('[data-cy="rightMenu"] .nav-link')
       .eq(0)
@@ -96,7 +96,7 @@ describe('Account Test', () => {
       .wait('@logout')
       .should('not.be.visible')
       .location('pathname')
-      .should('eq', `${Cypress.env('baseHref')}/login`);
+      .should('eq', '/login');
 
       cy.route({
         url: '/user/login',
@@ -121,7 +121,7 @@ describe('Account Test', () => {
       .wait('@identity')
       .wait('@todo')
       .location('pathname')
-      .should('eq', `${Cypress.env('baseHref')}/`);
+      .should('eq', '/');
   });
 
   it('Login to Non-Existent Account', () => {
@@ -135,7 +135,7 @@ describe('Account Test', () => {
 
     cy.visit('/login')
       .location('pathname')
-      .should('eq', `${Cypress.env('baseHref')}/login`);
+      .should('eq', '/login');
 
     const bogusUserName = `${Math.random()
       .toString(36)
