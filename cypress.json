@@ -1,5 +1,8 @@
 {
   "viewportWidth": 1280,
   "viewportHeight": 720,
-  "baseUrl": "http://localhost:4200"
+  "baseUrl": "http://localhost:4200",
+  "env":{
+    "baseHref": "/angular-tutorial-code"
+  }
 }
