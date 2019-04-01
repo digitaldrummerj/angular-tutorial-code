@@ -8,7 +8,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:prod": "ng build --prod --base-href \"/angular-tutorial-code\"",
+    "build:prod": "ng build --prod --base-href \"https://digitaldrummerj.github.io/angular-tutorial-code\"",
     "test": "ng test",
     "test:ci": "ng test --watch=false --code-coverage=true --browsers ChromeHeadless",
     "lint": "ng lint",
