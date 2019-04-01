@@ -58,7 +58,7 @@ describe('Todo', () => {
 
       cy.wait('@initialGetTodo');
 
-      cy.location('pathname').should('eq', `${Cypress.env('baseHref')}/`);
+      cy.location('pathname').should('eq', '/');
 
       cy.get('[data-cy="todoInput"]').type(todoText);
 
@@ -262,7 +262,7 @@ describe('Todo', () => {
       cy.wait('@identity')
       .wait('@initialGetTodo');
 
-      cy.location('pathname').should('eq', `${Cypress.env('baseHref')}/`);
+      cy.location('pathname').should('eq', '/');
     });
 
     it('MinLength Validation', () => {

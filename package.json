@@ -8,7 +8,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:prod": "ng build --prod --base-href \"/angular-tutorial-code/\"",
+    "build:prod": "ng build --prod",
+    "build:prod:ghpages": "ng build --prod --base-href \"/angular-tutorial-code/\"",
     "test": "ng test",
     "test:ci": "ng test --watch=false --code-coverage=true --browsers ChromeHeadless",
     "lint": "ng lint",
@@ -18,9 +19,9 @@
     "ci:cy-run": "start-server-and-test ci:start-server http://localhost:4200 cy:run",
     "ci:start-server": "angular-http-server --path ./dist/ngws -p 4200",
     "cy:open": "cypress open -c ",
-    "cy:run": "cypress run -c video=false,baseUrl=http://localhost:4200/angular-tutorial-code",
+    "cy:run": "cypress run -c video=false",
     "cy:verify": "cypress verify",
-    "ci": "run-s lint:ci test:ci build:prod ci:cy-run"
+    "ci": "run-s lint:ci test:ci build:prod ci:cy-run build:prod:ghpages"
   },
   "private": true,
   "dependencies": {
