@@ -19,7 +19,7 @@
     "ci:cy-run": "start-server-and-test ci:start-server http://localhost:4200 cy:run",
     "ci:start-server": "angular-http-server --path ./dist/ngws -p 4200",
     "cy:open": "cypress open",
-    "cy:run": "cypress run -c video=false",
+    "cy:run": "cypress run",
     "cy:verify": "cypress verify",
     "ci": "run-s lint:ci test:ci build:prod ci:cy-run build:prod:ghpages"
   },
