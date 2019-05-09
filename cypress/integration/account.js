@@ -1,5 +1,21 @@
 import { recordReplayCommands } from '../support/recordReplayCommands';
 
+describe('Account - Login Layout Test', () => {
+  it('Login Page Default View', () => {
+    cy.visit('login');
+    cy.location('pathname').should('eq', '/login');
+
+    cy.percySnapshot();
+  });
+
+  it('Signup Page Default View', () => {
+    cy.visit('signup');
+    cy.location('pathname').should('eq', '/signup');
+
+    cy.percySnapshot();
+  });
+});
+
 describe('Navigation: Login and Create Account Pages', () => {
   it('Login to Signup', () => {
     cy.visit('login');
@@ -24,26 +40,12 @@ describe('Navigation: Login and Create Account Pages', () => {
   });
 });
 
-describe('Account Test', () => {
-  // recordReplayCommands('account-test', 0);
-  it('Create Account, Verify Header, Logout and Login', () => {
-    const userName = 'au0muoxay6jshfn9hwiwi8@uitest.com';
-    const password = 'r5zjxp8vmqrb5tbdodjfp';
+describe('Verify Login and Create Account', () => {
+  const userName = 'au0muoxay6jshfn9hwiwi8@uitest.com';
+  const password = 'r5zjxp8vmqrb5tbdodjfp';
 
+  beforeEach(() => {
     cy.server();
-
-    cy.route({
-      url: '/user',
-      status: 200,
-      method: 'POST',
-      response: {
-        "createdAt": 1552670656025,
-        "updatedAt": 1552670656025,
-        "id": 3,
-        "email": userName
-      }
-    }).as('signup');
-
     cy.route({
       url: '/user/identity',
       status: 200,
@@ -60,8 +62,22 @@ describe('Account Test', () => {
       url: '/todo',
       method: 'GET',
       status: 200,
-      response: []
+      response: [],
     }).as('todo');
+  });
+
+  it('Should Create Account', () => {
+    cy.route({
+      url: '/user',
+      status: 200,
+      method: 'POST',
+      response: {
+        createdAt: 1552670656025,
+        updatedAt: 1552670656025,
+        id: 3,
+        email: userName,
+      },
+    }).as('signup');
 
     cy.visit('/signup')
       .location('pathname')
@@ -77,17 +93,21 @@ describe('Account Test', () => {
       .wait('@todo')
       .location('pathname')
       .should('eq', '/');
-
+  });
+  it('Should have logged in username in header', () => {
     cy.get('[data-cy="rightMenu"] .nav-link')
       .eq(0)
-      .should('have.text', `Welcome ${userName}`);
+      .should('have.text', `Welcome ${userName}`)
+      .percySnapshot('Home Page - Signed In Default View');
+  });
 
-      cy.route({
-        url: '/user/logout',
-        method: 'GET',
-        status: 200,
-        response: 'Ok'
-      }).as('logout');
+  it('Should logout user', () => {
+    cy.route({
+      url: '/user/logout',
+      method: 'GET',
+      status: 200,
+      response: 'Ok',
+    }).as('logout');
 
     cy.get('[data-cy="rightMenu"] .nav-link')
       .eq(1)
@@ -97,20 +117,20 @@ describe('Account Test', () => {
       .should('not.be.visible')
       .location('pathname')
       .should('eq', '/login');
+  });
 
-      cy.route({
-        url: '/user/login',
-        status: 200,
-        method: 'PUT',
-        response: {
-          createdAt: 1551738475242,
-          updatedAt: 1551738475242,
-          id: 1,
-          email: userName,
-        },
-      }).as('login');
-
-
+  it('Should login user', () => {
+    cy.route({
+      url: '/user/login',
+      status: 200,
+      method: 'PUT',
+      response: {
+        createdAt: 1551738475242,
+        updatedAt: 1551738475242,
+        id: 1,
+        email: userName,
+      },
+    }).as('login');
 
     cy.get('[data-cy="email"]').type(userName);
     cy.get('[data-cy="password"]').type(password);
@@ -124,13 +144,12 @@ describe('Account Test', () => {
       .should('eq', '/');
   });
 
-  it('Login to Non-Existent Account', () => {
-    cy.server();
+  it('Should give invalid login upon login to non-existent account', () => {
     cy.route({
       url: '/user/login',
       method: 'PUT',
       status: 401,
-      response: 'Forbidden'
+      response: 'Forbidden',
     }).as('login-invalid');
 
     cy.visit('/login')
@@ -161,78 +180,102 @@ describe('Account Test', () => {
   });
 });
 
-describe('Form Validation', () => {
+describe('Verify Form Validation', () => {
   describe('Login Form Validation', () => {
     before(() => {
       cy.visit('/login');
     });
 
-    it('Email Validation', () => {
-      cy.get('[data-cy="email"]')
-        .focus()
-        .blur()
-        .get('[data-cy="emailValidation"]')
-        .should('contain', 'Email is required')
-        .should('be.visible')
-        .get('[data-cy="loginBtn"]')
-        .should('be.disabled');
+    describe('Email Validation', () => {
+      it('Is Required', () => {
+        cy.get('[data-cy="email"]')
+          .focus()
+          .blur()
+          .get('[data-cy="emailValidation"]')
+          .should('contain', 'Email is required')
+          .should('be.visible')
+          .get('[data-cy="loginBtn"]')
+          .should('be.disabled')
+          .percySnapshot('Login Page - Email Is Required');
+      });
 
-      cy.get('[data-cy="email"]')
-        .type('1')
-        .get('[data-cy="emailValidation"]')
-        .should('contain', 'Must be an email')
-        .should('be.visible')
-        .get('[data-cy="loginBtn"')
-        .should('be.disabled');
+      it('Must Be An Email', () => {
+        cy.get('[data-cy="email"]')
+          .type('1')
+          .get('[data-cy="emailValidation"]')
+          .should('contain', 'Must be an email')
+          .should('be.visible')
+          .get('[data-cy="loginBtn"')
+          .should('be.disabled')
+          .percySnapshot('Login Page - Must be an Email');
+      });
 
-      cy.get('[data-cy="email"]')
-        .clear()
-        .get('[data-cy="emailValidation"]')
-        .should('contain', 'Email is required')
-        .should('be.visible')
-        .get('[data-cy="loginBtn"]')
-        .should('be.disabled');
+      it('Is Required After Clearing Email Field', () => {
+        cy.get('[data-cy="email"]')
+          .clear()
+          .get('[data-cy="emailValidation"]')
+          .should('contain', 'Email is required')
+          .should('be.visible')
+          .get('[data-cy="loginBtn"]')
+          .should('be.disabled');
+      });
 
-      cy.get('[data-cy="email"]')
-        .type('123@foo.com')
-        .get('[data-cy="emailValidation"]')
-        .should('not.be.visible')
-        .get('[data-cy="loginBtn"]')
-        .should('be.disabled');
+      it('Is Valid', () => {
+        cy.get('[data-cy="email"]')
+          .type('123@foo.com')
+          .get('[data-cy="emailValidation"]')
+          .should('not.be.visible')
+          .get('[data-cy="loginBtn"]')
+          .should('be.disabled');
+
+        cy.percySnapshot('Login Page - Email Is Valid');
+      });
     });
 
-    it('Password Validation', () => {
-      cy.get('[data-cy="password"]')
-        .focus()
-        .blur()
-        .get('[data-cy="passwordValidation"]')
-        .should('contain', 'Password is required')
-        .should('be.visible')
-        .get('[data-cy="loginBtn"]')
-        .should('be.disabled');
+    describe('Password Validation', () => {
+      it('Required', () => {
+        cy.get('[data-cy="password"]')
+          .focus()
+          .blur()
+          .get('[data-cy="passwordValidation"]')
+          .should('contain', 'Password is required')
+          .should('be.visible')
+          .get('[data-cy="loginBtn"]')
+          .should('be.disabled')
+          .percySnapshot('Login Page - Password is required');
+      });
 
-      cy.get('[data-cy="password"]')
-        .type('1')
-        .get('[data-cy="passwordValidation"]')
-        .should('contain', 'Password must be at least 6 characters long')
-        .should('be.visible')
-        .get('[data-cy="loginBtn"]')
-        .should('be.disabled');
+      it('Must Be > 6 Characters', () => {
+        cy.get('[data-cy="password"]')
+          .type('1')
+          .get('[data-cy="passwordValidation"]')
+          .should('contain', 'Password must be at least 6 characters long')
+          .should('be.visible')
+          .get('[data-cy="loginBtn"]')
+          .should('be.disabled')
+          .percySnapshot('Login Page - Password must be at least 6 characters');
+      });
 
-      cy.get('[data-cy="password"]')
-        .clear()
-        .get('[data-cy="passwordValidation"]')
-        .should('contain', 'Password is required')
-        .should('be.visible')
-        .get('[data-cy="loginBtn"]')
-        .should('be.disabled');
+      it('Required after clearing password field', () => {
+        cy.get('[data-cy="password"]')
+          .clear()
+          .get('[data-cy="passwordValidation"]')
+          .should('contain', 'Password is required')
+          .should('be.visible')
+          .get('[data-cy="loginBtn"]')
+          .should('be.disabled');
+      });
 
-      cy.get('[data-cy="password"]')
-        .type('123456')
-        .get('[data-cy="passwordValidation"]')
-        .should('not.be.visible')
-        .get('[data-cy="loginBtn"]')
-        .should('not.be.disabled');
+      it('Is Valid', () => {
+        cy.get('[data-cy="password"]')
+          .type('123456')
+          .wait(300)
+          .percySnapshot('Login Page - Email and Password is Valid')
+          .get('[data-cy="passwordValidation"]')
+          .should('not.be.visible')
+          .get('[data-cy="loginBtn"]')
+          .should('not.be.disabled');
+      });
     });
   });
 
@@ -241,70 +284,95 @@ describe('Form Validation', () => {
       cy.visit('/signup');
     });
 
-    it('Email Validation', () => {
-      cy.get('[data-cy="email"]')
-        .focus()
-        .blur()
-        .get('[data-cy="emailValidation"]')
-        .should('contain', 'Email is required')
-        .should('be.visible')
-        .get('[data-cy="signupBtn"]')
-        .should('be.disabled');
-      cy.get('[data-cy="email"]')
-        .type('1')
-        .get('[data-cy="emailValidation"]')
-        .should('contain', 'Must be an email')
-        .should('be.visible')
-        .get('[data-cy="signupBtn"')
-        .should('be.disabled');
+    describe('Email Validation', () => {
+      it('Required', () => {
+        cy.get('[data-cy="email"]')
+          .focus()
+          .blur()
+          .get('[data-cy="emailValidation"]')
+          .should('contain', 'Email is required')
+          .should('be.visible')
+          .get('[data-cy="signupBtn"]')
+          .should('be.disabled')
+          .percySnapshot('Signup Page - Email is Required');
+      });
 
-      cy.get('[data-cy="email"]')
-        .clear()
-        .get('[data-cy="emailValidation"]')
-        .should('contain', 'Email is required')
-        .should('be.visible')
-        .get('[data-cy="signupBtn"]')
-        .should('be.disabled');
+      it('Must be Email', () => {
+        cy.get('[data-cy="email"]')
+          .type('1')
+          .get('[data-cy="emailValidation"]')
+          .should('contain', 'Must be an email')
+          .should('be.visible')
+          .get('[data-cy="signupBtn"')
+          .should('be.disabled')
+          .percySnapshot('Signup Page - Must be an email');
+      });
 
-      cy.get('[data-cy="email"]')
-        .type('123@foo.com')
-        .get('[data-cy="emailValidation"]')
-        .should('not.be.visible')
-        .get('[data-cy="signupBtn"]')
-        .should('be.disabled');
+      it('Required after clearing email field', () => {
+        cy.get('[data-cy="email"]')
+          .clear()
+          .get('[data-cy="emailValidation"]')
+          .should('contain', 'Email is required')
+          .should('be.visible')
+          .get('[data-cy="signupBtn"]')
+          .should('be.disabled');
+      });
+
+      it('Is Valid', () => {
+        cy.get('[data-cy="email"]')
+          .type('123@foo.com')
+          .get('[data-cy="emailValidation"]')
+          .should('not.be.visible')
+          .get('[data-cy="signupBtn"]')
+          .should('be.disabled')
+          .percySnapshot('Signup Page - Email is Valid');
+      });
     });
 
-    it('Password Validation', () => {
-      cy.get('[data-cy="password"]')
-        .focus()
-        .blur()
-        .get('[data-cy="passwordValidation"]')
-        .should('contain', 'Password is required')
-        .should('be.visible')
-        .get('[data-cy="signupBtn"]')
-        .should('be.disabled');
-      cy.get('[data-cy="password"]')
-        .type('1')
-        .get('[data-cy="passwordValidation"]')
-        .should('contain', 'Password must be at least 6 characters long')
-        .should('be.visible')
-        .get('[data-cy="signupBtn"]')
-        .should('be.disabled');
+    describe('Password Validation', () => {
+      it('Required', () => {
+        cy.get('[data-cy="password"]')
+          .focus()
+          .blur()
+          .get('[data-cy="passwordValidation"]')
+          .should('contain', 'Password is required')
+          .should('be.visible')
+          .get('[data-cy="signupBtn"]')
+          .should('be.disabled')
+          .percySnapshot('Signup Page - Password is required');
+      });
 
-      cy.get('[data-cy="password"]')
-        .clear()
-        .get('[data-cy="passwordValidation"]')
-        .should('contain', 'Password is required')
-        .should('be.visible')
-        .get('[data-cy="signupBtn"]')
-        .should('be.disabled');
+      it('Must be > 6 characters', () => {
+        cy.get('[data-cy="password"]')
+          .type('1')
+          .get('[data-cy="passwordValidation"]')
+          .should('contain', 'Password must be at least 6 characters long')
+          .should('be.visible')
+          .get('[data-cy="signupBtn"]')
+          .should('be.disabled')
+          .percySnapshot('Signup Page - Password must be 6 characters');
+      });
 
-      cy.get('[data-cy="password"]')
-        .type('123456')
-        .get('[data-cy="passwordValidation"]')
-        .should('not.be.visible')
-        .get('[data-cy="signupBtn"]')
-        .should('not.be.disabled');
+      it('Required after clearing password field', () => {
+        cy.get('[data-cy="password"]')
+          .clear()
+          .get('[data-cy="passwordValidation"]')
+          .should('contain', 'Password is required')
+          .should('be.visible')
+          .get('[data-cy="signupBtn"]')
+          .should('be.disabled');
+      });
+
+      it('Is Valid', () => {
+        cy.get('[data-cy="password"]')
+          .type('123456')
+          .get('[data-cy="passwordValidation"]')
+          .should('not.be.visible')
+          .get('[data-cy="signupBtn"]')
+          .should('not.be.disabled');
+
+        cy.percySnapshot('Signup Page - Email and Password are Valid');
+      });
     });
   });
 });

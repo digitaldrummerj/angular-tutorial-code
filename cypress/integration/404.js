@@ -1,9 +1,16 @@
 describe('404 error page', () => {
-  it('route works', () => {
-    cy.visit('/unknown')
-      .location('pathname')
-      .should('eq', '/unknown');
+  beforeEach(() => {
+    cy.visit('/unknown');
+    cy.location('pathname').should('eq', '/unknown');
+    cy.injectAxe();
+  });
 
-      cy.get('[data-cy="works"]').should('contain', 'not-found works!');
+  it('Has no detectable a11y violations on load', () => {
+    // Test the page at initial load
+    cy.checkA11y();
+  });
+
+  it('route works', () => {
+    cy.get('[data-cy="works"]').should('contain', 'not-found works!');
   });
 });
