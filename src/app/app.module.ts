@@ -22,8 +22,6 @@ import { SignupComponent } from './signup/signup.component';
     FormsModule,
     HttpClientModule,
     AppRoutingModule,
-     NgbModule.forRoot(),
-     FontAwesomeModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]
