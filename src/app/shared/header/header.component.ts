@@ -11,7 +11,6 @@ import { User } from '../classes/user';
 export class HeaderComponent implements OnInit,  OnDestroy {
   isCollapsed = true;
   loggedInUser: User;
-  subscription: any;
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -25,7 +24,6 @@ export class HeaderComponent implements OnInit,  OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
   }
 
   logout() {
