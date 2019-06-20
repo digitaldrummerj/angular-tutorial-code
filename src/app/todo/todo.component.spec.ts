@@ -50,6 +50,7 @@ function setup() {
     component = element.componentInstance;
     fixture.detectChanges();
     itemField = component.addForm.controls['item'];
+    expect(itemField).toBeTruthy('item field was not found');
   });
 }
 
@@ -68,7 +69,6 @@ function formValidationTests() {
 
   beforeEach(() => {
     errors = {};
-    expect(itemField).toBeTruthy('item field was not found');
     if (itemField) {
       itemField.markAsDirty();
       expect(itemField.dirty).toBeTruthy('field should be dirty');
