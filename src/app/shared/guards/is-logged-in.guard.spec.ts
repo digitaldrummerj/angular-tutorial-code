@@ -1,6 +1,4 @@
-import { TestBed, async, inject } from '@angular/core/testing';
-import { Observable, of } from 'rxjs';
-import { Http, Response, ResponseOptions } from '@angular/http';
+import { TestBed, inject } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CookieModule } from 'ngx-cookie';
 
