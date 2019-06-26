@@ -7,6 +7,11 @@ import { Observable, of } from 'rxjs';
 
 export class GreetingServiceStub {
   public subject = 'Test World';
+  getGreeting(): Observable<string> { return of('Hello'); }
+
+  getSubject(): Observable<string> { return of(this.subject); }
+
+  getPunctuation(): Observable<string> { return of('!'); }
 }
 
 describe('SimpleComponentWithServiceComponent', () => {
