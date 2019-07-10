@@ -29,8 +29,6 @@ library.add(faTrashAlt, faCheckSquare, faSquare);
     CollapseModule.forRoot(),
     BrowserAnimationsModule,
     AppRoutingModule,
-    NgbModule.forRoot(),
-    FontAwesomeModule,
   ],
   providers: [AuthService, TodoService],
   bootstrap: [AppComponent],
