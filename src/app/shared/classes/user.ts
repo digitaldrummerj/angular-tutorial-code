@@ -1,8 +1,8 @@
 export class User {
   email: string;
   id: string;
-  createdAt: Number;
-  updatedAt: Number;
+  createdAt: number;
+  updatedAt: number;
 
   constructor(email: string, id?: string, createdAt?: Date, updatedAt?: Date) {
     this.email = email;
