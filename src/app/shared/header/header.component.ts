@@ -1,30 +1,18 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from '../classes/user';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit,  OnDestroy {
+export class HeaderComponent implements OnInit {
   isCollapsed = true;
-  loggedInUser: User;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) {}
 
-  ngOnInit() {
-    this.loggedInUser  = this.authService.getUser();
-
-    this.authService.getLoggedInUser.subscribe(user => {
-      this.loggedInUser = user;
-      console.log('user changed through emit', this.loggedInUser);
-    });
-  }
-
-  ngOnDestroy(): void {
-  }
+  ngOnInit() {}
 
   logout() {
     this.authService.logout().subscribe(() => {
