@@ -9,7 +9,6 @@ import { NotFoundComponent } from './not-found/not-found.component';
 const routes: Routes = [
   {
     path: '',
-    children: [],
     component: TodoComponent,
     canActivate: [IsLoggedInGuard]
   },
