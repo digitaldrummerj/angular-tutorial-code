@@ -14,29 +14,28 @@ export class AuthService {
   login(email: string, password: string): Observable<boolean | Response> {
     console.log('auth.service login');
 
-    const loginInfo = { email: email, password: password };
+    const loginInfo = { email, password };
 
-    return this.http
-      .put('https://sails-ws.herokuapp.com/user/login', loginInfo, requestOptions)
-      .pipe(
-        tap((res: Response) => {
-          if (res) {
-            console.log('logged in');
-            return of(true);
-          }
+    return this.http.put('https://sails-ws.herokuapp.com/user/login', loginInfo, requestOptions)
+        .pipe(
+            tap((res: Response) => {
+                if (res) {
+                    console.log('logged in');
+                    return of(true);
+                }
 
-          console.log('not logged in');
-          return of(false);
-        }),
-        catchError(error => {
-          console.log('login error', error);
-          return of(false);
-        })
-      );
-  }
+                console.log('not logged in');
+                return of(false);
+            }),
+            catchError((error) => {
+                console.log('login error', error);
+                return of(false);
+            })
+        );
+}
 
   signup(email: string, password: string): Observable<boolean | Response> {
-    const loginInfo = { email: email, password: password };
+    const loginInfo = { email, password };
     return this.http
       .post('https://sails-ws.herokuapp.com/user/', loginInfo, requestOptions)
       .pipe(
