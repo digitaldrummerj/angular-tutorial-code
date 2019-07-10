@@ -7,16 +7,12 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit,  OnDestroy {
+export class HeaderComponent implements OnInit {
   isCollapsed = true;
-  loggedInUser: User;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {}
-
-  ngOnDestroy(): void {
-  }
 
   logout() {
     this.authService.logout().subscribe(() => {
@@ -26,11 +22,5 @@ export class HeaderComponent implements OnInit,  OnDestroy {
 
   toggleMenu() {
     this.isCollapsed = !this.isCollapsed;
-  }
-
-  logout() {
-    this.authService.logout().subscribe(() => {
-      this.router.navigate(['/login']);
-    });
   }
 }

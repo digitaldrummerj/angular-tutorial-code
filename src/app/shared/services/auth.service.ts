@@ -4,8 +4,6 @@ import { Observable, of } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { User } from '../classes/user';
-import { CookieService } from 'ngx-cookie';
-import { Output, EventEmitter } from '@angular/core';
 
 const requestOptions = {
   withCredentials: true,
@@ -13,24 +11,8 @@ const requestOptions = {
 
 @Injectable()
 export class AuthService {
-  @Output() getLoggedInUser: EventEmitter<User> = new EventEmitter<User>();
   private url = `${environment.apiBaseUrl}/user`;
-  private cookieKey = 'currentUser';
-  constructor(private http: HttpClient, private cookieService: CookieService) {}
-
-  public getUser(): User {
-    return <User>this.cookieService.getObject(this.cookieKey);
-  }
-
-  private setUser(value: User): void {
-    this.cookieService.putObject(this.cookieKey, value);
-    this.getLoggedInUser.emit(value);
-  }
-
-  private clearUser(): void {
-    this.cookieService.remove(this.cookieKey);
-    this.getLoggedInUser.emit(null);
-  }
+  constructor(private http: HttpClient) {}
 
   login(email: string, password: string): Observable<boolean | User> {
     console.log('auth.service login');
@@ -41,17 +23,14 @@ export class AuthService {
       tap((user: User) => {
         if (user) {
           console.log('logged in');
-          this.setUser(user);
           return of(true);
         }
 
         console.log('not logged in');
-        this.clearUser();
         return of(false);
       }),
       catchError(error => {
         console.log('login error', error);
-        this.clearUser();
         return of(false);
       })
     );
@@ -65,12 +44,10 @@ export class AuthService {
           return of(true);
         }
 
-        this.clearUser();
         return of(false);
       }),
       catchError(error => {
         console.log('signup error', error);
-        this.clearUser();
         return of(false);
       })
     );
@@ -85,7 +62,6 @@ export class AuthService {
         }
 
         console.log('not logged in');
-        this.clearUser();
         return of(false);
       }),
       catchError((error: HttpErrorResponse) => {
@@ -93,7 +69,6 @@ export class AuthService {
           console.log('isAuthenticated error', error);
         }
         console.log('not logged in', error);
-        this.clearUser();
         return of(false);
       })
     );
