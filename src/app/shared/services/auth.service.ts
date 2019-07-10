@@ -35,7 +35,7 @@ export class AuthService {
   login(email: string, password: string): Observable<boolean | User> {
     console.log('auth.service login');
 
-    const loginInfo = { email: email, password: password };
+    const loginInfo = { email, password };
 
     return this.http.put<User>(`${this.url}/login`, loginInfo, requestOptions).pipe(
       tap((user: User) => {
@@ -57,12 +57,11 @@ export class AuthService {
     );
   }
 
-  signup(email: string, password: string): Observable<boolean | User> {
-    const loginInfo = { email: email, password: password };
-    return this.http.post<User>(this.url, loginInfo, requestOptions).pipe(
-      tap((user: User) => {
-        if (user) {
-          this.setUser(user);
+  signup(email: string, password: string): Observable<boolean | Response> {
+    const loginInfo = { email, password };
+    return this.http.post('https://sails-ws.herokuapp.com/user/', loginInfo, requestOptions).pipe(
+      tap((res: Response) => {
+        if (res) {
           return of(true);
         }
 
@@ -77,12 +76,11 @@ export class AuthService {
     );
   }
 
-  isAuthenticated(): Observable<boolean | User> {
-    return this.http.get<User>(`${this.url}/identity`, requestOptions).pipe(
-      tap((user: User) => {
-        if (user) {
+  isAuthenticated(): Observable<boolean | Response> {
+    return this.http.get('https://sails-ws.herokuapp.com/user/identity', requestOptions).pipe(
+      tap((res: Response) => {
+        if (res) {
           console.log('logged in');
-          this.setUser(user);
           return of(true);
         }
 
@@ -102,9 +100,8 @@ export class AuthService {
   }
 
   logout(): Observable<boolean | Response> {
-    return this.http.get(`${this.url}/logout`, requestOptions).pipe(
+    return this.http.get('https://sails-ws.herokuapp.com/user/logout', requestOptions).pipe(
       tap((res: Response) => {
-        this.clearUser();
         if (res.ok) {
           return of(true);
         }
@@ -112,7 +109,6 @@ export class AuthService {
         return of(false);
       }),
       catchError((error: HttpErrorResponse) => {
-        this.clearUser();
         return of(false);
       })
     );

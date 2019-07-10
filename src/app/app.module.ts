@@ -5,13 +5,14 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { LoginComponent } from './login/login.component';
 import { AuthService } from './shared/services/auth.service';
 import { SignupComponent } from './signup/signup.component';
 import { TodoComponent } from './todo/todo.component';
 import { TodoService } from './shared/services/todo.service';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTrashAlt, faSquare, faCheckSquare } from '@fortawesome/free-regular-svg-icons';
 import { IsLoggedInGuard } from './shared/guards/is-logged-in.guard';
@@ -37,10 +38,10 @@ library.add(faTrashAlt, faCheckSquare, faSquare);
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    AppRoutingModule,
-    CookieModule.forRoot(),
-    NgbModule.forRoot(),
     FontAwesomeModule,
+    CollapseModule.forRoot(),
+    BrowserAnimationsModule,
+    AppRoutingModule,
   ],
   providers: [AuthService, TodoService, IsLoggedInGuard],
   bootstrap: [AppComponent]

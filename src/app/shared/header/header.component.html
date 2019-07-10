@@ -8,7 +8,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div [ngbCollapse]="isCollapsed" class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div [collapse]="isCollapsed" class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
           <a (click)="toggleMenu()" class="nav-link" routerLink="/">All Items</a>
@@ -25,9 +25,8 @@
         </li>
       </ul>
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active nav-link">Welcome {{ loggedInUser?.email }}</li>
-        <li class="nav-item active" (click)="logout()" [hidden]="!loggedInUser" >
-          <a class="nav-link" routerLink="">logout</a>
+        <li class="nav-item active" (click)="logout()">
+          <a class="nav-link" routerLink="" (click)="toggleMenu()">logout</a>
         </li>
       </ul>
     </div>
