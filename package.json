@@ -21,7 +21,8 @@
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "cy:verify": "cypress verify",
-    "ci": "run-s lint:ci test:ci build:prod ci:cy-run build:prod:ghpages"
+    "ci": "run-s lint:ci test:ci build:prod ci:cy-run build:prod:ghpages",
+    "percy": "npx percy exec -- cypress run"
   },
   "private": true,
   "dependencies": {
@@ -49,13 +50,14 @@
     "@angular/cli": "~8.1.0",
     "@angular/compiler-cli": "~8.1.0",
     "@angular/language-service": "~8.1.0",
+    "@percy/cypress": "^1.0.9",
     "@types/jasmine": "~3.3.10",
     "@types/jasminewd2": "~2.0.6",
     "@types/node": "~8.9.4",
-    "codelyzer": "^5.0.1",
     "angular-cli-ghpages": "^0.5.3",
     "angular-http-server": "^1.8.1",
     "axe-core": "^3.2.2",
+    "codelyzer": "^5.0.1",
     "cypress": "^3.2.0",
     "cypress-axe": "^0.4.1",
     "jasmine-core": "~3.3.0",

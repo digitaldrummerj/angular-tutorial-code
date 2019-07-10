@@ -9,7 +9,7 @@
     </button>
 
     <div [collapse]="isCollapsed" class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
+      <ul class="navbar-nav mr-auto" data-cy="leftMenu">
         <li class="nav-item active">
           <a (click)="toggleMenu()" class="nav-link" routerLink="/">All Items</a>
         </li>
@@ -24,9 +24,9 @@
           <a class="nav-link" routerLink="/signup">Signup</a>
         </li>
       </ul>
-      <ul class="navbar-nav mr-auto">
+      <ul class="navbar-nav mr-auto" data-cy="rightMenu">
           <li class="nav-item active nav-link">Welcome {{ loggedInUser?.email }}</li>
-        <li class="nav-item active" (click)="logout()"  [hidden]="!loggedInUser">
+        <li class="nav-item active" (click)="logout()"   [hidden]="!loggedInUser">
           <a class="nav-link" routerLink="" (click)="toggleMenu()">logout</a>
         </li>
       </ul>
