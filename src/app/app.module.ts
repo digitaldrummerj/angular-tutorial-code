@@ -19,6 +19,7 @@ import { IsLoggedInGuard } from './shared/guards/is-logged-in.guard';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { FooterComponent } from './shared/footer/footer.component';
+import { CookieModule } from 'ngx-cookie';
 
 library.add(faTrashAlt, faCheckSquare, faSquare);
 
@@ -40,6 +41,7 @@ library.add(faTrashAlt, faCheckSquare, faSquare);
     FontAwesomeModule,
     CollapseModule.forRoot(),
     BrowserAnimationsModule,
+    CookieModule.forRoot(),
     AppRoutingModule,
   ],
   providers: [AuthService, TodoService, IsLoggedInGuard],
