@@ -13,13 +13,14 @@ const requestOptions = {
 
 @Injectable()
 export class AuthService {
-  @Output() getLoggedInUser: EventEmitter<User> = new EventEmitter<User>();
   private url = `${environment.apiBaseUrl}/user`;
   private cookieKey = 'currentUser';
+  @Output() getLoggedInUser: EventEmitter<User> = new EventEmitter<User>();
+
   constructor(private http: HttpClient, private cookieService: CookieService) {}
 
-  public getUser(): User {
-    return <User>this.cookieService.getObject(this.cookieKey);
+  getUser(): User {
+    return this.cookieService.getObject(this.cookieKey) as User;
   }
 
   private setUser(value: User): void {
@@ -35,7 +36,7 @@ export class AuthService {
   login(email: string, password: string): Observable<boolean | User> {
     console.log('auth.service login');
 
-    const loginInfo = { email: email, password: password };
+    const loginInfo = { email, password };
 
     return this.http.put<User>(`${this.url}/login`, loginInfo, requestOptions).pipe(
       tap((user: User) => {
@@ -58,8 +59,8 @@ export class AuthService {
   }
 
   signup(email: string, password: string): Observable<boolean | User> {
-    const loginInfo = { email: email, password: password };
-    return this.http.post<User>(this.url, loginInfo, requestOptions).pipe(
+    const loginInfo = { email, password };
+    return this.http.post<User>('https://sails-ws.herokuapp.com/user/', loginInfo, requestOptions).pipe(
       tap((user: User) => {
         if (user) {
           this.setUser(user);
@@ -78,7 +79,7 @@ export class AuthService {
   }
 
   isAuthenticated(): Observable<boolean | User> {
-    return this.http.get<User>(`${this.url}/identity`, requestOptions).pipe(
+    return this.http.get<User>('https://sails-ws.herokuapp.com/user/identity', requestOptions).pipe(
       tap((user: User) => {
         if (user) {
           console.log('logged in');
@@ -102,7 +103,7 @@ export class AuthService {
   }
 
   logout(): Observable<boolean | Response> {
-    return this.http.get(`${this.url}/logout`, requestOptions).pipe(
+    return this.http.get('https://sails-ws.herokuapp.com/user/logout', requestOptions).pipe(
       tap((res: Response) => {
         this.clearUser();
         if (res.ok) {

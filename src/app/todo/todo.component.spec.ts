@@ -11,6 +11,7 @@ import { TodoComponent } from './todo.component';
 import { ItemTextPipe } from '../shared/pipe/item-text.pipe';
 import { DatePipe } from '@angular/common';
 import { Todo, MockTodoData, MockTodoService, click, advance } from '../../testing';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 let component: TodoComponent;
 let fixture: ComponentFixture<TodoComponent>;
@@ -28,8 +29,7 @@ describe('TodoComponent', () => {
 function setup() {
   beforeEach(async(() => {
     const testBed = TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule],
-      schemas: [NO_ERRORS_SCHEMA],
+      imports: [ReactiveFormsModule, FontAwesomeModule],
       declarations: [
         TodoComponent,
         ItemTextPipe
@@ -62,18 +62,14 @@ function createTests() {
 
 function formValidationTests() {
   let errors = {};
-  beforeAll(() => {
-    // monkey patches debounce time to make field validation errors test past.
-    // Observable.prototype.debounceTime = function () { return this; };
-  });
 
   beforeEach(() => {
     errors = {};
-    if (itemField) {
-      itemField.markAsDirty();
-      expect(itemField.dirty).toBeTruthy('field should be dirty');
-      fixture.detectChanges();
-    }
+    itemField = component.addForm.controls['item'];
+    expect(itemField).toBeTruthy('item field was not found');
+    itemField.markAsDirty();
+    expect(itemField.dirty).toBeTruthy('field should be dirty');
+    fixture.detectChanges();
   });
 
   it('form invalid when empty', () => {
@@ -158,7 +154,7 @@ function interactionTests() {
   });
 
   it('ngOnInit open item count', () => {
-    expect(component.openItemCount).toBe(3);
+    expect(component.openItemCount).toBe(mockTodoData.todoItems.length - 1);
   });
 
   it('ngOnInit sort items', () => {

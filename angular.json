@@ -140,6 +140,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "ngws"
 }

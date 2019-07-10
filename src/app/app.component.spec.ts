@@ -2,12 +2,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HeaderComponent } from './shared/header/header.component';
 import { FooterComponent } from './shared/footer/footer.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CollapseModule } from 'ngx-bootstrap';
 
 import { AppComponent } from './app.component';
 import { AuthService } from './shared/services/auth.service';
 import { MockAuthService } from '../testing';
 import { CookieModule } from 'ngx-cookie';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -17,7 +18,8 @@ describe('AppComponent', () => {
       imports: [
         RouterTestingModule,
         CookieModule.forRoot(),
-        NgbModule.forRoot()
+        CollapseModule.forRoot(),
+        BrowserAnimationsModule
       ],
       declarations: [
         AppComponent,

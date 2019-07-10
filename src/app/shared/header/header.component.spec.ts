@@ -5,9 +5,10 @@ import { By } from '@angular/platform-browser';
 import { SpyLocation } from '@angular/common/testing';
 import { Location } from '@angular/common';
 import { RouterLinkWithHref } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MockAuthService, advance, expectPathToBe, click } from '../../../testing';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CollapseModule } from 'ngx-bootstrap';
 import { CookieModule } from 'ngx-cookie';
 
 import { HeaderComponent } from './header.component';
@@ -36,8 +37,9 @@ function setup() {
           { path: 'signup', component: HeaderComponent },
           { path: '**', component: HeaderComponent },
         ]),
-        NgbModule.forRoot(),
+        CollapseModule.forRoot(),
         CookieModule.forRoot(),
+        BrowserAnimationsModule
       ],
       declarations: [HeaderComponent],
       providers: [{ provide: AuthService, useClass: MockAuthService }],
