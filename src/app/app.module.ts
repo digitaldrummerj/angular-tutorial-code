@@ -14,6 +14,8 @@ import { SignupComponent } from './signup/signup.component';
 import { TodoComponent } from './todo/todo.component';
 import { TodoService } from './shared/services/todo.service';
 import { GreetingService } from './shared/services/greeting.service';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTrashAlt, faSquare, faCheckSquare } from '@fortawesome/free-regular-svg-icons';
 import { IsLoggedInGuard } from './shared/guards/is-logged-in.guard';
