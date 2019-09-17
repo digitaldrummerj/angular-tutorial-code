@@ -24,21 +24,17 @@ describe('SignupComponent', () => {
       imports: [
         RouterTestingModule.withRoutes([
           { path: 'login', component: SignupComponent },
-          { path: '', component: SignupComponent }
+          { path: '', component: SignupComponent },
         ]),
-        FormsModule
+        FormsModule,
       ],
       schemas: [NO_ERRORS_SCHEMA],
-      declarations: [
-        SignupComponent
-      ],
-      providers: [
-        { provide: AuthService, useClass: MockAuthService }
-      ]
+      declarations: [SignupComponent],
+      providers: [{ provide: AuthService, useClass: MockAuthService }],
     });
-      testBed.compileComponents();
+    testBed.compileComponents();
 
-      location = testBed.get(Location) as SpyLocation;
+    location = testBed.get(Location) as SpyLocation;
   }));
 
   beforeEach(() => {
@@ -48,7 +44,6 @@ describe('SignupComponent', () => {
 
     fixture.detectChanges();
     allLinks = fixture.debugElement.queryAll(By.directive(RouterLinkWithHref));
-
   });
 
   it('should be created', () => {

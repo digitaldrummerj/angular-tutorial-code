@@ -42,7 +42,9 @@ describe('ItemTextPipe', () => {
   });
 
   it('should throw with undefined todo', () => {
-    expect(() => { pipe.transform(undefined) }).toThrowError('todo is undefined');
+    expect(() => {
+      pipe.transform(undefined);
+    }).toThrowError('todo is undefined');
   });
 
   it('should throw with null todo', () => {

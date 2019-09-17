@@ -16,8 +16,8 @@ export class FieldSorter {
 
           // capture values so as not to change the original array field value
           // important when doing case insensitive searches else items would display in lowercase
-          let item1Value = item1[field],
-            item2Value = item2[field];
+          let item1Value = item1[field];
+          let item2Value = item2[field];
 
           // if ignoring case and field value is a type of string
           // then call toLocaleLowerCase on both fields.

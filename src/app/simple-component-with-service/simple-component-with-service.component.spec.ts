@@ -7,11 +7,17 @@ import { Observable, of } from 'rxjs';
 
 export class GreetingServiceStub {
   public subject = 'Test World';
-  getGreeting(): Observable<string> { return of('Hello'); }
+  getGreeting(): Observable<string> {
+    return of('Hello');
+  }
 
-  getSubject(): Observable<string> { return of(this.subject); }
+  getSubject(): Observable<string> {
+    return of(this.subject);
+  }
 
-  getPunctuation(): Observable<string> { return of('!'); }
+  getPunctuation(): Observable<string> {
+    return of('!');
+  }
 }
 
 describe('SimpleComponentWithServiceComponent', () => {
@@ -24,11 +30,11 @@ describe('SimpleComponentWithServiceComponent', () => {
     const testBed = TestBed.configureTestingModule({
       declarations: [SimpleComponentWithServiceComponent],
       // providers: [{ provide: GreetingService, useClass: GreetingServiceStub }]
-      providers: [GreetingService]
+      providers: [GreetingService],
     });
-      testBed.compileComponents();
+    testBed.compileComponents();
 
-      greetingService = testBed.get(GreetingService);
+    greetingService = testBed.get(GreetingService);
   }));
 
   beforeEach(() => {
@@ -103,7 +109,6 @@ describe('SimpleComponentWithServiceComponent', () => {
     fixture.detectChanges();
     const h1 = element.query(By.css('h1'));
     expect(h1.nativeElement.innerText).toBe('Hello World!');
-
   }));
 
   it('fakeasync test', fakeAsync(() => {

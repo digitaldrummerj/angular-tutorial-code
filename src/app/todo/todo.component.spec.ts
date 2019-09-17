@@ -5,7 +5,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AbstractControl, Validators } from '@angular/forms';
 import { FieldSorter } from '../shared/classes/field-sorter';
 
-
 import { TodoService } from '../shared/services/todo.service';
 import { TodoComponent } from './todo.component';
 import { ItemTextPipe } from '../shared/pipe/item-text.pipe';
@@ -30,18 +29,12 @@ function setup() {
   beforeEach(async(() => {
     const testBed = TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, FontAwesomeModule],
-      declarations: [
-        TodoComponent,
-        ItemTextPipe
-      ],
-      providers: [
-        DatePipe,
-        { provide: TodoService, useClass: MockTodoService }
-      ]
+      declarations: [TodoComponent, ItemTextPipe],
+      providers: [DatePipe, { provide: TodoService, useClass: MockTodoService }],
     });
-      testBed.compileComponents();
+    testBed.compileComponents();
 
-      service = testBed.get(TodoService);
+    service = testBed.get(TodoService);
   }));
 
   beforeEach(() => {
@@ -91,7 +84,6 @@ function formValidationTests() {
   });
 
   it('item field required with blank validity', fakeAsync(() => {
-
     itemField.setValue('');
     advance(fixture, 1000);
 
@@ -104,7 +96,6 @@ function formValidationTests() {
   }));
 
   it('item field required passed', fakeAsync(() => {
-
     itemField.setValue('test');
     advance(fixture, 1000);
 
@@ -168,7 +159,6 @@ function interactionTests() {
     // get original counts
     const initialOpenItemCount = component.openItemCount;
     const initialItemCount = component.todoList.length;
-
 
     // set field value and save
     itemField.setValue(mockTodoData.newTodoItem.item);
