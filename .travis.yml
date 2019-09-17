@@ -15,6 +15,7 @@ branches:
 
 cache:
   # cache both npm modules and Cypress binary
+  npm: true
   directories:
     - ~/.npm
     - ./node_modules
