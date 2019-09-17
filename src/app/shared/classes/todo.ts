@@ -2,8 +2,8 @@ export class Todo {
   id: string;
   item: string;
   completed: boolean;
-  createdAt: Number;
-  updatedAt: Number;
+  createdAt: number;
+  updatedAt: number;
   user: string;
 
   constructor(

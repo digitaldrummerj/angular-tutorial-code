@@ -5,6 +5,9 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { LoginComponent } from './login/login.component';
 import { AuthService } from './shared/services/auth.service';
 import { SignupComponent } from './signup/signup.component';
@@ -45,10 +48,11 @@ library.add(faTrashAlt, faCheckSquare, faSquare);
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    AppRoutingModule,
-    CookieModule.forRoot(),
-    NgbModule.forRoot(),
     FontAwesomeModule,
+    CollapseModule.forRoot(),
+    BrowserAnimationsModule,
+    CookieModule.forRoot(),
+    AppRoutingModule,
   ],
   providers: [DatePipe, AuthService, TodoService, IsLoggedInGuard, GreetingService],
   bootstrap: [AppComponent]
