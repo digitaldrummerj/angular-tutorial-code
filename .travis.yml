@@ -5,6 +5,9 @@ node_js:
   - "lts/*"
 addons:
   chrome: stable
+  apt:
+    packages:
+    - libgconf-2-4
 
 branches:
   only:
