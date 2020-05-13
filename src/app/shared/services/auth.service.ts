@@ -4,8 +4,9 @@ import { Observable, of } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { User } from '../classes/user';
-import { CookieService } from 'ngx-cookie';
+
 import { Output, EventEmitter } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 
 const requestOptions = {
   withCredentials: true,
@@ -20,16 +21,16 @@ export class AuthService {
   constructor(private http: HttpClient, private cookieService: CookieService) {}
 
   getUser(): User {
-    return this.cookieService.getObject(this.cookieKey) as User;
+    return JSON.parse(this.cookieService.get(this.cookieKey)) as User;
   }
 
   private setUser(value: User): void {
-    this.cookieService.putObject(this.cookieKey, value);
+    this.cookieService.set(this.cookieKey, JSON.stringify(value));
     this.getLoggedInUser.emit(value);
   }
 
   private clearUser(): void {
-    this.cookieService.remove(this.cookieKey);
+    this.cookieService.delete(this.cookieKey);
     this.getLoggedInUser.emit(null);
   }
 
