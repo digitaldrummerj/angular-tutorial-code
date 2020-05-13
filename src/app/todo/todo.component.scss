@@ -1,0 +1,24 @@
+ @import "../../variables";
+ div.todo {
+     width: 100%;
+     padding-bottom: .2em;
+     padding-top: .2em;
+     border-bottom: 1px solid $gray-light;
+     font-size: 1.4em;
+
+     small {
+         font-size: .7em;
+         color: $gray-light;
+     }
+
+     fa-icon {
+         width: 40px;
+         padding-right: 10px;
+         vertical-align: middle
+     }
+
+     .done-true {
+         text-decoration: line-through;
+         color: $gray-light;
+     }
+ }

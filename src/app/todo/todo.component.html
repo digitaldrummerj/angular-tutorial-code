@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="page-header">
+    <h1 align="center">Todo List</h1>
+  </div>
+  <form (ngSubmit)="save()" role="form" [formGroup]="addForm" class="text-center">
+    <div class="form-group row">
+      <div class="col-sm-10">
+        <input type="text" [ngClass]="{'is-invalid': formErrors.item}" class="form-control form-control-lg" formControlName="item"
+          placeholder="Todo!">
+      </div>
+      <div class="col-sm-2">
+        <button type="submit" class="btn btn-primary btn-lg btn-block" [disabled]="addForm.invalid">Add</button>
+      </div>
+    </div>
+  </form>
+  <div *ngIf="formErrors.item" class="alert alert-danger">
+    {{ formErrors.item }}
+  </div>
+  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    <h3>Error Saving</h3>
+    {{ errorMessage }}
+  </div>
+  <div class="row todo" *ngFor="let todoItem of todoList">
+    <div class="col-1" (click)="completeTodo(todoItem)">
+      <fa-icon [icon]="['far', todoItem.completed  ? 'check-square' : 'square']"></fa-icon>
+    </div>
+    <div class="col-10 done-{{todoItem.completed}}">
+      {{todoItem.item}}
+      <br />
+      <small>created: {{ todoItem.createdAt | date:'short'}}</small>
+    </div>
+    <div class="col-1" (click)="deleteTodo(todoItem)">
+      <fa-icon [icon]="['far', 'trash-alt']"></fa-icon>
+    </div>
+  </div>
+</div>
