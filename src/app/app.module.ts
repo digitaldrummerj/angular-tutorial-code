@@ -19,8 +19,7 @@ import { IsLoggedInGuard } from './shared/guards/is-logged-in.guard';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { FooterComponent } from './shared/footer/footer.component';
-import { CookieModule } from 'ngx-cookie';
-
+import { CookieService } from 'ngx-cookie-service';
 // library.add(faTrashAlt, faCheckSquare, faSquare);
 
 @NgModule({
@@ -41,10 +40,9 @@ import { CookieModule } from 'ngx-cookie';
     FontAwesomeModule,
     CollapseModule.forRoot(),
     BrowserAnimationsModule,
-    CookieModule.forRoot(),
     AppRoutingModule,
   ],
-  providers: [AuthService, TodoService, IsLoggedInGuard],
+  providers: [AuthService, TodoService, IsLoggedInGuard, CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
