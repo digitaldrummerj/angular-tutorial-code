@@ -21,7 +21,11 @@ export class AuthService {
   constructor(private http: HttpClient, private cookieService: CookieService) {}
 
   getUser(): User {
-    return JSON.parse(this.cookieService.get(this.cookieKey)) as User;
+    if (this.cookieService.check(this.cookieKey)) {
+      return JSON.parse(this.cookieService.get(this.cookieKey)) as User;
+    }
+
+    return null;
   }
 
   private setUser(value: User): void {
